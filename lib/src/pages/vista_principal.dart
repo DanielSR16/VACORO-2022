@@ -11,7 +11,7 @@ class _vista_principalState extends State<vista_principal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('Vista 12345'),
+      child: Text('Vista SIMON'),
     );
   }
 }
