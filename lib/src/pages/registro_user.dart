@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class vista_principal extends StatefulWidget {
-  const vista_principal({Key? key}) : super(key: key);
+class registroUser extends StatefulWidget {
+  const registroUser({Key? key}) : super(key: key);
 
   @override
-  State<vista_principal> createState() => _vista_principalState();
+  State<registroUser> createState() => _registroUserState();
 }
 
-class _vista_principalState extends State<vista_principal> {
+class _registroUserState extends State<registroUser> {
   var size, height_media, width_media;
   late double bordes = 30;
   @override
