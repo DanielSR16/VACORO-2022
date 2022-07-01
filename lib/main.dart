@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_bull.dart';
+import 'package:vacoro_proyect/src/pages/dashboard_calf.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_cow.dart';
 import 'package:vacoro_proyect/src/pages/splash.dart';
 import 'package:vacoro_proyect/src/pages/splash_canva.dart';
@@ -19,13 +20,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       // initialRoute: 'vistaPrincipal',
-      initialRoute: 'dash_bull',
+      initialRoute: 'dash_calf',
       routes: {
         // 'vistaPrincipal': (BuildContext context) => vista_principal(),
         'splash': (BuildContext context) => Splash(),
         'splash_canva':(BuildContext context) => SplashCanva(),
         'dash_cow':(BuildContext context) => DashBoardCow(),
-        'dash_bull':(BuildContext context) => DashBoardBull()
+        'dash_bull':(BuildContext context) => DashBoardBull(),
+        'dash_calf':(BuildContext context) => DashBoardCalf()
       },
     );
   }
