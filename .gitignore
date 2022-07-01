@@ -49,3 +49,5 @@ app.*.map.json
 /lib/src/pages/splash.dart
 /lib/src/pages/splash_canva.dart
 .gitignore
+
+/assets/images/calf.png
