@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/login.dart';
+import 'package:vacoro_proyect/src/pages/pre_login.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
 void main() {
@@ -14,9 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      initialRoute: 'vistaPrincipal',
+      initialRoute: 'pre_login',
       routes: {
-        'vistaPrincipal': (BuildContext context) => vista_principal(),
+        'login': (BuildContext context) => const Login(),
+        'pre_login': (BuildContext context) => const preLogin(),
       },
     );
   }

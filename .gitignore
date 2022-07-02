@@ -48,3 +48,4 @@ app.*.map.json
 /lib/src/pages/anadir_animal.dart
 /lib/src/pages/photoscreen.dart
 /lib/src/pages/vista_principal.dart
+/lib/src/pages/pre_login.dart
