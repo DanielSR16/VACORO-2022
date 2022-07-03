@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/splash.dart';
+import 'package:vacoro_proyect/src/pages/splash_canva.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
 void main() {
@@ -14,9 +16,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      initialRoute: 'vistaPrincipal',
+      initialRoute: 'splash',
       routes: {
         'vistaPrincipal': (BuildContext context) => vista_principal(),
+        'splash': (BuildContext context) => Splash(),
+        'splash_canva': (BuildContext context) => SplashCanva()
       },
     );
   }
