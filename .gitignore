@@ -45,7 +45,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-/lib/src/pages/vista_principal.dart
-/lib/src/pages/pre_login.dart
-/assets/images/logo_blanco.png
-pubspec.yaml
+
