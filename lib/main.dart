@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'vistaPrincipal': (BuildContext context) => vista_principal(),
         'splash': (BuildContext context) => Splash(),
-        'splash_canva': (BuildContext context) => SplashCanva()
+        'splash_canva': (BuildContext context) => SplashCanva(),
         'login': (BuildContext context) => const Login(),
         'pre_login': (BuildContext context) => const preLogin(),
       },
