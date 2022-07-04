@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vacoro_proyect/src/pages/login.dart';
 
 class SplashCanva extends StatefulWidget {
   SplashCanva({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class _SplashCanvaState extends State<SplashCanva> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _SplashChange();
+    // _SplashChange();
   }
 
   @override
@@ -62,7 +61,7 @@ class _SplashCanvaState extends State<SplashCanva> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 0),
+                margin: const EdgeInsets.only(bottom: 0, top: 590),
                 width: size.width,
                 height: size.height,
                 child: CustomPaint(
@@ -76,11 +75,11 @@ class _SplashCanvaState extends State<SplashCanva> {
     );
   }
 
-  _SplashChange() async {
-    await Future.delayed(const Duration(milliseconds: 3000), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Login()));
-  }
+  // _SplashChange() async {
+  //   await Future.delayed(const Duration(milliseconds: 3000), () {});
+  //   Navigator.pushReplacement(
+  //       context, MaterialPageRoute(builder: (context) => Login())); //Aqui agregan la vista de login
+  // }
 }
 
 class _SplashCanvasTop extends CustomPainter {
@@ -124,14 +123,14 @@ class _SplashCanvasBottom extends CustomPainter {
       fontWeight: FontWeight.bold,
     );
     const textSpan =
-        TextSpan(text: "BIENVENIDO A SU APLICACIÓN VACORO", style: textStyle);
+        TextSpan(text: "BIENVENID@ A SU APLICACIÓN VACORO.", style: textStyle);
 
     final textPainter =
         TextPainter(text: textSpan, textDirection: TextDirection.ltr);
     textPainter.layout(minWidth: 0, maxWidth: size.width);
 
     final x = (size.width) * 0.15;
-    final y = (size.height - textPainter.height) * 0.98;
+    final y = (size.height - textPainter.height) * 0.8;
 
     final offset = Offset(x, y);
 
@@ -142,15 +141,45 @@ class _SplashCanvasBottom extends CustomPainter {
     paint2.strokeWidth = 5;
 
     final path2 = Path();
-    path2.lineTo(0, size.height * 0.98);
-    path2.quadraticBezierTo(size.width * 0.001, size.height * 0.7,
-        size.width * 0, size.height * 0.89);
-    path2.quadraticBezierTo(size.width * 0.40, size.height * 0.7,
-        size.width * 0.99, size.height * 0.95);
+    // path2.lineTo(0, size.height * 0.98);
+    // path2.quadraticBezierTo(size.width * 0.001, size.height * 0.7,
+    //     size.width * 0, size.height * 0.89);
+    // path2.quadraticBezierTo(size.width * 0.40, size.height * 0.7,
+    //     size.width * 0.99, size.height * 0.95);
+    // path2.lineTo(size.width, size.height);
+    // path2.lineTo(0, size.height);
+
+    // canvas.drawPath(path2, paint2);
+    // textPainter.paint(canvas, offset);
+
+    paint2.color = const Color(0xff68C34E);
+    paint2.style = PaintingStyle.fill;
+    paint2.strokeWidth = 1;
+
+    path2.moveTo(0, size.height);
+    path2.lineTo(0, size.height * 0.0980000);
+    path2.quadraticBezierTo(size.width * 0.0483500, size.height * 0.0005000,
+        size.width * 0.1996000, 0);
+    path2.cubicTo(
+        size.width * 0.3509000,
+        size.height * -0.0038000,
+        size.width * 0.4223000,
+        size.height * 0.2590000,
+        size.width * 0.5008000,
+        size.height * 0.2664000);
+    path2.cubicTo(
+        size.width * 0.5862000,
+        size.height * 0.2692000,
+        size.width * 0.6562000,
+        size.height * -0.0116000,
+        size.width * 0.8016000,
+        0);
+    path2.quadraticBezierTo(size.width * 0.9522000, size.height * -0.0142000,
+        size.width, size.height * 0.0368000);
     path2.lineTo(size.width, size.height);
-    path2.lineTo(0, size.height);
 
     canvas.drawPath(path2, paint2);
+
     textPainter.paint(canvas, offset);
   }
 
