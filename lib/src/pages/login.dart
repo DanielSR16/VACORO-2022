@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
             splashRadius: 15,
             icon: const Icon(
               Icons.arrow_back,
-              color: ColorSelect.color7,
+              color: Colors.white,
               size: 40,
             ),
             onPressed: () {
