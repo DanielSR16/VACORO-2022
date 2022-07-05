@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/homepage.dart';
+import 'package:vacoro_proyect/src/pages/login.dart';
+import 'package:vacoro_proyect/src/pages/pre_login.dart';
+import 'package:vacoro_proyect/src/pages/splash.dart';
+import 'package:vacoro_proyect/src/pages/splash_canva.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 import 'firebase_options.dart';
 import 'src/pages/authentications.dart';
@@ -23,10 +27,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       initialRoute: 'homePage',
+
+      title: 'VACORO',
+      initialRoute: 'splash',
       routes: {
         'autenticacion': (BuildContext context) => autenticacion(),
         'homePage': (BuildContext context) => homePage(),
         'vistaPrincipal': (BuildContext context) => vista_principal(),
+        'splash': (BuildContext context) => Splash(),
+        'splash_canva': (BuildContext context) => SplashCanva(),
+        'login': (BuildContext context) => const Login(),
+        'pre_login': (BuildContext context) => const preLogin(),
       },
     );
   }
