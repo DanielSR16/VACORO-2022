@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'VACORO',
-      initialRoute: 'login',
+      initialRoute: 'pre_login',
       routes: {
         'login': (BuildContext context) => const Login(),
         'pre_login': (BuildContext context) => const preLogin(),
