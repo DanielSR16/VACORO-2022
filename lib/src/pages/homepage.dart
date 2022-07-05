@@ -8,19 +8,19 @@ import '../widgets/HomePage/card_image_text_center.dart';
 
 
 class homePage extends StatefulWidget {
-  const homePage({Key? key}) : super(key: key);
+  String nombre;
+  homePage({Key? key, required this.nombre}) : super(key: key);
 
   @override
   State<homePage> createState() => _homePage();
 }
 
 class _homePage extends State<homePage> {
-  var nombre = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: appbargeneral(widget.nombre, 'assets/images/logo_blanco.png'),
       body: Column(
         children: [
           textoBienvenida(context,0.06,"Seleccione el tipo de ganado que desea visualizar"),
