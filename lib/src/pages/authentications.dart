@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/services/authFacebook.dart';
 import 'package:vacoro_proyect/src/services/authGoogle.dart';
 
@@ -24,9 +25,9 @@ class _autenticacion extends State<autenticacion> {
                   child: Text('Facebook Inicio Sesion'),
                   onPressed: () {
                     try {
-                      signInWithFacebook().then((value) =>
-                        // ignore: avoid_print
-                        print(value.user!.displayName)
+                      signInWithFacebook().then((value) => {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)));
+                      }
                       );
                     } catch (e) {
                       // ignore: avoid_print
@@ -38,9 +39,10 @@ class _autenticacion extends State<autenticacion> {
                   child: Text('Google Inicio Sesion'),
                   onPressed: () {
                     try {
-                      signInWithGoogle().then((value) =>
+                      signInWithGoogle().then((value) =>{
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)));
+                      }
                         // ignore: avoid_print
-                        print(value.user!.displayName)
                       );
                     } catch (e) {
                       // ignore: avoid_print
