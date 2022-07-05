@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/login.dart';
 import 'package:vacoro_proyect/src/pages/pre_login.dart';
@@ -25,8 +26,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      initialRoute: 'homePage',
 
       title: 'VACORO',
       initialRoute: 'splash',
@@ -38,6 +37,7 @@ class MyApp extends StatelessWidget {
         'splash_canva': (BuildContext context) => SplashCanva(),
         'login': (BuildContext context) => const Login(),
         'pre_login': (BuildContext context) => const preLogin(),
+        'anadir_animal': (BuildContext context) => const AnadirAnimal(),
       },
     );
   }
