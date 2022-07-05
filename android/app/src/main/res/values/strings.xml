@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">vacoro</string>
+    <string name="facebook_app_id">2355015984641528</string>
+    <string name="fb_login_protocol_scheme">fb2355015984641528</string>
+    <string name="facebook_client_token">0a990a36d0dba87dd4adce25ec4a24b5</string>
+
+</resources>
