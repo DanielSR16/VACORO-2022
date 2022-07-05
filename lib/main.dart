@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:vacoro_proyect/src/pages/homepage.dart';
+//import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/login.dart';
 import 'package:vacoro_proyect/src/pages/pre_login.dart';
 import 'package:vacoro_proyect/src/pages/splash.dart';
@@ -25,14 +25,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      initialRoute: 'homePage',
-
       title: 'VACORO',
       initialRoute: 'splash',
       routes: {
         'autenticacion': (BuildContext context) => autenticacion(),
-        'homePage': (BuildContext context) => homePage(),
+        //'homePage': (BuildContext context) => homePage(),
         'vistaPrincipal': (BuildContext context) => vista_principal(),
         'splash': (BuildContext context) => Splash(),
         'splash_canva': (BuildContext context) => SplashCanva(),

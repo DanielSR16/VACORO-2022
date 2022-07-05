@@ -199,8 +199,6 @@ packages:
     source: hosted
     version: "4.0.1"
   intl:
-    dependency: transitive
-  intl:
     dependency: "direct main"
     description:
       name: intl
