@@ -13,7 +13,7 @@ import 'src/pages/authentications.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
 }
@@ -26,12 +26,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
       title: 'VACORO',
       initialRoute: 'splash',
       routes: {
         'autenticacion': (BuildContext context) => autenticacion(),
-        'homePage': (BuildContext context) => homePage(),
+        //'homePage': (BuildContext context) => homePage(),
         'vistaPrincipal': (BuildContext context) => vista_principal(),
         'splash': (BuildContext context) => Splash(),
         'splash_canva': (BuildContext context) => SplashCanva(),
