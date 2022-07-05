@@ -26,7 +26,7 @@ class _autenticacion extends State<autenticacion> {
                   onPressed: () {
                     try {
                       signInWithFacebook().then((value) => {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)))
                       }
                       );
                     } catch (e) {
@@ -40,7 +40,7 @@ class _autenticacion extends State<autenticacion> {
                   onPressed: () {
                     try {
                       signInWithGoogle().then((value) =>{
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)))
                       }
                         // ignore: avoid_print
                       );
