@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/pre_login.dart';
 
 class SplashCanva extends StatefulWidget {
   SplashCanva({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class _SplashCanvaState extends State<SplashCanva> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _SplashChange();
+    _SplashChange();
   }
 
   @override
@@ -75,11 +76,11 @@ class _SplashCanvaState extends State<SplashCanva> {
     );
   }
 
-  // _SplashChange() async {
-  //   await Future.delayed(const Duration(milliseconds: 3000), () {});
-  //   Navigator.pushReplacement(
-  //       context, MaterialPageRoute(builder: (context) => Login())); //Aqui agregan la vista de login
-  // }
+  _SplashChange() async {
+        await Future.delayed(const Duration(milliseconds: 3000), () {});
+        Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => preLogin())); //Aqui agregan la vista de login
+   }
 }
 
 class _SplashCanvasTop extends CustomPainter {
