@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/services/authFacebook.dart';
+import 'package:vacoro_proyect/src/services/authGoogle.dart';
 import '../style/colors/colorview.dart';
 
 class preLogin extends StatelessWidget {
@@ -64,7 +66,16 @@ class preLogin extends StatelessWidget {
                                   AssetImage('assets/images/icon_google.png'))
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                         try {
+                          signInWithGoogle().then((value) => 
+                          print(value.user!)
+                          // 
+                          );
+                        } on Exception catch (_) {
+                          print('never reached');
+                        }
+                      },
                     ),
                   ),
                   Container(
@@ -96,7 +107,16 @@ class preLogin extends StatelessWidget {
                                     'assets/images/icon_facebook.png'))
                           ],
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                           try {
+                          signInWithFacebook().then((value) => 
+                          print(value.user!)
+                          // 
+                          );
+                          } on Exception catch (_) {
+                            print('never reached');
+                          }
+                        },
                       )),
                   Container(
                     margin: const EdgeInsets.only(right: 150, top: 20),
