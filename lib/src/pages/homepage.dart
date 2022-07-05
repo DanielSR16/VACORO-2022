@@ -3,8 +3,8 @@ import 'package:vacoro_proyect/src/widgets/HomePage/appBar.dart';
 import 'package:vacoro_proyect/src/widgets/HomePage/textoBienvenida.dart';
 import '../widgets/HomePage/dashboard.dart';
 import '../widgets/HomePage/card_image_text_center.dart';
-import '../services/authFacebook.dart';
-import '../services/authGoogle.dart';
+//import '../services/authFacebook.dart';
+//import '../services/authGoogle.dart';
 
 
 class homePage extends StatefulWidget {
