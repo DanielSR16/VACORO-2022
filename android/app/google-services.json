@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1006388724031",
+    "project_id": "vacoro-2022",
+    "storage_bucket": "vacoro-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006388724031:android:6e5c38c2ad5f7f02c9538a",
+        "android_client_info": {
+          "package_name": "com.example.vacoro_proyect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006388724031-6mg02a53n20s4mog4cqrulqp1ipeko44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9M52L7wymkGH4khd-h5-tHtq8dVHsDxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006388724031-6mg02a53n20s4mog4cqrulqp1ipeko44.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1006388724031-h7ak371r9i30pc4qdmbavumt3nmcs2pv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vacoroProyect"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
