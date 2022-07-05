@@ -67,13 +67,15 @@ class preLogin extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
-                         try {
-                          signInWithGoogle().then((value) => 
-                          print(value.user!)
-                          // 
+                        try {
+                          signInWithGoogle().then((value) =>{
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)))
+                          }
+                            // ignore: avoid_print
                           );
-                        } on Exception catch (_) {
-                          print('never reached');
+                        } catch (e) {
+                          // ignore: avoid_print
+                          print(e);
                         }
                       },
                     ),
@@ -109,12 +111,14 @@ class preLogin extends StatelessWidget {
                         ),
                         onPressed: () {
                            try {
-                          signInWithFacebook().then((value) => 
-                          print(value.user!)
-                          // 
-                          );
-                          } on Exception catch (_) {
-                            print('never reached');
+                            signInWithFacebook().then((value) =>{
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)))
+                            }
+                              // ignore: avoid_print
+                            );
+                          } catch (e) {
+                            // ignore: avoid_print
+                            print(e);
                           }
                         },
                       )),
