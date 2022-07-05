@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/services/authFacebook.dart';
 import 'package:vacoro_proyect/src/services/authGoogle.dart';
 import '../style/colors/colorview.dart';
+import 'homepage.dart';
 
 class preLogin extends StatelessWidget {
   const preLogin({Key? key}) : super(key: key);
