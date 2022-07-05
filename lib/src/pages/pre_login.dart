@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/services/authFacebook.dart';
+import 'package:vacoro_proyect/src/services/authGoogle.dart';
 import '../style/colors/colorview.dart';
 
 class preLogin extends StatelessWidget {
@@ -37,35 +39,52 @@ class preLogin extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      width: size.width - 75,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                ColorSelect.color3),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                            )),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: const [
-                            Text('Continuar con Google',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: ColorSelect.color6,
-                                    fontSize: 18),
-                                textAlign: TextAlign.center),
-                            Image(
-                                width: 32,
-                                image:
-                                    AssetImage('assets/images/icon_google.png'))
-                          ],
+                        margin: const EdgeInsets.only(bottom: 20),
+                        width: size.width - 75,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  ColorSelect.color3),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                              )),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: const [
+                              Text('Continuar con Google',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorSelect.color6,
+                                      fontSize: 18),
+                                  textAlign: TextAlign.center),
+                              Image(
+                                  width: 32,
+                                  image: AssetImage(
+                                      'assets/images/icon_google.png'))
+                            ],
+                          ),
+                          onPressed: () {
+                            try {
+                              signInWithFacebook()
+                                  .then((value) => print(value.user!)
+                                      //
+                                      );
+                            } on Exception catch (_) {
+                              print('never reached');
+                            }
+                          },
+                        )),
+                    Container(
+                      margin: const EdgeInsets.only(right: 150, top: 20),
+                      child: const Text(
+                        '¿Ya tienes una cuenta?',
+                        style: TextStyle(
+                          fontSize: 16,
                         ),
-                        onPressed: () {},
                       ),
                     ),
                     Container(
