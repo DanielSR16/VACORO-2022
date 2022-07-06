@@ -58,7 +58,6 @@ class _EditarAnimalState extends State<EditarAnimal> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double bordes = 20.0;
-    String dropdownValue = 'One';
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
