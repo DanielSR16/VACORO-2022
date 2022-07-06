@@ -7,7 +7,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.9.0"
+    version: "2.8.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -21,7 +21,14 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.0"
+  charcode:
+    dependency: transitive
+    description:
+      name: charcode
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.1"
   clock:
     dependency: transitive
     description:
@@ -163,7 +170,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-<<<<<<< HEAD
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -171,8 +177,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "9.2.0"
-=======
->>>>>>> feature/VACORO-55
   google_sign_in:
     dependency: "direct main"
     description:
@@ -237,7 +241,6 @@ packages:
     source: hosted
     version: "0.8.5+3"
   image_picker_android:
-<<<<<<< HEAD
     dependency: transitive
     description:
       name: image_picker_android
@@ -247,17 +250,6 @@ packages:
   image_picker_for_web:
     dependency: transitive
     description:
-=======
-    dependency: transitive
-    description:
-      name: image_picker_android
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.5+1"
-  image_picker_for_web:
-    dependency: transitive
-    description:
->>>>>>> feature/VACORO-55
       name: image_picker_for_web
       url: "https://pub.dartlang.org"
     source: hosted
@@ -310,21 +302,21 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.4"
   meta:
     dependency: transitive
     description:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.7.0"
   path:
     dependency: transitive
     description:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.2"
+    version: "1.8.1"
   path_provider:
     dependency: "direct main"
     description:
@@ -413,7 +405,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.0"
+    version: "1.8.2"
   stack_trace:
     dependency: transitive
     description:
@@ -434,7 +426,7 @@ packages:
       name: string_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.0"
   term_glyph:
     dependency: transitive
     description:
@@ -478,11 +470,5 @@ packages:
     source: hosted
     version: "0.2.0+1"
 sdks:
-<<<<<<< HEAD
-  dart: ">=2.17.0-0 <3.0.0"
-  flutter: ">=3.0.0"
-
-=======
   dart: ">=2.17.0 <3.0.0"
   flutter: ">=3.0.0"
->>>>>>> feature/VACORO-55

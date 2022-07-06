@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
 
 import 'package:vacoro_proyect/src/pages/dashboard_bull.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_calf.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'VACORO',
-      initialRoute: 'dash_calf',
+      initialRoute: 'anadir_becerro',
       routes: {
         // 'autenticacion': (BuildContext context) => const autenticacion(),
         // 'homePage': (BuildContext context) => homePage(),
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         'login': (BuildContext context) => const Login(),
         'pre_login': (BuildContext context) => const preLogin(),
         'anadir_animal': (BuildContext context) => const AnadirAnimal(),
+        'anadir_becerro': (BuildContext context) => const AnadirBecerro(),
         'dash_cow': (BuildContext context) => DashBoardCow(),
         'dash_bull': (BuildContext context) => DashBoardBull(),
         'dash_calf': (BuildContext context) => DashBoardCalf()
