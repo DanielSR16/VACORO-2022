@@ -121,7 +121,9 @@ class _registroUserState extends State<registroUser> {
                   ),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, 'registroUser2');
+              },
               child: const Text(
                 'Siguiente',
                 style: TextStyle(
