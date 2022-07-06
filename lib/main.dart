@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: 'vistaPrincipal',
       routes: {
-        'vistaPrincipal': (BuildContext context) => vista_principal(),
+        'vistaPrincipal': (BuildContext context) => registroUser(),
       },
     );
   }
