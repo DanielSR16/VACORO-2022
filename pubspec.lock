@@ -165,6 +165,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.2.0"
+
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -296,6 +305,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
+
   meta:
     dependency: transitive
     description:
@@ -433,7 +443,9 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
+
     version: "0.4.9"
+
   typed_data:
     dependency: transitive
     description:
@@ -465,3 +477,4 @@ packages:
 sdks:
   dart: ">=2.17.0-0 <3.0.0"
   flutter: ">=3.0.0"
+
