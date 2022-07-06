@@ -17,6 +17,10 @@ class AnadirAnimal extends StatefulWidget {
 class _AnadirAnimalState extends State<AnadirAnimal> {
   File? image;
   bool isSwitched = false;
+  TextEditingController nombreToroVaca = TextEditingController();
+  TextEditingController descripcionToroVaca = TextEditingController();
+  TextEditingController razaToroVaca = TextEditingController();
+  TextEditingController numeroAreteToroVaca = TextEditingController();
 
   Future pickImage() async {
     try {
@@ -53,8 +57,6 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    double bordes = 20.0;
     String dropdownValue = 'One';
 
     return Scaffold(
@@ -91,16 +93,19 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       body: SizedBox(
         child: SafeArea(
           child: Container(
-            padding: EdgeInsets.only(right: bordes, left: 20),
+            padding: const EdgeInsets.only(right: 20, left: 20),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  inputs("Nombre", "Ingrese nombre del animal", size),
+                  inputs("Nombre", "Ingrese nombre del animal", size,
+                      nombreToroVaca),
                   inputs("Descripción", "Ingrese una descripción del animal",
-                      size),
-                  inputs("Raza", "Ingrese la raza del animal", size),
-                  inputs("Número de arete", "Ingrese el número de arete", size),
+                      size, descripcionToroVaca),
+                  inputs(
+                      "Raza", "Ingrese la raza del animal", size, razaToroVaca),
+                  inputs("Número de arete", "Ingrese el número de arete", size,
+                      numeroAreteToroVaca),
                   date(),
                   edadEstado("Edad", "Buen estado", size),
                   selectImage(),
@@ -134,7 +139,8 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
     );
   }
 
-  Widget inputs(String nameTopField, String nameInField, Size size) {
+  Widget inputs(String nameTopField, String nameInField, Size size,
+      TextEditingController controllerInput) {
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Column(
@@ -155,6 +161,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
           SizedBox(
             height: 40,
             child: TextField(
+              controller: controllerInput,
               decoration: InputDecoration(
                 labelStyle: const TextStyle(color: ColorSelect.color5),
                 enabledBorder: const OutlineInputBorder(

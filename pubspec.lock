@@ -163,6 +163,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -170,6 +171,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "9.2.0"
+=======
+>>>>>>> feature/VACORO-55
   google_sign_in:
     dependency: "direct main"
     description:
@@ -234,6 +237,7 @@ packages:
     source: hosted
     version: "0.8.5+3"
   image_picker_android:
+<<<<<<< HEAD
     dependency: transitive
     description:
       name: image_picker_android
@@ -243,6 +247,17 @@ packages:
   image_picker_for_web:
     dependency: transitive
     description:
+=======
+    dependency: transitive
+    description:
+      name: image_picker_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.5+1"
+  image_picker_for_web:
+    dependency: transitive
+    description:
+>>>>>>> feature/VACORO-55
       name: image_picker_for_web
       url: "https://pub.dartlang.org"
     source: hosted
@@ -463,6 +478,11 @@ packages:
     source: hosted
     version: "0.2.0+1"
 sdks:
+<<<<<<< HEAD
   dart: ">=2.17.0-0 <3.0.0"
   flutter: ">=3.0.0"
 
+=======
+  dart: ">=2.17.0 <3.0.0"
+  flutter: ">=3.0.0"
+>>>>>>> feature/VACORO-55
