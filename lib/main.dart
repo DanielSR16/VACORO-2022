@@ -28,13 +28,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'VACORO',
-      initialRoute: 'anadir_animal',
+      initialRoute: 'pre_login',
       routes: {
 
         // 'autenticacion': (BuildContext context) => const autenticacion(),
         // 'homePage': (BuildContext context) => homePage(),
         // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
-
         'splash': (BuildContext context) => Splash(),
         'splash_canva': (BuildContext context) => SplashCanva(),
         'login': (BuildContext context) => const Login(),
