@@ -1,10 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+
+import 'package:vacoro_proyect/src/pages/dashboard_bull.dart';
+import 'package:vacoro_proyect/src/pages/dashboard_calf.dart';
+import 'package:vacoro_proyect/src/pages/dashboard_cow.dart';
+
+
 //import 'package:vacoro_proyect/src/pages/homepage.dart';
+
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 // import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/login.dart';
 import 'package:vacoro_proyect/src/pages/pre_login.dart';
+
 import 'package:vacoro_proyect/src/pages/splash.dart';
 import 'package:vacoro_proyect/src/pages/splash_canva.dart';
 // import 'package:vacoro_proyect/src/pages/vista_principal.dart';
@@ -26,7 +35,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,     
+
       title: 'VACORO',
       initialRoute: 'pre_login',
       routes: {
@@ -39,6 +49,9 @@ class MyApp extends StatelessWidget {
         'login': (BuildContext context) => const Login(),
         'pre_login': (BuildContext context) => const preLogin(),
         'anadir_animal': (BuildContext context) => const AnadirAnimal(),
+        'dash_cow':(BuildContext context) => DashBoardCow(),
+        'dash_bull':(BuildContext context) => DashBoardBull(),
+        'dash_calf':(BuildContext context) => DashBoardCalf()
       },
     );
   }
