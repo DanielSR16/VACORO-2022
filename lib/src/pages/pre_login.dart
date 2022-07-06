@@ -37,24 +37,7 @@ class preLogin extends StatelessWidget {
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('assets/images/logo.png')),
-                      ),
-                      // onPressed: () {
-                      //   try {
-                      //     signInWithGoogle().then((value) => {
-                      //               Navigator.pushReplacement(
-                      //                   context,
-                      //                   MaterialPageRoute(
-                      //                       builder: (context) => homePage(
-                      //                           nombre:
-                      //                               value.user!.displayName!)))
-                      //             }
-                      //         // ignore: avoid_print
-                      //         );
-                      //   } catch (e) {
-                      //     // ignore: avoid_print
-                      //     print(e);
-                      //   }
-                      // },
+
                     ),
                     Container(
                         margin: const EdgeInsets.only(bottom: 20),
@@ -96,16 +79,7 @@ class preLogin extends StatelessWidget {
                             // }
 
                             try {
-                              signInWithFacebook().then((value) => {
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => homePage(
-                                                    nombre: value
-                                                        .user!.displayName!)))
-                                      }
-                                  // ignore: avoid_print
-                                  );
+
                             } catch (e) {
                               // ignore: avoid_print
                               print(e);
@@ -128,8 +102,10 @@ class preLogin extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                         ),
+
                       ),
                     ),
+                  ),
                     Container(
                         width: size.width - 75,
                         height: 50,
@@ -159,8 +135,19 @@ class preLogin extends StatelessWidget {
                                       'assets/images/icon_facebook.png'))
                             ],
                           ),
-                          onPressed: () {},
-                        )),
+                          onPressed: () {
+                           try {
+                            signInWithFacebook().then((value) =>{
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)))
+                                }
+                                // ignore: avoid_print
+                                );
+                              } catch (e) {
+                              // ignore: avoid_print
+                              print(e);
+                              }
+                            },
+                          )),
                     Container(
                       margin: const EdgeInsets.only(right: 150, top: 20),
                       child: const Text(
