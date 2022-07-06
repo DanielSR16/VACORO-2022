@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+//import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 // import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/login.dart';
@@ -29,9 +30,11 @@ class MyApp extends StatelessWidget {
       title: 'VACORO',
       initialRoute: 'anadir_animal',
       routes: {
+
         // 'autenticacion': (BuildContext context) => const autenticacion(),
         // 'homePage': (BuildContext context) => homePage(),
         // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
+
         'splash': (BuildContext context) => Splash(),
         'splash_canva': (BuildContext context) => SplashCanva(),
         'login': (BuildContext context) => const Login(),

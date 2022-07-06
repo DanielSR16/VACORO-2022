@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/services/authFacebook.dart';
 import 'package:vacoro_proyect/src/services/authGoogle.dart';
 import '../style/colors/colorview.dart';
+import 'homepage.dart';
 
 class preLogin extends StatelessWidget {
   const preLogin({Key? key}) : super(key: key);
@@ -37,6 +38,18 @@ class preLogin extends StatelessWidget {
                         image: DecorationImage(
                             image: AssetImage('assets/images/logo.png')),
                       ),
+                      onPressed: () {
+                        try {
+                          signInWithGoogle().then((value) =>{
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)))
+                          }
+                            // ignore: avoid_print
+                          );
+                        } catch (e) {
+                          // ignore: avoid_print
+                          print(e);
+                        }
+                      },
                     ),
                     Container(
                         margin: const EdgeInsets.only(bottom: 20),
@@ -85,6 +98,25 @@ class preLogin extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                         ),
+                        onPressed: () {
+                           try {
+                            signInWithFacebook().then((value) =>{
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)))
+                            }
+                              // ignore: avoid_print
+                            );
+                          } catch (e) {
+                            // ignore: avoid_print
+                            print(e);
+                          }
+                        },
+                      )),
+                  Container(
+                    margin: const EdgeInsets.only(right: 150, top: 20),
+                    child: const Text(
+                      '¿Ya tienes una cuenta?',
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
                     Container(
