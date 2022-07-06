@@ -12,6 +12,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -64,6 +67,7 @@ class _LoginState extends State<Login> {
                   Container(
                     margin: const EdgeInsets.only(right: 12, left: 11),
                     child: TextField(
+                      controller: email,
                       textAlign: TextAlign.left,
                       style: const TextStyle(
                           fontSize: 15, color: ColorSelect.color1),
@@ -91,6 +95,7 @@ class _LoginState extends State<Login> {
                   Container(
                     margin: const EdgeInsets.only(right: 12, left: 11),
                     child: TextField(
+                      controller: password,
                       textAlign: TextAlign.left,
                       style: const TextStyle(
                           fontSize: 15, color: ColorSelect.color1),

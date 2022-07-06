@@ -28,8 +28,8 @@ class _autenticacion extends State<autenticacion> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => homePage(
-                                    nombre: value.user!.displayName!))),
+                                builder: (context) =>
+                                    homePage(nombre: value.user!.displayName!)))
                       });
                 } catch (e) {
                   // ignore: avoid_print
@@ -45,7 +45,7 @@ class _autenticacion extends State<autenticacion> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => homePage(
-                                        nombre: value.user!.displayName!))),
+                                        nombre: value.user!.displayName!)))
                           }
                       // ignore: avoid_print
                       );
