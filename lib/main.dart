@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/pages/registro_user2.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
 void main() {
@@ -15,9 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      initialRoute: 'vistaPrincipal',
+      initialRoute: 'registroUser2',
       routes: {
-        'vistaPrincipal': (BuildContext context) => registroUser(),
+        'registroUser': (BuildContext context) => registroUser(),
+        'registroUser2': (BuildContext context) => registroUser2()
       },
     );
   }
