@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/pages/registro_user2.dart';
+import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
 import 'package:vacoro_proyect/src/pages/dashboard_bull.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_calf.dart';
@@ -33,22 +36,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'VACORO',
-      initialRoute: 'dash_calf',
-      routes: {
-        // 'autenticacion': (BuildContext context) => const autenticacion(),
-        // 'homePage': (BuildContext context) => homePage(),
-        // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
-        'splash': (BuildContext context) => Splash(),
-        'splash_canva': (BuildContext context) => SplashCanva(),
-        'login': (BuildContext context) => const Login(),
-        'pre_login': (BuildContext context) => const preLogin(),
-        'anadir_animal': (BuildContext context) => const AnadirAnimal(),
-        'dash_cow': (BuildContext context) => DashBoardCow(),
-        'dash_bull': (BuildContext context) => DashBoardBull(),
-        'dash_calf': (BuildContext context) => DashBoardCalf()
-      },
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'VACORO',
+        initialRoute: 'dash_calf',
+        routes: {
+          // 'autenticacion': (BuildContext context) => const autenticacion(),
+          // 'homePage': (BuildContext context) => homePage(),
+          // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
+          'splash': (BuildContext context) => Splash(),
+          'splash_canva': (BuildContext context) => SplashCanva(),
+          'login': (BuildContext context) => const Login(),
+          'pre_login': (BuildContext context) => const preLogin(),
+          'anadir_animal': (BuildContext context) => const AnadirAnimal(),
+          'dash_cow': (BuildContext context) => DashBoardCow(),
+          'dash_bull': (BuildContext context) => DashBoardBull(),
+          'dash_calf': (BuildContext context) => DashBoardCalf(),
+          'registroUser': (BuildContext context) => registroUser(),
+          'registroUser2': (BuildContext context) => registroUser2()
+        });
   }
 }
