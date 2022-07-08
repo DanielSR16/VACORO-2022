@@ -40,10 +40,10 @@ class _EditarAnimalState extends State<EditarAnimal> {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
+      final imageTemporary = await saveImagePermanently(image.path);
       setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      print('Failed to pick camera: $e');
     }
   }
 
