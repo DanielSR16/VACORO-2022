@@ -410,7 +410,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                     dropdownValue = newValue!;
                   });
                 },
-                items: <String>['Margarita', 'Lola', 'Vanessa', 'Pepe']
+                items: <String>['Margarita', 'Lola', 'Vanessa', 'Pilly']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
