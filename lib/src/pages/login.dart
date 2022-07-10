@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
+import 'package:vacoro_proyect/src/services/login.dart';
 
 import '../style/colors/colorview.dart';
 
@@ -135,7 +137,39 @@ class _LoginState extends State<Login> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            servicelogin(email, password).then((value) {
+                              if (value['id'] == 'errorEmail') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(milliseconds: 1000),
+                                    content: Text('Email incorrecto'),
+                                  ),
+                                );
+                              } else if (value['id'] == 'errorPassword') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(milliseconds: 1000),
+                                    content: Text('Password incorrecto'),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(milliseconds: 1000),
+                                    content: Text('Inicio de sesión correcto'),
+                                  ),
+                                );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          homePage(nombre: value['nombre'])),
+                                );
+                                //Navigator.push(context,homePage(nombre: "f"));
+                              }
+                            });
+                          },
                           style: ElevatedButton.styleFrom(
                               primary: ColorSelect.color5,
                               shape: RoundedRectangleBorder(
