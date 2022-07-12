@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/services/servicios_user.dart';
 import '../metodos/regularExpresion.dart';
 
 class registroUser extends StatefulWidget {
@@ -18,6 +19,8 @@ class _registroUserState extends State<registroUser> {
   late String ciudad_;
   final edad_ = TextEditingController();
   final nombreRancho_ = TextEditingController();
+  List<String> listaCiudades = [''];
+  List<String> listaEstados = [''];
   @override
   late bool _validateNombre = false;
   late bool _validateApellido = false;
@@ -30,10 +33,23 @@ class _registroUserState extends State<registroUser> {
   late bool _validateNombreRancho = false;
   late String _errorCorreo = '';
   late String _errorContrasenia = '';
-  // void initState() {
+//https://api.flutter.dev/flutter/widgets/Element/reassemble.html
+//https://api.flutter.dev/flutter/widgets/BuildOwner/reassemble.html
+  void initState() {
+    setState(
+      () {
+        estados_all().then(
+          (value) {
+            for (var i = 0; i < value.length; i++) {
+              listaEstados.add(value[i]['description']);
+            }
+          },
+        );
+      },
+    );
 
-  //   super.initState();
-  // }
+    super.initState();
+  }
 
   var size, height_media, width_media;
   late double bordes = 30;
@@ -385,14 +401,14 @@ class _registroUserState extends State<registroUser> {
     );
   }
 
-  String dropdownValue_estado = 'One';
-  Widget drop_button_estado(int tam_width, String nameTopField) {
+  late String dropdownValue_estado = listaEstados[0];
+  Widget drop_button_estado(int tamWidth, String nameTopField) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           padding: const EdgeInsets.only(top: 10, bottom: 5, left: 30),
-          width: width_media - tam_width,
+          width: width_media - tamWidth,
           child: Text(
             nameTopField,
             textAlign: TextAlign.left,
@@ -404,7 +420,7 @@ class _registroUserState extends State<registroUser> {
           ),
         ),
         Container(
-          width: width_media - tam_width,
+          width: width_media - tamWidth,
           padding: EdgeInsets.only(left: bordes),
           child: SizedBox(
             height: 40,
@@ -419,14 +435,16 @@ class _registroUserState extends State<registroUser> {
                   color: Color(0xFF68C24E),
                 ),
                 value: dropdownValue_estado,
-                items: <String>['One', 'Two', 'Free', 'Four']
-                    .map<DropdownMenuItem<String>>(
+                items: listaEstados.map<DropdownMenuItem<String>>(
                   (String value) {
                     // print('val drop: ' + dropdownValue_estado);
                     // print('soy el valor: ' + value);
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 9),
+                      ),
                     );
                   },
                 ).toList(),
@@ -434,6 +452,8 @@ class _registroUserState extends State<registroUser> {
                   setState(
                     () {
                       dropdownValue_estado = newValue!;
+
+                      print('************** ' + dropdownValue_estado);
                     },
                   );
                 },
@@ -445,14 +465,14 @@ class _registroUserState extends State<registroUser> {
     );
   }
 
-  String dropdownValue_ciudad = 'One';
-  Widget drop_button_ciudad(int tam_width, String nameTopField) {
+  late String dropdownValue_ciudad = listaCiudades[0];
+  Widget drop_button_ciudad(int tamWidth, String nameTopField) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           padding: const EdgeInsets.only(top: 10, bottom: 5, left: 30),
-          width: width_media - tam_width,
+          width: width_media - tamWidth,
           child: Text(
             nameTopField,
             textAlign: TextAlign.left,
@@ -464,7 +484,7 @@ class _registroUserState extends State<registroUser> {
           ),
         ),
         Container(
-            width: width_media - tam_width,
+            width: width_media - tamWidth,
             padding: EdgeInsets.only(left: bordes),
             child: SizedBox(
               height: 40,
@@ -480,14 +500,16 @@ class _registroUserState extends State<registroUser> {
                     color: Color(0xFF68C24E),
                   ),
                   value: dropdownValue_ciudad,
-                  items: <String>['One', 'Two', 'Free', 'Four']
-                      .map<DropdownMenuItem<String>>(
+                  items: listaCiudades.map<DropdownMenuItem<String>>(
                     (String value) {
                       // print('val drop: ' + dropdownValue_ciudad);
                       // print('soy el valor: ' + value);
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: TextStyle(fontSize: 9),
+                        ),
                       );
                     },
                   ).toList(),
@@ -495,10 +517,12 @@ class _registroUserState extends State<registroUser> {
                     setState(
                       () {
                         dropdownValue_ciudad = newValue!;
-                        print(dropdownValue_ciudad);
                       },
                     );
                   },
+                  // onTap: () {
+                  //   print('aa');
+                  // },
                 ),
               ),
             )),
@@ -511,7 +535,6 @@ class _registroUserState extends State<registroUser> {
     if (nombre_.text.isEmpty) {
       _validateNombre = true;
       lleno = false;
-      print('1');
     } else {
       _validateNombre = false;
     }
@@ -519,7 +542,6 @@ class _registroUserState extends State<registroUser> {
     if (apellidos_.text.isEmpty) {
       _validateApellido = true;
       lleno = false;
-      print('2');
     } else {
       _validateApellido = false;
     }
@@ -528,7 +550,6 @@ class _registroUserState extends State<registroUser> {
       _errorCorreo = 'El campo esta vacio';
       _validateCorreo = true;
       lleno = false;
-      print('3');
     } else {
       _validateCorreo = false;
       Iterable<RegExpMatch> matches =
@@ -545,7 +566,6 @@ class _registroUserState extends State<registroUser> {
       _validateContrasenia = true;
       lleno = false;
       _errorContrasenia = 'El campo esta vacio';
-      print('4');
     } else {
       _validateContrasenia = false;
     }
@@ -578,7 +598,7 @@ class _registroUserState extends State<registroUser> {
 
     if (edad_.text.isEmpty) {
       _validatedad = true;
-      print('6');
+
       lleno = false;
     } else {
       _validatedad = false;
@@ -586,7 +606,7 @@ class _registroUserState extends State<registroUser> {
 
     if (nombreRancho_.text.isEmpty) {
       _validateNombreRancho = true;
-      print('7');
+
       lleno = false;
     } else {
       _validateNombreRancho = false;
@@ -595,6 +615,14 @@ class _registroUserState extends State<registroUser> {
     // setState(() {
     //   print(lleno);
     // });
+
+    setState(() {
+      // print(listaEstados);
+      // print();
+    });
+    // listaCiudades.add('hola');
+    // listaCiudades.length
+
     return lleno;
   }
 }
