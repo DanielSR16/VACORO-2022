@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-Container botones(context,alto,imagen,texto){
+Container botones(context,imagen,texto){
   return Container(
-    margin: EdgeInsets.all(15),
-    height: MediaQuery.of(context).size.height * alto,
+    margin: EdgeInsets.all(20),
+    width: MediaQuery.of(context).size.width,
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
         primary: HexColor("#68C34E")
@@ -28,7 +28,7 @@ Container botones(context,alto,imagen,texto){
                 child: Text(
                   texto,
                   textAlign: TextAlign.center,
-                  style: const TextStyle( fontSize: 30.0),
+                  style: const TextStyle( fontSize: 20.0),
                 )
             )
           ],
