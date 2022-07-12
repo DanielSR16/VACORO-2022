@@ -8,6 +8,7 @@ import 'package:vacoro_proyect/src/pages/dashboard_cow.dart';
 //import 'package:vacoro_proyect/src/pages/homepage.dart';
 
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
 // import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/login.dart';
 import 'package:vacoro_proyect/src/pages/pre_login.dart';
@@ -35,10 +36,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'VACORO',
-      initialRoute: 'dash_calf',
+      initialRoute: 'homePage',
       routes: {
         // 'autenticacion': (BuildContext context) => const autenticacion(),
-        // 'homePage': (BuildContext context) => homePage(),
+        'homePage': (BuildContext context) =>
+            homePage(nombre: "hom", correo: "correo"),
         // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
         'splash': (BuildContext context) => Splash(),
         'splash_canva': (BuildContext context) => SplashCanva(),
