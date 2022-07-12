@@ -19,13 +19,26 @@ class DialogContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CloseButton(
+                      color: const Color(0xff2F6622),
+                      onPressed: () {
+                        print("Salir");
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
                 Center(
                   child: Container(
-                    margin: const EdgeInsets.only(top: 20, bottom: 10),
+                    margin: const EdgeInsets.only(top: 10, bottom: 40),
                     child: const Text(
                       "Agregar Medicamento",
                       style: TextStyle(
-                        color: ColorSelect.color5,
+                        color: Color(0xff2F6622),
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -39,7 +52,7 @@ class DialogContainer extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: ColorSelect.color5,
+                      color: Color(0xff2F6622),
                     ),
                   ),
                 ),
@@ -85,7 +98,7 @@ class DialogContainer extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
-                              color: ColorSelect.color5,
+                              color: Color(0xff2F6622),
                             ),
                           ),
                         ),
