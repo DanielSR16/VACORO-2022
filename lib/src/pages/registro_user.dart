@@ -29,6 +29,7 @@ class _registroUserState extends State<registroUser> {
   late bool _validatedad = false;
   late bool _validateNombreRancho = false;
   late String _errorCorreo = '';
+  late String _errorContrasenia = '';
   // void initState() {
 
   //   super.initState();
@@ -88,10 +89,15 @@ class _registroUserState extends State<registroUser> {
               _validateCorreo,
               TextInputType.emailAddress,
               _errorCorreo),
-          inputs('Contraseña', 'Ingrese contraseña', contrasenia_,
-              _validateContrasenia, TextInputType.name),
-          inputs('Repetir contraseña', 'Repila la contraseña',
-              repetirContrasenia_, _validateRepetirContra, TextInputType.name),
+          inputs_correo('Contraseña', 'Ingrese contraseña', contrasenia_,
+              _validateContrasenia, TextInputType.name, _errorContrasenia),
+          inputs_correo(
+              'Repetir contraseña',
+              'Repila la contraseña',
+              repetirContrasenia_,
+              _validateRepetirContra,
+              TextInputType.name,
+              _errorContrasenia),
           Row(
             children: [
               drop_button_estado(220, "Estado"),
@@ -116,20 +122,21 @@ class _registroUserState extends State<registroUser> {
                     ),
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 40,
                   child: TextField(
+                    controller: edad_,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Color(0xFF68C24E)),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Color(0xFF3E762F), width: 2.0),
                         borderRadius: BorderRadius.all(
                           Radius.circular(12),
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Color(0xFF3E762F), width: 2.0),
                         borderRadius: BorderRadius.all(
@@ -137,6 +144,7 @@ class _registroUserState extends State<registroUser> {
                         ),
                       ),
                       labelText: 'Ingrese edad',
+                      errorText: _validatedad ? 'El campo esta vacio' : null,
                     ),
                   ),
                 ),
@@ -313,6 +321,70 @@ class _registroUserState extends State<registroUser> {
     );
   }
 
+  Widget inputs_contrasenia(
+      String nameTopField,
+      String nameInField,
+      TextEditingController controller_,
+      bool validate_,
+      TextInputType tipeKeyboard,
+      String _errorContrasenia) {
+    // print(validate_);
+    return Container(
+      padding: EdgeInsets.only(left: bordes, right: bordes),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 5),
+            width: width_media,
+            child: Text(
+              nameTopField,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3E762F),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 40,
+            child: TextField(
+              keyboardType: tipeKeyboard,
+              controller: controller_,
+              decoration: InputDecoration(
+                labelStyle: const TextStyle(color: Color(0xFF68C24E)),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                errorText: validate_ ? _errorContrasenia : null,
+                errorStyle: const TextStyle(color: Colors.red),
+                labelText: nameInField,
+              ),
+            ),
+          ),
+          const Divider(
+            height: 5,
+          ),
+        ],
+      ),
+    );
+  }
+
   String dropdownValue_estado = 'One';
   Widget drop_button_estado(int tam_width, String nameTopField) {
     return Column(
@@ -434,7 +506,7 @@ class _registroUserState extends State<registroUser> {
     );
   }
 
-  void valid() {
+  bool valid() {
     bool lleno = true;
     if (nombre_.text.isEmpty) {
       _validateNombre = true;
@@ -472,6 +544,7 @@ class _registroUserState extends State<registroUser> {
     if (contrasenia_.text.isEmpty) {
       _validateContrasenia = true;
       lleno = false;
+      _errorContrasenia = 'El campo esta vacio';
       print('4');
     } else {
       _validateContrasenia = false;
@@ -479,10 +552,15 @@ class _registroUserState extends State<registroUser> {
 
     if (repetirContrasenia_.text.isEmpty) {
       _validateRepetirContra = true;
-      lleno = false;
-      print('5');
+      _errorContrasenia = 'El campo esta vacio';
     } else {
       _validateRepetirContra = false;
+    }
+
+    if (contrasenia_.text != repetirContrasenia_.text) {
+      _validateRepetirContra = true;
+      _validateContrasenia = true;
+      _errorContrasenia = 'Las contraseñas no coinciden';
     }
 
     // if (estado_.text.isEmpty) {
@@ -514,20 +592,9 @@ class _registroUserState extends State<registroUser> {
       _validateNombreRancho = false;
     }
 
-    // if (_validateNombre == false &&
-    //     _validateApellido == false &&
-    //     _validateCorreo == false &&
-    //     _validateContrasenia == false &&
-    //     _validateRepetirContra == false &&
-    //     _validateEstado == false &&
-    //     _validateciudad == false &&
-    //     _validatedad == false &&
-    //     _validateNombreRancho == false) {
-    //   print('TODO LISTO !!!!');
-    // }
-    setState(() {
-      print('aaa');
-      print(lleno);
-    });
+    // setState(() {
+    //   print(lleno);
+    // });
+    return lleno;
   }
 }
