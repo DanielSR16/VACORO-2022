@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_add_medication.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_edit_medication.dart';
 
 class Medication extends StatefulWidget {
   Medication({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class _MedicationState extends State<Medication> {
   String? medication = '';
   String? description = '';
   int? cant = 0;
+  String text = '';
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +91,12 @@ class _MedicationState extends State<Medication> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           print("Agregar Medicamento");
+          await showDialog(
+            context: context,
+            builder: (_) => DialogContainer(text: text),
+          );
         },
         child: const Icon(Icons.add),
         backgroundColor: ColorSelect.color5,
@@ -164,8 +170,9 @@ class _MedicationState extends State<Medication> {
                         onTap: () async {
                           // print("Editar Medicamento!")
                           await showDialog(
-                              context: context,
-                              builder: (_) => DialogContainer(text: text));
+                            context: context,
+                            builder: (_) => ContainerDialogEdit(text: text),
+                          );
                         },
                         child: Image.asset('assets/images/edit_logo.png'),
                       ),
