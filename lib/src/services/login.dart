@@ -22,6 +22,7 @@ Future<Map<String, dynamic>> servicelogin(
       Map<String, dynamic> responseMap = {
         'id': data['id'],
         'nombre': data['nombre'],
+        'correo_electronico': data['correo_electronico'],
       };
       return responseMap;
     } else {
