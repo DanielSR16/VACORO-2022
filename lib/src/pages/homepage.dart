@@ -22,15 +22,23 @@ class _homePage extends State<homePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbargeneral(widget.nombre, 'assets/images/logo_blanco.png'),
-      body: Column(
-        children: [
-          textoBienvenida(context, 0.06,
-              "Seleccione el tipo de ganado que desea visualizar"),
-          botones(context, 0.12, "assets/images/vaca.png", "Vacas"),
-          botones(context, 0.12, "assets/images/toro.png", "Toros"),
-          botones(context, 0.12, "assets/images/becerro.png", "Becerros"),
-          listaCards(context, 0.25)
-        ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Container(
+              child: Column(
+                children: [
+                  textoBienvenida(context,
+                      "Seleccione el tipo de ganado que desea visualizar"),
+                  botones(context, "assets/images/vaca.png", "Vacas"),
+                  botones(context, "assets/images/toro.png", "Toros"),
+                  botones(context, "assets/images/becerro.png", "Becerros"),
+                  listaCards(context)
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
       drawer: drawer(widget.nombre, widget.correo),
     );
