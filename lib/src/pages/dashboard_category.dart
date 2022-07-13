@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_category_details.dart';
 
 class DashboardCategory extends StatefulWidget {
   DashboardCategory({Key? key}) : super(key: key);
@@ -72,27 +73,59 @@ class _DashboardCategoryState extends State<DashboardCategory> {
                 ),
               ),
               _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
+                  "Aqui va la descripción de la categoria", "Categoria", ""),
               _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
+                  "Aqui va la descripción de la categoria", "Categoria", ""),
               _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
-              _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
-              _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
-              _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
-              _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
-              _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
-              _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
-              _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
-              _createdCardCategory(size, "N",
-                  "Aqui va la descripción de la categoria", "Categoria"),
+                  "Aqui va la descripción de la categoria", "Categoria", ""),
+              _createdCardCategory(
+                  size,
+                  "N",
+                  "Aqui va la descripción de la categoria",
+                  "Categoria",
+                  "Modal1"),
+              _createdCardCategory(
+                  size,
+                  "N",
+                  "Aqui va la descripción de la categoria",
+                  "Categoria",
+                  "Modal"),
+              _createdCardCategory(
+                  size,
+                  "N",
+                  "Aqui va la descripción de la categoria",
+                  "Categoria",
+                  "Modal"),
+              _createdCardCategory(
+                  size,
+                  "N",
+                  "Aqui va la descripción de la categoria",
+                  "Categoria",
+                  "Modal"),
+              _createdCardCategory(
+                  size,
+                  "N",
+                  "Aqui va la descripción de la categoria",
+                  "Categoria",
+                  "Modal"),
+              _createdCardCategory(
+                  size,
+                  "N",
+                  "Aqui va la descripción de la categoria",
+                  "Categoria",
+                  "Modal"),
+              _createdCardCategory(
+                  size,
+                  "N",
+                  "Aqui va la descripción de la categoria",
+                  "Categoria",
+                  "Modal"),
+              _createdCardCategory(
+                  size,
+                  "N",
+                  "Aqui va la descripción de la categoria",
+                  "Categoria",
+                  "Modal"),
             ],
           ),
         )),
@@ -107,82 +140,89 @@ class _DashboardCategoryState extends State<DashboardCategory> {
     );
   }
 
-  Card _createdCardCategory(
-      Size size, String name, String description, String category) {
+  Card _createdCardCategory(Size size, String name, String description,
+      String category, String text) {
     return Card(
-      shadowColor: Colors.grey,
-      // shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(30)),
-      margin: const EdgeInsets.all(15),
-      elevation: 10,
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            // margin: const EdgeInsets.only(top: 0),
-            width: size.width,
-            height: 200,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  // margin: const EdgeInsets.only(left: 20),
-                  child: const Image(
-                    image: AssetImage('assets/images/cow.png'),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        shadowColor: Colors.grey,
+        // shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(30)),
+        margin: const EdgeInsets.all(15),
+        elevation: 10,
+        child: InkWell(
+          onTap: () async {
+            print("TAP CARDS");
+            await showDialog(
+                context: context,
+                builder: (_) => ContainerDialogCategoryDetails(text: text));
+          },
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                // margin: const EdgeInsets.only(top: 0),
+                width: size.width,
+                height: 200,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      // margin: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Name: $name',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
-                        ),
+                      // margin: const EdgeInsets.only(left: 20),
+                      child: const Image(
+                        image: AssetImage('assets/images/cow.png'),
                       ),
                     ),
-                    Container(
-                      child: Text(
-                        'Descripcion: $description',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          // margin: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            'Name: $name',
+                            style: const TextStyle(
+                              color: Color(0xff3E762F),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
+                        Container(
+                          child: Text(
+                            'Descripcion: $description',
+                            style: const TextStyle(
+                              color: Color(0xff3E762F),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            'Categoria: $category',
+                            style: const TextStyle(
+                              color: Color(0xff3E762F),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      child: Text(
-                        'Categoria: $category',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          // margin: const EdgeInsets.only(left: 50),
+                          child: GestureDetector(
+                            onTap: (() => {
+                                  print("Editar Categoria!"),
+                                }),
+                            child: Image.asset('assets/images/edit_logo.png'),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      // margin: const EdgeInsets.only(left: 50),
-                      child: GestureDetector(
-                        onTap: (() => {
-                              print("Editar Categoria!"),
-                            }),
-                        child: Image.asset('assets/images/edit_logo.png'),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
