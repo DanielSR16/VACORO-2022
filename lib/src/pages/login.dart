@@ -3,6 +3,7 @@ import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/services/login.dart';
 
 import '../style/colors/colorview.dart';
+import '../utils/user_secure_storage.dart';
 
 //Login para ingresar correo y contraseña
 
@@ -138,7 +139,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onPressed: () {
-                          servicelogin(email, password).then((value) {
+                          servicelogin(email, password).then((value) async {
                             if (value['id'] == 'errorEmail') {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -154,6 +155,8 @@ class _LoginState extends State<Login> {
                                 ),
                               );
                             } else {
+                              await UserSecureStorage.setId(value['id']
+                                  .toString()); //Se guarda el id en el local storage
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   duration: Duration(milliseconds: 1000),
@@ -163,8 +166,10 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        homePage(nombre: value['nombre'])),
+                                    builder: (context) => homePage(
+                                          nombre: value['nombre'],
+                                          correo: value['correo_electronico'],
+                                        )),
                               );
                             }
                           });
