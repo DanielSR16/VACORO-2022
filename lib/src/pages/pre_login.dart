@@ -37,7 +37,7 @@ class preLogin extends StatelessWidget {
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('assets/images/logo.png')),
-                      )
+
                     ),
                     Container(
                         margin: const EdgeInsets.only(bottom: 20),
@@ -69,17 +69,31 @@ class preLogin extends StatelessWidget {
                             ],
                           ),
                           onPressed: () {
+                            // try {
+                            //   signInWithFacebook()
+                            //       .then((value) => print(value.user!)
+                            //           //
+                            //           );
+                            // } on Exception catch (_) {
+                            //   print('never reached');
+                            // }
+
                             try {
-                              signInWithGoogle().then((value) =>{
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => homePage(nombre: value.user!.displayName!)))
-                              }
-                                // ignore: avoid_print
-                              );
+
                             } catch (e) {
                               // ignore: avoid_print
                               print(e);
                             }
                           },
+                        )),
+                    Container(
+                        margin: const EdgeInsets.only(right: 150, top: 20),
+                        child: const Text(
+                          '¿Ya tienes una cuenta?',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                          // onPressed: () {},
                         )),
                     Container(
                       margin: const EdgeInsets.only(right: 150, top: 20),
@@ -88,13 +102,7 @@ class preLogin extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                         ),
-                      )),
-                  Container(
-                    margin: const EdgeInsets.only(right: 150, top: 20),
-                    child: const Text(
-                      '¿Ya tienes una cuenta?',
-                      style: TextStyle(
-                        fontSize: 16,
+
                       ),
                     ),
                   ),
