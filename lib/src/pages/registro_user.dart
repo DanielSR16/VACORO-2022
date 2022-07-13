@@ -43,25 +43,13 @@ class _registroUserState extends State<registroUser> {
   late bool _llenadoDatos = false;
 
   late int indexEstado;
-//https://api.flutter.dev/flutter/widgets/Element/reassemble.html
-//https://api.flutter.dev/flutter/widgets/BuildOwner/reassemble.html
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _getFieldsData();
-    // _fieldList.map((value) {
-    //   list_edo.add(value.description);
-    // }).toList();
-    // estados_all().then(
-    //   (value) {
-    //     list_edo = const JsonDecoder().convert(value);
-    //     print(list_edo);
-    //     // for (var i = 0; i < value.length; i++) {
-    //     //   listaEstados.add(value[i]['description']);
-    //     // }
-    //   },
-    // );
+
   }
 
   var size, height_media, width_media;

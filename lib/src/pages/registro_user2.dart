@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
+import 'package:vacoro_proyect/src/services/generate_image_url.dart';
+import 'package:vacoro_proyect/src/services/upload_file.dart';
 
 class registroUser2 extends StatefulWidget {
   const registroUser2({super.key});
@@ -173,10 +175,31 @@ class _registroUser2State extends State<registroUser2> {
   Future pickCamera() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
 
+      if (image == null) return;
+      late String uploadURL;
       final imageTemporary = File(image.path);
-      setState(() => this.image = imageTemporary);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+      print(isUploaded);
+      setState(
+        () => this.image = imageTemporary,
+      );
+
+      // String fileExtension = path.extension(image.path);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -184,8 +207,9 @@ class _registroUser2State extends State<registroUser2> {
 
   Future<File> saveImagePermanently(String imagePath) async {
     final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
+    final name = path.basename(imagePath);
     final image = File('${directory.path}/$name');
+
     return File(imagePath).copy(image.path);
   }
 
@@ -199,6 +223,21 @@ class _registroUser2State extends State<registroUser2> {
       setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
+    }
+  }
+
+  Future<bool> uploadFile(context, String url, File image) async {
+    try {
+      UploadFile uploadFile = UploadFile();
+      await uploadFile.call(url, image);
+
+      if (uploadFile.isUploaded != null && uploadFile.isUploaded) {
+        return true;
+      } else {
+        throw uploadFile.message;
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }

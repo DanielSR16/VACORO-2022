@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      initialRoute: 'registroUser',
+      initialRoute: 'registroUser2',
       routes: {
         'registroUser': (BuildContext context) => registroUser(),
         'registroUser2': (BuildContext context) => registroUser2()
