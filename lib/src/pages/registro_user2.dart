@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/services/generate_image_url.dart';
+import 'package:vacoro_proyect/src/services/servicios_user.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
 
 class registroUser2 extends StatefulWidget {
@@ -22,6 +24,10 @@ class _registroUser2State extends State<registroUser2> {
   var size, height_media, width_media;
   late double bordes = 30;
   Widget build(BuildContext context) {
+    var con;
+    var args = ModalRoute.of(context)!.settings.arguments;
+    Usuario? usuario = args as Usuario?;
+
     size = MediaQuery.of(context).size;
     height_media = size.height;
     width_media = size.width;
@@ -53,7 +59,7 @@ class _registroUser2State extends State<registroUser2> {
                 ),
               ),
             ),
-            selectImage()
+            selectImage(usuario)
           ],
         ),
       ),
@@ -82,7 +88,7 @@ class _registroUser2State extends State<registroUser2> {
         onPressed: onClicked,
       );
 
-  Widget selectImage() {
+  Widget selectImage(var usuario) {
     return Column(
       children: <Widget>[
         Column(
@@ -90,7 +96,7 @@ class _registroUser2State extends State<registroUser2> {
             Container(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
               child: const Text(
-                'Ingresar fotogria',
+                'Ingresar fotografia',
                 style: TextStyle(
                   color: Color(0xFF3E752F),
                   fontSize: 16,
@@ -157,7 +163,26 @@ class _registroUser2State extends State<registroUser2> {
                 ),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              var nombre = usuario!.nombre.text;
+              var apellidos = usuario!.apellidos.text;
+              var correoElectronico = usuario!.correoElectronico.text;
+              var contrasenia = usuario!.contrasenia.text;
+              var estado = usuario!.estado;
+              var ciudad = usuario!.ciudad;
+              var edad = usuario!.edad.text;
+              late int edad_int = int.parse(edad);
+              var nombreRancho = usuario!.nombreRancho.text;
+
+              register_user(nombre, apellidos, correoElectronico, contrasenia,
+                      estado, ciudad, edad_int, nombreRancho, "url")
+                  .then((value) {
+                print(value);
+              });
+
+              // Navigator.pushNamed(context, 'registroUser2',
+              //         arguments: usuario);
+            },
             child: const Text(
               'Siguiente',
               style: TextStyle(

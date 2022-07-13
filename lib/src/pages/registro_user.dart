@@ -17,12 +17,13 @@ class _registroUserState extends State<registroUser> {
   final correo_electronico_ = TextEditingController();
   final contrasenia_ = TextEditingController();
   final repetirContrasenia_ = TextEditingController();
-  final estado_ = TextEditingController();
+  late String estado_;
   late String ciudad_;
   final edad_ = TextEditingController();
   final nombreRancho_ = TextEditingController();
   List<String> listaCiudades = [''];
   List<String> listaEstados = [''];
+
   @override
   late bool _validateNombre = false;
   late bool _validateApellido = false;
@@ -43,13 +44,12 @@ class _registroUserState extends State<registroUser> {
   late bool _llenadoDatos = false;
 
   late int indexEstado;
-
+  Usuario usuario = Usuario();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _getFieldsData();
-
   }
 
   var size, height_media, width_media;
@@ -187,10 +187,26 @@ class _registroUserState extends State<registroUser> {
                 print('controlador: ' + correo_electronico_.text);
                 //  print('controlador b: ' + nombre_.text);
                 setState(() {
-                  valid();
+                  late bool res = valid();
+
+                  if (res == true) {
+                    print(estado_);
+                    late dynamic a = {"nombre": nombre_};
+
+                    usuario.nombre = nombre_;
+                    usuario.apellidos = apellidos_;
+                    usuario.correoElectronico = correo_electronico_;
+                    usuario.contrasenia = contrasenia_;
+                    usuario.estado = estado_;
+                    usuario.ciudad = ciudad_;
+                    usuario.edad = edad_;
+                    usuario.nombreRancho = nombreRancho_;
+                  }
+                  Navigator.pushNamed(context, 'registroUser2',
+                      arguments: usuario);
                 });
 
-                // Navigator.pushNamed(context, 'registroUser2');
+                //
               },
               child: const Text(
                 'Siguiente',
@@ -448,7 +464,7 @@ class _registroUserState extends State<registroUser> {
                   setState(
                     () {
                       _selectedField = value!;
-
+                      estado_ = _selectedField;
                       indexEstado = list_edo.indexOf(_selectedField) + 1;
                       _getFieldsData_municipios(indexEstado);
                     },
@@ -507,6 +523,7 @@ class _registroUserState extends State<registroUser> {
                     setState(
                       () {
                         _selectedFieldMunicipio = newValue!;
+                        ciudad_ = _selectedFieldMunicipio;
                       },
                     );
                   },
@@ -572,19 +589,6 @@ class _registroUserState extends State<registroUser> {
       _validateContrasenia = true;
       _errorContrasenia = 'Las contraseñas no coinciden';
     }
-
-    // if (estado_.text.isEmpty) {
-    //   _validateEstado = true;
-
-    // } else {
-    //   _validateEstado = false;
-    // }
-
-    // if (ciudad_.text.isEmpty) {
-    //   _validateciudad = true;
-    // } else {
-    //   _validateciudad = false;
-    // }
 
     if (edad_.text.isEmpty) {
       _validatedad = true;
@@ -668,4 +672,15 @@ class FormField {
     data['description'] = description;
     return data;
   }
+}
+
+class Usuario {
+  var nombre;
+  var apellidos;
+  var correoElectronico;
+  var contrasenia;
+  var estado;
+  var ciudad;
+  var edad;
+  var nombreRancho;
 }
