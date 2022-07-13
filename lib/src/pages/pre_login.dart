@@ -77,8 +77,10 @@ class preLogin extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => homePage(
-                                              nombre:
-                                                  value.user!.displayName!)))
+                                                nombre:
+                                                    value.user!.displayName!,
+                                                correo: value.user!.email!,
+                                              )))
                                 });
                           } catch (e) {
                             // ignore: avoid_print
@@ -124,7 +126,9 @@ class preLogin extends StatelessWidget {
                                             MaterialPageRoute(
                                                 builder: (context) => homePage(
                                                     nombre: value
-                                                        .user!.displayName!)))
+                                                        .user!.displayName!,
+                                                    correo:
+                                                        value.user!.email!)))
                                       }
                                   // ignore: avoid_print
                                   );
