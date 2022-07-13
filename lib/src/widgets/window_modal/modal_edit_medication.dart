@@ -62,26 +62,7 @@ class ContainerDialogEdit extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: TextField(
-                      onChanged: (text) {},
-                      decoration: InputDecoration(
-                        hintStyle: const TextStyle(
-                          color: ColorSelect.color5,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: const BorderSide(
-                            style: BorderStyle.solid,
-                            color: Color(0xff2F6622),
-                            width: 3,
-                          ),
-                        ),
-                        hintText: "Ingrese nombre del medicamento",
-                      ),
-                    ),
+                    child: _input("Ingrese nombre del medicamento..."),
                   ),
                 ),
                 Column(
@@ -138,10 +119,32 @@ class ContainerDialogEdit extends StatelessWidget {
                     ),
                   ],
                 ),
+                Container(
+                  margin: const EdgeInsets.only(left: 20, bottom: 10, top: 20),
+                  child: const Text(
+                    "Cantidad",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Color(0xff2F6622),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    width: size.width * 0.75,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: _input("Ingrese la cantidad del medicamento"),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
+                      margin: const EdgeInsets.only(top: 20),
                       child: TextButton(
                         onPressed: () {
                           print("Eliminar medicamento");
@@ -156,6 +159,7 @@ class ContainerDialogEdit extends StatelessWidget {
                       ),
                     ),
                     Container(
+                      margin: const EdgeInsets.only(top: 20),
                       height: 50,
                       width: 50,
                       child: GestureDetector(
@@ -196,6 +200,29 @@ class ContainerDialogEdit extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _input(String hintText) {
+    return TextField(
+      onChanged: (text) {},
+      decoration: InputDecoration(
+        hintStyle: const TextStyle(
+          color: ColorSelect.color5,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(
+            style: BorderStyle.solid,
+            color: Color(0xff2F6622),
+            width: 3,
+          ),
+        ),
+        hintText: hintText,
       ),
     );
   }
