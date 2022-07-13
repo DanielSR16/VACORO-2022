@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 String ip = '192.168.56.1';
 Future<String> register_user(
     String name,
     String apellidos,
-    String correo_electronico,
+    String correoElectronico,
     String contrasenia,
     String estado,
     String ciudad,
@@ -21,7 +20,7 @@ Future<String> register_user(
         {
           "nombre": name,
           "apellido": apellidos,
-          "correo_electronico": correo_electronico,
+          "correo_electronico": correoElectronico,
           "contrasenia": contrasenia,
           "ciudad": ciudad,
           "estado": estado,
@@ -56,9 +55,29 @@ Future estados_all() async {
     );
 
     if (response.statusCode == 200) {
-      // final data = json.decode(response.body);
-      // var data = response.body;
-      var data = jsonDecode(response.body);
+      var data = response.body;
+      if (data == 'Usuario Existente') {
+        return 'El usuario ya existe';
+      } else {
+        return data;
+      }
+    } else {
+      return 'No se ha podido conectar al servidor';
+    }
+  } catch (e) {
+    return 'Error';
+  }
+}
+
+Future municipios_id(int id) async {
+  try {
+    final response = await http.post(
+        Uri.http(ip + ':3002', '/municipio/municipioEstado'),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: json.encode({"id": id}));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var data = response.body;
       if (data == 'Usuario Existente') {
         return 'El usuario ya existe';
       } else {

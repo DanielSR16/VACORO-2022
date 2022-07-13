@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/services/servicios_user.dart';
 import '../metodos/regularExpresion.dart';
@@ -33,22 +35,33 @@ class _registroUserState extends State<registroUser> {
   late bool _validateNombreRancho = false;
   late String _errorCorreo = '';
   late String _errorContrasenia = '';
+  late List list_edo = [];
+  late String _selectedField = "";
+  late String _selectedFieldMunicipio = "";
+  late List<FormField> _fieldList = [];
+  late List<FormField> _fieldListMunicipio = [];
+  late bool _llenadoDatos = false;
+
+  late int indexEstado;
 //https://api.flutter.dev/flutter/widgets/Element/reassemble.html
 //https://api.flutter.dev/flutter/widgets/BuildOwner/reassemble.html
+  @override
   void initState() {
-    setState(
-      () {
-        estados_all().then(
-          (value) {
-            for (var i = 0; i < value.length; i++) {
-              listaEstados.add(value[i]['description']);
-            }
-          },
-        );
-      },
-    );
-
+    // TODO: implement initState
     super.initState();
+    _getFieldsData();
+    // _fieldList.map((value) {
+    //   list_edo.add(value.description);
+    // }).toList();
+    // estados_all().then(
+    //   (value) {
+    //     list_edo = const JsonDecoder().convert(value);
+    //     print(list_edo);
+    //     // for (var i = 0; i < value.length; i++) {
+    //     //   listaEstados.add(value[i]['description']);
+    //     // }
+    //   },
+    // );
   }
 
   var size, height_media, width_media;
@@ -114,12 +127,8 @@ class _registroUserState extends State<registroUser> {
               _validateRepetirContra,
               TextInputType.name,
               _errorContrasenia),
-          Row(
-            children: [
-              drop_button_estado(220, "Estado"),
-              drop_button_ciudad(220, "Ciudad")
-            ],
-          ),
+          drop_button_estado(50, "Estado"),
+          drop_button_ciudad(50, "Ciudad"),
           Container(
             padding: EdgeInsets.only(left: bordes, right: 250),
             child: Column(
@@ -407,7 +416,7 @@ class _registroUserState extends State<registroUser> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.only(top: 10, bottom: 5, left: 30),
+          padding: const EdgeInsets.only(top: 10, bottom: 5, left: 5),
           width: width_media - tamWidth,
           child: Text(
             nameTopField,
@@ -421,7 +430,7 @@ class _registroUserState extends State<registroUser> {
         ),
         Container(
           width: width_media - tamWidth,
-          padding: EdgeInsets.only(left: bordes),
+          padding: const EdgeInsets.only(left: 5),
           child: SizedBox(
             height: 40,
             child: DecoratedBox(
@@ -431,29 +440,29 @@ class _registroUserState extends State<registroUser> {
               ),
               child: DropdownButton<String>(
                 alignment: AlignmentDirectional.topEnd,
-                style: const TextStyle(
-                  color: Color(0xFF68C24E),
-                ),
-                value: dropdownValue_estado,
-                items: listaEstados.map<DropdownMenuItem<String>>(
-                  (String value) {
-                    // print('val drop: ' + dropdownValue_estado);
-                    // print('soy el valor: ' + value);
-                    return DropdownMenuItem<String>(
-                      value: value,
+                style: const TextStyle(color: Color(0xFF68C24E), fontSize: 16),
+                value: _selectedField,
+                items: _fieldList.map((value) {
+                  if (_llenadoDatos == false) {
+                    list_edo.add(value.description);
+                    if (list_edo.length == 32) {
+                      _llenadoDatos = true;
+                    }
+                  }
+
+                  return DropdownMenuItem(
                       child: Text(
-                        value,
-                        style: TextStyle(fontSize: 9),
+                        value.description!,
                       ),
-                    );
-                  },
-                ).toList(),
-                onChanged: (String? newValue) {
+                      value: value.description);
+                }).toList(),
+                onChanged: (value) {
                   setState(
                     () {
-                      dropdownValue_estado = newValue!;
+                      _selectedField = value!;
 
-                      print('************** ' + dropdownValue_estado);
+                      indexEstado = list_edo.indexOf(_selectedField) + 1;
+                      _getFieldsData_municipios(indexEstado);
                     },
                   );
                 },
@@ -471,7 +480,7 @@ class _registroUserState extends State<registroUser> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.only(top: 10, bottom: 5, left: 30),
+          padding: const EdgeInsets.only(top: 10, bottom: 5, left: 5),
           width: width_media - tamWidth,
           child: Text(
             nameTopField,
@@ -485,7 +494,7 @@ class _registroUserState extends State<registroUser> {
         ),
         Container(
             width: width_media - tamWidth,
-            padding: EdgeInsets.only(left: bordes),
+            padding: const EdgeInsets.only(left: 5),
             child: SizedBox(
               height: 40,
               child: DecoratedBox(
@@ -495,28 +504,21 @@ class _registroUserState extends State<registroUser> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: DropdownButton<String>(
-                  alignment: AlignmentDirectional.topEnd,
-                  style: const TextStyle(
-                    color: Color(0xFF68C24E),
-                  ),
-                  value: dropdownValue_ciudad,
-                  items: listaCiudades.map<DropdownMenuItem<String>>(
-                    (String value) {
-                      // print('val drop: ' + dropdownValue_ciudad);
-                      // print('soy el valor: ' + value);
-                      return DropdownMenuItem<String>(
-                        value: value,
+                  alignment: AlignmentDirectional.center,
+                  style:
+                      const TextStyle(color: Color(0xFF68C24E), fontSize: 16),
+                  value: _selectedFieldMunicipio,
+                  items: _fieldListMunicipio.map((value) {
+                    return DropdownMenuItem(
                         child: Text(
-                          value,
-                          style: TextStyle(fontSize: 9),
+                          value.description!,
                         ),
-                      );
-                    },
-                  ).toList(),
+                        value: value.description);
+                  }).toList(),
                   onChanged: (String? newValue) {
                     setState(
                       () {
-                        dropdownValue_ciudad = newValue!;
+                        _selectedFieldMunicipio = newValue!;
                       },
                     );
                   },
@@ -624,5 +626,58 @@ class _registroUserState extends State<registroUser> {
     // listaCiudades.length
 
     return lleno;
+  }
+
+  void _getFieldsData() {
+    estados_all().then(
+      (data) {
+        final items = jsonDecode(data).cast<Map<String, dynamic>>();
+        var fieldListData = items.map<FormField>((json) {
+          return FormField.fromJson(json);
+        }).toList();
+        _selectedField = fieldListData[0].description;
+        // update widget
+        setState(
+          () {
+            _fieldList = fieldListData;
+          },
+        );
+      },
+    );
+  }
+
+  void _getFieldsData_municipios(id) {
+    municipios_id(id).then(
+      (data) {
+        final items = jsonDecode(data).cast<Map<String, dynamic>>();
+        var fieldListData = items.map<FormField>((json) {
+          return FormField.fromJson(json);
+        }).toList();
+        _selectedFieldMunicipio = fieldListData[0].description;
+        // update widget
+        setState(
+          () {
+            _fieldListMunicipio = fieldListData;
+          },
+        );
+      },
+    );
+  }
+}
+
+// Model Class
+class FormField {
+  String? description;
+
+  FormField({this.description});
+
+  FormField.fromJson(Map<String, dynamic> json) {
+    description = json['description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['description'] = description;
+    return data;
   }
 }
