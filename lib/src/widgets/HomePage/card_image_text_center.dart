@@ -2,7 +2,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/cards.dart'; //82F562
 
-SizedBox listaCards(context,alto){
+SizedBox listaCards(context){
   return SizedBox(
     height: MediaQuery.of(context).size.height * 0.25,
     width: double.infinity,
@@ -27,7 +27,7 @@ GestureDetector createCard(context,imagen,texto,id){
       }
     },
     child: Container(
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.only(left: 20, right: 20, top: 10),
       width: MediaQuery.of(context).size.width * 0.45,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -38,20 +38,23 @@ GestureDetector createCard(context,imagen,texto,id){
       ),
     child: Column(
       children: [
-        Padding(padding: EdgeInsets.only(top: 20)),
-        Image(
-          height: MediaQuery.of(context).size.height * 0.1, 
-          image: AssetImage(imagen),
+        Padding(padding: EdgeInsets.only(top: 30)),
+        Expanded(
+          child: Image(
+            image: AssetImage(imagen),
+          ),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 20),
-          child: Text(
-            texto,
-            style: TextStyle(
-                color: HexColor("#3E762F"),
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),
+        Expanded(
+          child: Container(
+            //margin: const EdgeInsets.only(top: 20),
+            child: Text(
+              texto,
+              style: TextStyle(
+                  color: HexColor("#3E762F"),
+                  //fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),
+            ),
           ),
         )
       ],
