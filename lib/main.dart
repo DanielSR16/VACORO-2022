@@ -1,25 +1,39 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'package:vacoro_proyect/src/pages/medication.dart';
+
+
+
+import 'package:vacoro_proyect/src/pages/dashboard_category.dart';
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/pages/registro_user2.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
+import 'package:vacoro_proyect/src/pages/medication_history.dart';
+
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/pages/registro_user2.dart';
+import 'package:vacoro_proyect/src/pages/vista_principal.dart';
+
+import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
+
 import 'package:vacoro_proyect/src/pages/dashboard_bull.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_calf.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_cow.dart';
-
-//import 'package:vacoro_proyect/src/pages/homepage.dart';
-
-import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
+import 'package:vacoro_proyect/src/pages/edit_categories.dart';
 // import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/login.dart';
+import 'package:vacoro_proyect/src/pages/metrics.dart';
 import 'package:vacoro_proyect/src/pages/pre_login.dart';
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/pages/registro_user2.dart';
 
 import 'package:vacoro_proyect/src/pages/splash.dart';
 import 'package:vacoro_proyect/src/pages/splash_canva.dart';
 // import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 import 'firebase_options.dart';
+import 'src/pages/homepage.dart';
 // import 'src/pages/authentications.dart';
 
 Future<void> main() async {
@@ -39,7 +53,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
+
         initialRoute: 'splash',
+
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -52,9 +68,15 @@ class MyApp extends StatelessWidget {
           'dash_cow': (BuildContext context) => DashBoardCow(),
           'dash_bull': (BuildContext context) => DashBoardBull(),
           'dash_calf': (BuildContext context) => DashBoardCalf(),
+          'dash_category': (BuildContext context) => DashboardCategory(),
           'registroUser': (BuildContext context) => registroUser(),
           'registroUser2': (BuildContext context) => registroUser2(),
+
           'medication': (BuildContext context) => Medication()
+
+          'medication_history': (BuildContext context) => MedicationHistory()
+
+
         });
   }
 }
