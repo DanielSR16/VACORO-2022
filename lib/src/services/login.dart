@@ -18,7 +18,6 @@ Future<Map<String, dynamic>> servicelogin(
     );
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      print(data);
       Map<String, dynamic> responseMap = {
         'id': data['id'],
         'nombre': data['nombre'],
@@ -29,7 +28,6 @@ Future<Map<String, dynamic>> servicelogin(
       return {'status': 'Error'};
     }
   } catch (e) {
-    print("Error al conectarse con el servidor");
     return {'status': 'Error al conectarse con el servidor'};
   }
 }

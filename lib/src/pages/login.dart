@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/metodos/regularExpresion.dart';
 import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/services/login.dart';
 
@@ -17,6 +18,12 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  late bool _validateEmail = false;
+  late bool _validatePassword = false;
+  late String _errorCorreo = '';
+  late String _errorContrasenia = '';
+
+  late bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +78,31 @@ class _LoginState extends State<Login> {
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         fontSize: 15, color: ColorSelect.color1),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       fillColor: Colors.amber,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      border: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: ColorSelect.color1, width: 2.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: ColorSelect.color1, width: 2.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: ColorSelect.color5, width: 2.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
                       ),
                       hintText: 'Ingrese su correo electrónico',
+                      errorText: _validateEmail ? _errorCorreo : null,
                     ),
                     onChanged: (text) {},
                   ),
@@ -96,15 +122,50 @@ class _LoginState extends State<Login> {
                   width: size.width * 0.90,
                   margin: const EdgeInsets.only(right: 12, left: 11),
                   child: TextField(
+                    obscureText: !_passwordVisible,
+                    enableSuggestions: false,
+                    autocorrect: false,
                     controller: password,
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         fontSize: 15, color: ColorSelect.color1),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: ColorSelect.color1, width: 2.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: ColorSelect.color1, width: 2.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: ColorSelect.color5, width: 2.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
                       ),
                       hintText: 'Ingrese su contraseña',
+                      errorText: _validatePassword ? _errorContrasenia : null,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: ColorSelect.color1,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                      ),
                     ),
                     onChanged: (text) {},
                   ),
@@ -139,38 +200,40 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onPressed: () {
-                          servicelogin(email, password).then((value) async {
-                            if (value['id'] == 'errorEmail') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(milliseconds: 1000),
-                                  content: Text('Email incorrecto'),
-                                ),
-                              );
-                            } else if (value['id'] == 'errorPassword') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(milliseconds: 1000),
-                                  content: Text('Password incorrecto'),
-                                ),
-                              );
-                            } else {
-                              await UserSecureStorage.setId(value['id']
-                                  .toString()); //Se guarda el id en el local storage
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(milliseconds: 1000),
-                                  content: Text('Inicio de sesión correcto'),
-                                ),
-                              );
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => homePage(
-                                          nombre: value['nombre'],
-                                          correo: value['correo_electronico'],
-                                        )),
-                              );
+                          setState(() {
+                            late bool res = valid();
+
+                            if (res == true) {
+                              servicelogin(email, password).then((value) async {
+                                if (value['id'] == 'errorEmailPassword') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      duration: Duration(milliseconds: 1000),
+                                      content: Text(
+                                          'Correo o contraseña incorrecta'),
+                                    ),
+                                  );
+                                } else {
+                                  await UserSecureStorage.setId(value['id']
+                                      .toString()); //Se guarda el id en el local storage
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      duration: Duration(milliseconds: 1000),
+                                      content:
+                                          Text('Inicio de sesión correcto'),
+                                    ),
+                                  );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => homePage(
+                                              nombre: value['nombre'],
+                                              correo:
+                                                  value['correo_electronico'],
+                                            )),
+                                  );
+                                }
+                              });
                             }
                           });
                         },
@@ -195,7 +258,9 @@ class _LoginState extends State<Login> {
                               color: ColorSelect.color5,
                               fontSize: 16),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'registroUser');
+                        },
                       )
                     ],
                   ),
@@ -206,5 +271,34 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  bool valid() {
+    bool lleno = true;
+
+    if (email.text.isEmpty) {
+      _errorCorreo = 'El campo esta vacio';
+      _validateEmail = true;
+      lleno = false;
+    } else {
+      _validateEmail = false;
+      Iterable<RegExpMatch> matches = expresionRegular.allMatches(email.text);
+
+      if (matches.isEmpty == true) {
+        _validateEmail = true;
+        lleno = false;
+        _errorCorreo = 'Correo invalido';
+      }
+    }
+
+    if (password.text.isEmpty) {
+      _validatePassword = true;
+      lleno = false;
+      _errorContrasenia = 'El campo esta vacio';
+    } else {
+      _validatePassword = false;
+    }
+
+    return lleno;
   }
 }
