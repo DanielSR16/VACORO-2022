@@ -202,7 +202,6 @@ class _LoginState extends State<Login> {
                         onPressed: () {
                           setState(() {
                             late bool res = valid();
-
                             if (res == true) {
                               servicelogin(email, password).then((value) async {
                                 if (value['id'] == 'errorEmailPassword') {
