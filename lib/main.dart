@@ -1,11 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+
 import 'package:vacoro_proyect/src/pages/dashboard_category.dart';
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/pages/registro_user2.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
+import 'package:vacoro_proyect/src/pages/medication_history.dart';
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/pages/registro_user2.dart';
+import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 
@@ -61,6 +66,8 @@ class MyApp extends StatelessWidget {
           'dash_category': (BuildContext context) => DashboardCategory(),
           'registroUser': (BuildContext context) => registroUser(),
           'registroUser2': (BuildContext context) => registroUser2(),
+          'medication_history': (BuildContext context) => MedicationHistory()
+
         });
   }
 }
