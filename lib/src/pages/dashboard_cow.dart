@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCards.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_calf_details.dart';
 
 class DashBoardCow extends StatefulWidget {
   DashBoardCow({Key? key}) : super(key: key);
@@ -219,8 +220,12 @@ class _DashBoardCowState extends State<DashBoardCow> {
                               Container(
                                 margin: const EdgeInsets.only(right: 0),
                                 child: GestureDetector(
-                                  onTap: () {
-                                    print("TAP COW");
+                                  onTap: () async {
+                                    print("TAP COW CALF");
+                                    await showDialog(
+                                        context: context,
+                                        builder: (_) =>
+                                            ContainerdDialogCowCalfDetails());
                                   },
                                   child: Image.asset(
                                     'assets/images/logo_cow.png',
