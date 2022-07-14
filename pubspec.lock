@@ -206,6 +206,7 @@ packages:
     source: hosted
     version: "5.4.0"
   google_sign_in_android:
+
     dependency: transitive
     description:
       name: google_sign_in_android
@@ -229,6 +230,7 @@ packages:
   google_sign_in_web:
     dependency: transitive
     description:
+
       name: google_sign_in_web
       url: "https://pub.dartlang.org"
     source: hosted
