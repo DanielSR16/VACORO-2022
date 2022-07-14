@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
           'registroUser': (BuildContext context) => registroUser(),
           'registroUser2': (BuildContext context) => registroUser2(),
 
-          'medication': (BuildContext context) => Medication()
+          'medication': (BuildContext context) => Medication(),
 
           'medication_history': (BuildContext context) => MedicationHistory()
         });
