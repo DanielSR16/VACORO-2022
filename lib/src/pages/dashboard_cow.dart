@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCards.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_calf_details.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_detail.dart';
 
 class DashBoardCow extends StatefulWidget {
   DashBoardCow({Key? key}) : super(key: key);
