@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCards.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_calf_details.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_detail.dart';
 
 class DashBoardCow extends StatefulWidget {
   DashBoardCow({Key? key}) : super(key: key);
@@ -128,118 +129,128 @@ class _DashBoardCowState extends State<DashBoardCow> {
                 //     borderRadius: BorderRadius.circular(30)),
                 margin: const EdgeInsets.all(15),
                 elevation: 10,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 0),
-                      width: double.infinity,
-                      height: 250,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: Image(
-                              height: 100,
-                              width: 100,
-                              image: AssetImage(cards_cow[index].foto!),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 0),
-                            child: Text(
-                              cards_cow[index].name! +
-                                  "\n" +
-                                  cards_cow[index].enfermedad! +
-                                  "\n" +
-                                  cards_cow[index].dolor!,
-                              style: const TextStyle(
-                                color: Color(0xff3E762F),
-                                fontWeight: FontWeight.bold,
+                child: InkWell(
+                  onTap: () async {
+                    print("Detalles VACAS");
+                    await showDialog(
+                        context: context,
+                        builder: (_) => ContainerDialogModalCowDetail());
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 0),
+                        width: double.infinity,
+                        height: 250,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(left: 20),
+                              child: Image(
+                                height: 100,
+                                width: 100,
+                                image: AssetImage(cards_cow[index].foto!),
                               ),
                             ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print("EDIT");
-                                  },
-                                  child: Image.asset(
-                                    'assets/images/edit_logo.png',
-                                    height: 30,
-                                    scale: 0.7,
-                                  ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 0),
+                              child: Text(
+                                cards_cow[index].name! +
+                                    "\n" +
+                                    cards_cow[index].enfermedad! +
+                                    "\n" +
+                                    cards_cow[index].dolor!,
+                                style: const TextStyle(
+                                  color: Color(0xff3E762F),
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Switch(
-                                        value: isSwitched,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            isSwitched = value;
-                                            print("$value");
-                                          });
-                                        },
-                                        activeColor: const Color(0xff68C34E),
-                                        activeTrackColor: const Color.fromARGB(
-                                            255, 27, 206, 36),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(right: 0),
-                                        child: const Text(
-                                          'Buen estado',
-                                          style: TextStyle(
-                                            color: Color(0xff3E762F),
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ]),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 0),
-                                child: GestureDetector(
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: GestureDetector(
                                     onTap: () {
-                                      print("otra TAP");
+                                      print("EDIT");
                                     },
                                     child: Image.asset(
-                                      'assets/images/vaccine.png',
+                                      'assets/images/edit_logo.png',
                                       height: 30,
                                       scale: 0.7,
-                                    )),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 0),
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    print("TAP COW CALF");
-                                    await showDialog(
-                                        context: context,
-                                        builder: (_) =>
-                                            ContainerdDialogCowCalfDetails());
-                                  },
-                                  child: Image.asset(
-                                    'assets/images/logo_cow.png',
-                                    height: 30,
-                                    scale: 0.7,
+                                    ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Switch(
+                                          value: isSwitched,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isSwitched = value;
+                                              print("$value");
+                                            });
+                                          },
+                                          activeColor: const Color(0xff68C34E),
+                                          activeTrackColor:
+                                              const Color.fromARGB(
+                                                  255, 27, 206, 36),
+                                        ),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(right: 0),
+                                          child: const Text(
+                                            'Buen estado',
+                                            style: TextStyle(
+                                              color: Color(0xff3E762F),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(right: 0),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        print("otra TAP");
+                                      },
+                                      child: Image.asset(
+                                        'assets/images/vaccine.png',
+                                        height: 30,
+                                        scale: 0.7,
+                                      )),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(right: 0),
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      print("TAP COW CALF");
+                                      await showDialog(
+                                          context: context,
+                                          builder: (_) =>
+                                              ContainerdDialogCowCalfDetails());
+                                    },
+                                    child: Image.asset(
+                                      'assets/images/logo_cow.png',
+                                      height: 30,
+                                      scale: 0.7,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )),
     );
