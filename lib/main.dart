@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:vacoro_proyect/src/pages/medication.dart';
 
-
-
 import 'package:vacoro_proyect/src/pages/dashboard_category.dart';
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/pages/registro_user2.dart';
@@ -56,6 +54,7 @@ class MyApp extends StatelessWidget {
 
         initialRoute: 'splash',
 
+
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -75,8 +74,6 @@ class MyApp extends StatelessWidget {
           'medication': (BuildContext context) => Medication()
 
           'medication_history': (BuildContext context) => MedicationHistory()
-
-
         });
   }
 }
