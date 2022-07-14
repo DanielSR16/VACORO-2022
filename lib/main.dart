@@ -43,8 +43,6 @@ class MyApp extends StatelessWidget {
         title: 'VACORO',
 
         initialRoute: 'medication_history',
-
-        initialRoute: 'pre_login',
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
