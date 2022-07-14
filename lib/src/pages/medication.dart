@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_add_medication.dart';
 
 class Medication extends StatefulWidget {
   Medication({Key? key}) : super(key: key);
@@ -76,10 +77,12 @@ class _MedicationState extends State<Medication> {
                   ),
                 ),
                 ///////////////////////////////////////////////
-                _createdCardMedication(size, "Jarabe", "Para la diarrea", 10),
                 _createdCardMedication(
-                    size, "Inyección", "Para la fiebre", 200),
-                _createdCardMedication(size, "medication", "description", 50)
+                    size, "Jarabe", "Para la diarrea", 10, "MODAL"),
+                _createdCardMedication(
+                    size, "Inyección", "Para la fiebre", 200, "MODAL2"),
+                _createdCardMedication(
+                    size, "medication", "description", 50, "MODAL3")
               ],
             ),
           ),
@@ -95,8 +98,8 @@ class _MedicationState extends State<Medication> {
     );
   }
 
-  Card _createdCardMedication(
-      Size size, String medication, String description, int cantidad) {
+  Card _createdCardMedication(Size size, String medication, String description,
+      int cantidad, String text) {
     return Card(
       shadowColor: Colors.grey,
       // shape: RoundedRectangleBorder(
@@ -158,9 +161,12 @@ class _MedicationState extends State<Medication> {
                     Container(
                       // margin: const EdgeInsets.only(left: 50),
                       child: GestureDetector(
-                        onTap: (() => {
-                              print("Editar Medicamento!"),
-                            }),
+                        onTap: () async {
+                          // print("Editar Medicamento!")
+                          await showDialog(
+                              context: context,
+                              builder: (_) => DialogContainer(text: text));
+                        },
                         child: Image.asset('assets/images/edit_logo.png'),
                       ),
                     ),
