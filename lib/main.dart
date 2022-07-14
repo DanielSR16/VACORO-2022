@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
           'login': (BuildContext context) => const Login(),
           'pre_login': (BuildContext context) => const preLogin(),
           'anadir_animal': (BuildContext context) =>
-              AnadirAnimal(tipoAnimal: "toro"),
+              AnadirAnimal(tipoAnimal: "Vaca"),
           'dash_cow': (BuildContext context) => DashBoardCow(),
           'dash_bull': (BuildContext context) => DashBoardBull(),
           'dash_calf': (BuildContext context) => DashBoardCalf(),

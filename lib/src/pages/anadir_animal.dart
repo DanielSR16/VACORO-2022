@@ -150,7 +150,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                                           descripcionToroVaca.text,
                                           razaToroVaca.text,
                                           numeroAreteToroVaca.text,
-                                          url_img,
+                                          "url_img",
                                           estado,
                                           int.parse(edadToroVaca.text),
                                           dateinput.text)
@@ -165,7 +165,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                                               Text('Se agrego correctamente'),
                                         ),
                                       );
-                                      Navigator.pop(context);
+                                      //Navigator.pop(context);
                                     }
                                   });
                                 } else {
@@ -189,7 +189,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                                               Text('Se agrego correctamente'),
                                         ),
                                       );
-                                      Navigator.pop(context);
+                                      //Navigator.pop(context);
                                     }
                                   });
                                 }
