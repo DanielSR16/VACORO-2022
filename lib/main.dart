@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:vacoro_proyect/src/pages/dashboard_category.dart';
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/pages/registro_user2.dart';
@@ -49,8 +48,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'dash_category',
-
+        initialRoute: 'dash_bull',
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -67,7 +65,6 @@ class MyApp extends StatelessWidget {
           'registroUser': (BuildContext context) => registroUser(),
           'registroUser2': (BuildContext context) => registroUser2(),
           'medication_history': (BuildContext context) => MedicationHistory()
-
         });
   }
 }
