@@ -196,6 +196,7 @@ packages:
     source: hosted
     version: "5.4.0"
   google_sign_in_platform_interface:
+
     dependency: transitive
     description:
       name: google_sign_in_platform_interface
@@ -206,9 +207,13 @@ packages:
     dependency: transitive
     description:
 <<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
 =======
 
 >>>>>>> d699e1bf1fcb6edb514ae981f5bfd424fb5e730a
+>>>>>>> develop
       name: google_sign_in_web
       url: "https://pub.dartlang.org"
     source: hosted

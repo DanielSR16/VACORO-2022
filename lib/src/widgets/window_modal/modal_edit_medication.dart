@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class DialogContainer extends StatelessWidget {
-  DialogContainer({Key? key, required this.text}) : super(key: key);
+class ContainerDialogEdit extends StatelessWidget {
+  ContainerDialogEdit({Key? key, required this.text}) : super(key: key);
   String text;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Dialog(
       child: SingleChildScrollView(
         child: SizedBox(
@@ -36,7 +35,7 @@ class DialogContainer extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.only(top: 10, bottom: 40),
                     child: const Text(
-                      "Agregar Medicamento",
+                      "Editar Medicamento",
                       style: TextStyle(
                         color: Color(0xff2F6622),
                         fontWeight: FontWeight.bold,
@@ -63,26 +62,7 @@ class DialogContainer extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: TextField(
-                      onChanged: (text) {},
-                      decoration: InputDecoration(
-                        hintStyle: const TextStyle(
-                          color: ColorSelect.color5,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: const BorderSide(
-                            style: BorderStyle.solid,
-                            color: Color(0xff2F6622),
-                            width: 3,
-                          ),
-                        ),
-                        hintText: "Ingrese nombre del medicamento",
-                      ),
-                    ),
+                    child: _input("Ingrese nombre del medicamento..."),
                   ),
                 ),
                 Column(
@@ -158,28 +138,38 @@ class DialogContainer extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: _input("Ingrese la cantidad del medicamento"),
-                    // child: TextField(
-                    //   keyboardType: TextInputType.number,
-                    //   onChanged: (text) {},
-                    //   decoration: InputDecoration(
-                    //     hintStyle: const TextStyle(
-                    //       color: ColorSelect.color5,
-                    //     ),
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(15),
-                    //     ),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(15),
-                    //       borderSide: const BorderSide(
-                    //         style: BorderStyle.solid,
-                    //         color: Color(0xff2F6622),
-                    //         width: 3,
-                    //       ),
-                    //     ),
-                    //     hintText: "Ingrese la cantidad del medicamento",
-                    //   ),
-                    // ),
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      child: TextButton(
+                        onPressed: () {
+                          print("Eliminar medicamento");
+                        },
+                        child: const Text(
+                          "Borrar medicamento",
+                          style: TextStyle(
+                            color: ColorSelect.color5,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      height: 50,
+                      width: 50,
+                      child: GestureDetector(
+                        onTap: () {
+                          print("Eliminar datos");
+                        },
+                        child: Image.asset('assets/images/image_delete.png'),
+                      ),
+                    )
+                  ],
                 ),
                 Center(
                   child: Container(
@@ -197,7 +187,7 @@ class DialogContainer extends StatelessWidget {
                         print("AGREGAR MEDICAMENTOS");
                       },
                       child: const Text(
-                        "Agregar",
+                        "Editar",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 23,

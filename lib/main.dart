@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/medication.dart';
 
 
-import 'package:vacoro_proyect/src/pages/medication.dart';
 
 import 'package:vacoro_proyect/src/pages/dashboard_category.dart';
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
@@ -74,6 +73,7 @@ class MyApp extends StatelessWidget {
           'registroUser2': (BuildContext context) => registroUser2(),
 
           'medication': (BuildContext context) => Medication(),
+
           'medication_history': (BuildContext context) => MedicationHistory()
 
 
