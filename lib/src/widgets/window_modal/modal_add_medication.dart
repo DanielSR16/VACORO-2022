@@ -63,7 +63,26 @@ class DialogContainer extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: _input("Ingrese nombre del medicamento"),
+                    child: TextField(
+                      onChanged: (text) {},
+                      decoration: InputDecoration(
+                        hintStyle: const TextStyle(
+                          color: ColorSelect.color5,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            style: BorderStyle.solid,
+                            color: Color(0xff2F6622),
+                            width: 3,
+                          ),
+                        ),
+                        hintText: "Ingrese nombre del medicamento",
+                      ),
+                    ),
                   ),
                 ),
                 Column(

@@ -56,9 +56,6 @@ class MyApp extends StatelessWidget {
 
         initialRoute: 'medication',
 
-        
-
-
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -78,6 +75,7 @@ class MyApp extends StatelessWidget {
           'medication': (BuildContext context) => Medication(),
 
           'medication_history': (BuildContext context) => MedicationHistory()
+
 
         });
   }
