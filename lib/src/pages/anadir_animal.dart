@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:vacoro_proyect/src/services/generate_image_url.dart';
+import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
 import '../services/anadirAnimalVacaToro.dart';
@@ -19,7 +21,7 @@ class AnadirAnimal extends StatefulWidget {
 
 class _AnadirAnimalState extends State<AnadirAnimal> {
   File? image;
-
+  late String url_img;
   bool isSwitched = false;
   int estado = 0;
   TextEditingController nombreToroVaca = TextEditingController();
@@ -36,37 +38,37 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
   late bool _validateEdad = false;
   late bool _validateDate = false;
 
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
+  // Future pickImage() async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (image == null) return;
 
-      //final imageTemporary = File(image.path);
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
+  //     //final imageTemporary = File(image.path);
+  //     final imageTemporary = await saveImagePermanently(image.path);
+  //     setState(() => this.image = imageTemporary);
+  //   } on PlatformException catch (e) {
+  //     print('Failed to pick image: $e');
+  //   }
+  // }
 
-  Future pickCamera() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
+  // Future pickCamera() async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: ImageSource.camera);
+  //     if (image == null) return;
 
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
-    } on PlatformException catch (e) {
-      print('Failed to pick camera: $e');
-    }
-  }
+  //     final imageTemporary = await saveImagePermanently(image.path);
+  //     setState(() => this.image = imageTemporary);
+  //   } on PlatformException catch (e) {
+  //     print('Failed to pick camera: $e');
+  //   }
+  // }
 
-  Future<File> saveImagePermanently(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-    return File(imagePath).copy(image.path);
-  }
+  // Future<File> saveImagePermanently(String imagePath) async {
+  //   final directory = await getApplicationDocumentsDirectory();
+  //   final name = basename(imagePath);
+  //   final image = File('${directory.path}/$name');
+  //   return File(imagePath).copy(image.path);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +150,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                                           descripcionToroVaca.text,
                                           razaToroVaca.text,
                                           numeroAreteToroVaca.text,
-                                          "url",
+                                          url_img,
                                           estado,
                                           int.parse(edadToroVaca.text),
                                           dateinput.text)
@@ -193,38 +195,6 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                                 }
                               }
                             });
-                            // serviceanadirvaca(
-                            //   nombreToroVaca,
-                            //   descripcionToroVaca,
-                            //   razaToroVaca,
-                            //   numeroAreteToroVaca,
-                            //   "img",
-                            // ).then((value) {
-                            //   if (value['status'] == 'success') {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       const SnackBar(
-                            //         duration: Duration(milliseconds: 1000),
-                            //         content: Text('Correcto'),
-                            //       ),
-                            //     );
-                            //     Navigator.pushNamed(context, 'login');
-                            //   } else if (value['status'] ==
-                            //       'usuarioExistente') {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       const SnackBar(
-                            //         duration: Duration(milliseconds: 1000),
-                            //         content: Text('Usuario existente'),
-                            //       ),
-                            //     );
-                            //   } else {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       const SnackBar(
-                            //         duration: Duration(milliseconds: 1000),
-                            //         content: Text('Incorrecto'),
-                            //       ),
-                            //     );
-                            //   }
-                            // });
                           },
                           style: ElevatedButton.styleFrom(
                               primary: ColorSelect.color5,
@@ -647,5 +617,93 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       _validateDate = false;
     }
     return lleno;
+  }
+
+  Future pickCamera() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+      print(isUploaded);
+
+      setState(
+        () => this.image = imageTemporary,
+      );
+
+      // String fileExtension = path.extension(image.path);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<File> saveImagePermanently(String imagePath) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final name = path.basename(imagePath);
+    final image = File('${directory.path}/$name');
+
+    return File(imagePath).copy(image.path);
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      //final imageTemporary = File(image.path);
+      final imageTemporary = await saveImagePermanently(image.path);
+      setState(() => this.image = imageTemporary);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+      print(isUploaded);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<bool> uploadFile(context, String url, File image) async {
+    try {
+      UploadFile uploadFile = UploadFile();
+      await uploadFile.call(url, image);
+
+      if (uploadFile.isUploaded != null && uploadFile.isUploaded) {
+        return true;
+      } else {
+        throw uploadFile.message;
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 }
