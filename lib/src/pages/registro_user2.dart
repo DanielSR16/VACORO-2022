@@ -20,6 +20,7 @@ class registroUser2 extends StatefulWidget {
 class _registroUser2State extends State<registroUser2> {
   File? image;
   bool isSwitched = false;
+  late String url_img;
   @override
   var size, height_media, width_media;
   late double bordes = 30;
@@ -175,13 +176,15 @@ class _registroUser2State extends State<registroUser2> {
               var nombreRancho = usuario!.nombreRancho.text;
 
               register_user(nombre, apellidos, correoElectronico, contrasenia,
-                      estado, ciudad, edad_int, nombreRancho, "url")
+                      estado, ciudad, edad_int, nombreRancho, url_img)
                   .then((value) {
                 print(value);
               });
 
-              // Navigator.pushNamed(context, 'registroUser2',
-              //         arguments: usuario);
+              Navigator.pushNamed(
+                context,
+                'login',
+              );
             },
             child: const Text(
               'Siguiente',
@@ -202,7 +205,7 @@ class _registroUser2State extends State<registroUser2> {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
 
       if (image == null) return;
-      late String uploadURL;
+
       final imageTemporary = File(image.path);
 
       String fileExtension = path.extension(image.path);
@@ -210,6 +213,7 @@ class _registroUser2State extends State<registroUser2> {
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
       await generateImageUrl.call(fileExtension);
 
+      url_img = generateImageUrl.downloadUrl;
       var uploadUrl;
       if (generateImageUrl.isGenerated != null &&
           generateImageUrl.isGenerated) {
@@ -220,6 +224,7 @@ class _registroUser2State extends State<registroUser2> {
 
       bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
       print(isUploaded);
+
       setState(
         () => this.image = imageTemporary,
       );
@@ -246,6 +251,23 @@ class _registroUser2State extends State<registroUser2> {
       //final imageTemporary = File(image.path);
       final imageTemporary = await saveImagePermanently(image.path);
       setState(() => this.image = imageTemporary);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+      print(isUploaded);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }

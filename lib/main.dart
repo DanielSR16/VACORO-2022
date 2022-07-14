@@ -1,6 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'package:vacoro_proyect/src/pages/dashboard_category.dart';
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/pages/registro_user2.dart';
+import 'package:vacoro_proyect/src/pages/vista_principal.dart';
+
+import 'package:vacoro_proyect/src/pages/medication_history.dart';
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/pages/registro_user2.dart';
+import 'package:vacoro_proyect/src/pages/vista_principal.dart';
+
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
+
 import 'package:vacoro_proyect/src/pages/dashboard_bull.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_calf.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_cow.dart';
@@ -36,9 +48,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-
         initialRoute: 'dash_bull',
-
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -51,8 +61,10 @@ class MyApp extends StatelessWidget {
           'dash_cow': (BuildContext context) => DashBoardCow(),
           'dash_bull': (BuildContext context) => DashBoardBull(),
           'dash_calf': (BuildContext context) => DashBoardCalf(),
+          'dash_category': (BuildContext context) => DashboardCategory(),
           'registroUser': (BuildContext context) => registroUser(),
-          'registroUser2': (BuildContext context) => registroUser2()
+          'registroUser2': (BuildContext context) => registroUser2(),
+          'medication_history': (BuildContext context) => MedicationHistory()
         });
   }
 }

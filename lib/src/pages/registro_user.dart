@@ -202,8 +202,11 @@ class _registroUserState extends State<registroUser> {
                     usuario.edad = edad_;
                     usuario.nombreRancho = nombreRancho_;
                   }
-                  Navigator.pushNamed(context, 'registroUser2',
-                      arguments: usuario);
+
+                  if (res == true) {
+                    Navigator.pushNamed(context, 'registroUser2',
+                        arguments: usuario);
+                  }
                 });
 
                 //
@@ -539,6 +542,7 @@ class _registroUserState extends State<registroUser> {
 
   bool valid() {
     bool lleno = true;
+
     if (nombre_.text.isEmpty) {
       _validateNombre = true;
       lleno = false;
@@ -585,8 +589,10 @@ class _registroUserState extends State<registroUser> {
     }
 
     if (contrasenia_.text != repetirContrasenia_.text) {
+      print('hola entre a validar iguales');
       _validateRepetirContra = true;
       _validateContrasenia = true;
+      lleno = false;
       _errorContrasenia = 'Las contraseñas no coinciden';
     }
 
