@@ -60,7 +60,8 @@ class MyApp extends StatelessWidget {
           'splash_canva': (BuildContext context) => SplashCanva(),
           'login': (BuildContext context) => const Login(),
           'pre_login': (BuildContext context) => const preLogin(),
-          'anadir_animal': (BuildContext context) => const AnadirAnimal(),
+          'anadir_animal': (BuildContext context) =>
+              AnadirAnimal(tipoAnimal: "Vaca"),
           'dash_cow': (BuildContext context) => DashBoardCow(),
           'dash_bull': (BuildContext context) => DashBoardBull(),
           'dash_calf': (BuildContext context) => DashBoardCalf(),
