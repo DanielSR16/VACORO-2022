@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/model/listCardsBull.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_bull_details.dart';
 
 class DashBoardBull extends StatefulWidget {
   DashBoardBull({Key? key}) : super(key: key);
@@ -8,6 +10,13 @@ class DashBoardBull extends StatefulWidget {
 }
 
 class _DashBoardBullState extends State<DashBoardBull> {
+  bool isSwitched = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -80,529 +89,11 @@ class _DashBoardBullState extends State<DashBoardBull> {
                   ),
                 ),
               ),
-              Card(
-                shadowColor: Colors.grey,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(30)),
-                margin: const EdgeInsets.all(15),
-                elevation: 10,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 0),
-                      width: size.width,
-                      height: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: const Image(
-                              image: AssetImage('assets/images/bull.png'),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: const Text(
-                              'Juan \nEnfermedad estomacal\nSufriendo Mucho',
-                              style: TextStyle(
-                                color: Color(0xff3E762F),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.check_box_rounded,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Text(
-                                  'Buen estado',
-                                  style: TextStyle(
-                                    color: Color(0xff3E762F),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.medical_services_sharp,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shadowColor: Colors.grey,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(30)),
-                margin: const EdgeInsets.all(15),
-                elevation: 10,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 0),
-                      width: size.width,
-                      height: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: const Image(
-                              image: AssetImage('assets/images/bull.png'),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: const Text(
-                              'Juan \nEnfermedad estomacal\nSufriendo Mucho',
-                              style: TextStyle(
-                                color: Color(0xff3E762F),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.check_box_rounded,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Text(
-                                  'Buen estado',
-                                  style: TextStyle(
-                                    color: Color(0xff3E762F),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.medical_services_sharp,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shadowColor: Colors.grey,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(30)),
-                margin: const EdgeInsets.all(15),
-                elevation: 10,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 0),
-                      width: size.width,
-                      height: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: const Image(
-                              image: AssetImage('assets/images/bull.png'),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: const Text(
-                              'Juan \nEnfermedad estomacal\nSufriendo Mucho',
-                              style: TextStyle(
-                                color: Color(0xff3E762F),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.check_box_rounded,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Text(
-                                  'Buen estado',
-                                  style: TextStyle(
-                                    color: Color(0xff3E762F),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.medical_services_sharp,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shadowColor: Colors.grey,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(30)),
-                margin: const EdgeInsets.all(15),
-                elevation: 10,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 0),
-                      width: size.width,
-                      height: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: const Image(
-                              image: AssetImage('assets/images/bull.png'),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: const Text(
-                              'Juan \nEnfermedad estomacal\nSufriendo Mucho',
-                              style: TextStyle(
-                                color: Color(0xff3E762F),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.check_box_rounded,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Text(
-                                  'Buen estado',
-                                  style: TextStyle(
-                                    color: Color(0xff3E762F),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.medical_services_sharp,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shadowColor: Colors.grey,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(30)),
-                margin: const EdgeInsets.all(15),
-                elevation: 10,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 0),
-                      width: size.width,
-                      height: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: const Image(
-                              image: AssetImage('assets/images/bull.png'),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: const Text(
-                              'Juan \nEnfermedad estomacal\nSufriendo Mucho',
-                              style: TextStyle(
-                                color: Color(0xff3E762F),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.check_box_rounded,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Text(
-                                  'Buen estado',
-                                  style: TextStyle(
-                                    color: Color(0xff3E762F),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.medical_services_sharp,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shadowColor: Colors.grey,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(30)),
-                margin: const EdgeInsets.all(15),
-                elevation: 10,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 0),
-                      width: size.width,
-                      height: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: const Image(
-                              image: AssetImage('assets/images/bull.png'),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: const Text(
-                              'Juan \nEnfermedad estomacal\nSufriendo Mucho',
-                              style: TextStyle(
-                                color: Color(0xff3E762F),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.check_box_rounded,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Text(
-                                  'Buen estado',
-                                  style: TextStyle(
-                                    color: Color(0xff3E762F),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.medical_services_sharp,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                shadowColor: Colors.grey,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(30)),
-                margin: const EdgeInsets.all(15),
-                elevation: 10,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 0),
-                      width: size.width,
-                      height: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: const Image(
-                              image: AssetImage('assets/images/bull.png'),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: const Text(
-                              'Juan \nEnfermedad estomacal\nSufriendo Mucho',
-                              style: TextStyle(
-                                color: Color(0xff3E762F),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.check_box_rounded,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Text(
-                                  'Buen estado',
-                                  style: TextStyle(
-                                    color: Color(0xff3E762F),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 50),
-                                child: const Icon(
-                                  Icons.medical_services_sharp,
-                                  color: Color(0xff3E762F),
-                                  size: 50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              Container(
+                height: size.height * 0.75,
+                width: size.width,
+                child: Expanded(
+                  child: _createCardsBull(size),
                 ),
               )
             ],
@@ -614,6 +105,128 @@ class _DashBoardBullState extends State<DashBoardBull> {
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
       ),
+    );
+  }
+
+  ListView _createCardsBull(Size size) {
+    return ListView(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      children: List.generate(
+          cards_bull.length,
+          (index) => Card(
+                shadowColor: Colors.black,
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(30)),
+                margin: const EdgeInsets.all(15),
+                elevation: 10,
+                child: InkWell(
+                  onTap: () async {
+                    print("Detalles Toros");
+                    await showDialog(
+                        context: context,
+                        builder: (_) => ContainerDialogModalBullDetail());
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 0),
+                        width: double.infinity,
+                        height: 250,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(left: 20),
+                              child: Image(
+                                height: 100,
+                                width: 100,
+                                image: AssetImage(cards_bull[index].foto!),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 0),
+                              child: Text(
+                                cards_bull[index].name! +
+                                    "\n" +
+                                    cards_bull[index].enfermedad! +
+                                    "\n" +
+                                    cards_bull[index].dolor!,
+                                style: const TextStyle(
+                                  color: Color(0xff3E762F),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print("EDIT");
+                                    },
+                                    child: Image.asset(
+                                      'assets/images/edit_logo.png',
+                                      height: 30,
+                                      scale: 0.7,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Switch(
+                                          value: isSwitched,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isSwitched = value;
+                                              print("$value");
+                                            });
+                                          },
+                                          activeColor: const Color(0xff68C34E),
+                                          activeTrackColor:
+                                              const Color.fromARGB(
+                                                  255, 27, 206, 36),
+                                        ),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(right: 0),
+                                          child: const Text(
+                                            'Buen estado',
+                                            style: TextStyle(
+                                              color: Color(0xff3E762F),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(right: 0),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        print("otra TAP");
+                                      },
+                                      child: Image.asset(
+                                        'assets/images/vaccine.png',
+                                        height: 30,
+                                        scale: 0.7,
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
     );
   }
 }
