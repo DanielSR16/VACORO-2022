@@ -38,38 +38,6 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
   late bool _validateEdad = false;
   late bool _validateDate = false;
 
-  // Future pickImage() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (image == null) return;
-
-  //     //final imageTemporary = File(image.path);
-  //     final imageTemporary = await saveImagePermanently(image.path);
-  //     setState(() => this.image = imageTemporary);
-  //   } on PlatformException catch (e) {
-  //     print('Failed to pick image: $e');
-  //   }
-  // }
-
-  // Future pickCamera() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  //     if (image == null) return;
-
-  //     final imageTemporary = await saveImagePermanently(image.path);
-  //     setState(() => this.image = imageTemporary);
-  //   } on PlatformException catch (e) {
-  //     print('Failed to pick camera: $e');
-  //   }
-  // }
-
-  // Future<File> saveImagePermanently(String imagePath) async {
-  //   final directory = await getApplicationDocumentsDirectory();
-  //   final name = basename(imagePath);
-  //   final image = File('${directory.path}/$name');
-  //   return File(imagePath).copy(image.path);
-  // }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
