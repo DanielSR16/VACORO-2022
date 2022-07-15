@@ -144,55 +144,28 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                             setState(() {
                               late bool res = valid();
                               if (res == true) {
-                                if (widget.tipoAnimal == "Vaca") {
-                                  serviceanadirvaca(
-                                          nombreToroVaca.text,
-                                          descripcionToroVaca.text,
-                                          razaToroVaca.text,
-                                          numeroAreteToroVaca.text,
-                                          "url_img",
-                                          estado,
-                                          int.parse(edadToroVaca.text),
-                                          dateinput.text)
-                                      .then((value) {
-                                    if (value['status'] == 'success') {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          duration:
-                                              Duration(milliseconds: 1000),
-                                          content:
-                                              Text('Se agrego correctamente'),
-                                        ),
-                                      );
-                                      //Navigator.pop(context);
-                                    }
-                                  });
-                                } else {
-                                  serviceanadirtoro(
-                                          nombreToroVaca.text,
-                                          descripcionToroVaca.text,
-                                          razaToroVaca.text,
-                                          numeroAreteToroVaca.text,
-                                          "url",
-                                          estado,
-                                          int.parse(edadToroVaca.text),
-                                          dateinput.text)
-                                      .then((value) {
-                                    if (value['status'] == 'success') {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          duration:
-                                              Duration(milliseconds: 1000),
-                                          content:
-                                              Text('Se agrego correctamente'),
-                                        ),
-                                      );
-                                      //Navigator.pop(context);
-                                    }
-                                  });
-                                }
+                                serviceanadirvacatoro(
+                                        widget.tipoAnimal,
+                                        nombreToroVaca.text,
+                                        descripcionToroVaca.text,
+                                        razaToroVaca.text,
+                                        numeroAreteToroVaca.text,
+                                        url_img,
+                                        estado,
+                                        int.parse(edadToroVaca.text),
+                                        dateinput.text)
+                                    .then((value) {
+                                  if (value['status'] == 'success') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(milliseconds: 1000),
+                                        content:
+                                            Text('Se agrego correctamente'),
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                  }
+                                });
                               }
                             });
                           },
@@ -628,8 +601,10 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       final imageTemporary = File(image.path);
 
       String fileExtension = path.extension(image.path);
-
+      print(imageTemporary);
+      print(fileExtension);
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      print(generateImageUrl);
       await generateImageUrl.call(fileExtension);
 
       url_img = generateImageUrl.downloadUrl;
@@ -647,8 +622,6 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       setState(
         () => this.image = imageTemporary,
       );
-
-      // String fileExtension = path.extension(image.path);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }

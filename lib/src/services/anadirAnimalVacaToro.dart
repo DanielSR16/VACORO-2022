@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<Map<String, dynamic>> serviceanadirvaca(
+Future<Map<String, dynamic>> serviceanadirvacatoro(
+  String tipoAnimal,
   String nombre,
   String descripcion,
   String raza,
@@ -12,12 +13,18 @@ Future<Map<String, dynamic>> serviceanadirvaca(
   String fecha_llegada,
 ) async {
   Map<String, String> headers = {'Content-Type': 'application/json'};
-  String loginAPI = '/vaca/new/';
+  String animalAPI;
+  if (tipoAnimal == "Vaca") {
+    animalAPI = '/vaca/new/';
+  } else {
+    animalAPI = '/toro/new/';
+  }
+  print(animalAPI);
   String host = '192.168.0.3:3001';
   int id_usuario = 0;
   try {
     final response = await http.post(
-      Uri.http(host, loginAPI),
+      Uri.http(host, animalAPI),
       headers: headers,
       body: json.encode(
         {
