@@ -1,14 +1,20 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:vacoro_proyect/src/pages/date.dart';
+import 'package:vacoro_proyect/src/services/editarAnimalVacaToro.dart';
+import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
 class EditarAnimal extends StatefulWidget {
-  const EditarAnimal({Key? key}) : super(key: key);
+  String tipoAnimal;
+  int id;
+  EditarAnimal({Key? key, required this.tipoAnimal, required this.id})
+      : super(key: key);
 
   @override
   State<EditarAnimal> createState() => _EditarAnimalState();
@@ -16,11 +22,24 @@ class EditarAnimal extends StatefulWidget {
 
 class _EditarAnimalState extends State<EditarAnimal> {
   File? image;
-  bool isSwitched = false;
+  late bool isSwitched = false;
+  int estado = 0;
   TextEditingController nombreVacaToroEditar = TextEditingController();
   TextEditingController descripcionVacaToroEditar = TextEditingController();
   TextEditingController razaVacaToroEditar = TextEditingController();
   TextEditingController numeroAreteVacaToroEditar = TextEditingController();
+  TextEditingController edadToroVacaEditar = TextEditingController();
+  TextEditingController dateinputEditar = TextEditingController();
+
+  late bool _validateNombre = false;
+  late bool _validateDescripcion = false;
+  late bool _validateRaza = false;
+  late bool _validateNumeroArete = false;
+  late bool _validateEdad = false;
+  late bool _validateDate = false;
+
+  late int id;
+  late int id_usuario;
 
   Future pickImage() async {
     try {
@@ -55,15 +74,32 @@ class _EditarAnimalState extends State<EditarAnimal> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    vacatoro_id(widget.id, widget.tipoAnimal).then((value) {
+      print(value);
+      nombreVacaToroEditar.text = value.nombre;
+      descripcionVacaToroEditar.text = value.descripcion;
+      razaVacaToroEditar.text = value.raza;
+      numeroAreteVacaToroEditar.text = value.num_arete;
+      dateinputEditar.text = value.fecha_llegada;
+      edadToroVacaEditar.text = value.edad.toString();
+      id = value.id;
+      id_usuario = value.id_usuario;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double bordes = 20.0;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Center(
+        title: Center(
           child: Text(
-            'EDITAR ANIMAL',
+            'EDITAR ANIMAL (' + widget.tipoAnimal + ')',
             style: TextStyle(fontSize: 18),
           ),
         ),
@@ -97,13 +133,18 @@ class _EditarAnimalState extends State<EditarAnimal> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  inputs("Nombre", "", size, nombreVacaToroEditar),
-                  inputs("Descripción", "", size, descripcionVacaToroEditar),
-                  inputs("Raza", "", size, razaVacaToroEditar),
-                  inputs(
-                      "Número de arete", "", size, numeroAreteVacaToroEditar),
-                  date(),
-                  edadEstado("Edad", "Buen estado", size),
+                  inputs("Nombre", "Ingrese el nombre", size,
+                      nombreVacaToroEditar, _validateNombre),
+                  inputs("Descripción", "Ingrese una descripción", size,
+                      descripcionVacaToroEditar, _validateDescripcion),
+                  inputs("Raza", "Ingrese la raza", size, razaVacaToroEditar,
+                      _validateRaza),
+                  inputs("Número de arete", "Ingrese el número de arete", size,
+                      numeroAreteVacaToroEditar, _validateNumeroArete),
+                  fecha(context, "Fecha de llegada", dateinputEditar,
+                      _validateDate),
+                  edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
+                      "Buen estado", size, edadToroVacaEditar, _validateEdad),
                   selectImage(),
                   Container(
                     width: 220,
@@ -144,7 +185,37 @@ class _EditarAnimalState extends State<EditarAnimal> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              late bool res = valid();
+                              if (res == true) {
+                                serviceeditarvacatoro(
+                                        widget.tipoAnimal,
+                                        id,
+                                        id_usuario,
+                                        nombreVacaToroEditar.text,
+                                        descripcionVacaToroEditar.text,
+                                        razaVacaToroEditar.text,
+                                        numeroAreteVacaToroEditar.text,
+                                        "url_img",
+                                        estado,
+                                        int.parse(edadToroVacaEditar.text),
+                                        dateinputEditar.text)
+                                    .then((value) {
+                                  if (value['status'] == 'ok') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(milliseconds: 1000),
+                                        content:
+                                            Text('Actualizado correctamente'),
+                                      ),
+                                    );
+                                  }
+                                  print(value);
+                                });
+                              }
+                            });
+                          },
                           style: ElevatedButton.styleFrom(
                               primary: ColorSelect.color5,
                               shape: RoundedRectangleBorder(
@@ -160,8 +231,13 @@ class _EditarAnimalState extends State<EditarAnimal> {
     );
   }
 
-  Widget inputs(String nameTopField, String nameInField, Size size,
-      TextEditingController controllerInput) {
+  Widget inputs(
+    String nameTopField,
+    String nameInField,
+    Size size,
+    TextEditingController controllerInput,
+    bool validate_,
+  ) {
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Column(
@@ -180,11 +256,17 @@ class _EditarAnimalState extends State<EditarAnimal> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: validate_ ? 60 : 40,
             child: TextField(
               controller: controllerInput,
               decoration: InputDecoration(
                 labelStyle: const TextStyle(color: ColorSelect.color5),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
                   borderRadius: BorderRadius.all(
@@ -198,6 +280,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
                   ),
                 ),
                 labelText: nameInField,
+                errorText: validate_ ? 'El campo esta vacio' : null,
               ),
             ),
           ),
@@ -296,8 +379,13 @@ class _EditarAnimalState extends State<EditarAnimal> {
     );
   }
 
-  Widget edadEstado(String nameTopField, String nameTopField2, Size size) {
-    var dropdownValue = "1 años";
+  Widget edadEstado(
+      String nameTopField,
+      String nameInField,
+      String nameTopField2,
+      Size size,
+      TextEditingController edadToroVacaEditar,
+      bool validate_) {
     return Row(
       children: <Widget>[
         Container(
@@ -319,37 +407,35 @@ class _EditarAnimalState extends State<EditarAnimal> {
                 ),
               ),
               SizedBox(
-                height: 45,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: ColorSelect.color1, width: 2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                        enabledBorder: InputBorder.none,
-                        fillColor: Colors.white),
-                    value: dropdownValue,
-                    iconSize: 25,
-                    iconEnabledColor: ColorSelect.color1,
-                    icon: Container(
-                        margin: const EdgeInsets.only(right: 30),
-                        child: const Icon(Icons.arrow_drop_down)),
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
-                    },
-                    items: <String>['1 años', '2 años', '3 años', '4 años']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: Text(value)),
-                      );
-                    }).toList(),
+                height: validate_ ? 60 : 45,
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  controller: edadToroVacaEditar,
+                  decoration: InputDecoration(
+                    labelStyle: const TextStyle(color: ColorSelect.color5),
+                    border: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: ColorSelect.color1, width: 2.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: ColorSelect.color1, width: 2.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: ColorSelect.color5, width: 2.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    labelText: nameInField,
+                    errorText: validate_ ? 'El campo esta vacio' : null,
                   ),
                 ),
               ),
@@ -380,6 +466,11 @@ class _EditarAnimalState extends State<EditarAnimal> {
                   onChanged: (value) {
                     setState(() {
                       isSwitched = value;
+                      if (isSwitched == false) {
+                        estado = 0;
+                      } else {
+                        estado = 1;
+                      }
                     });
                   },
                   activeTrackColor: ColorSelect.color5,
@@ -391,5 +482,182 @@ class _EditarAnimalState extends State<EditarAnimal> {
         ),
       ],
     );
+  }
+
+  Widget fecha(
+    BuildContext context,
+    String nameTopField,
+    TextEditingController dateinput,
+    bool validate_,
+  ) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 5),
+            width: size.width,
+            child: Text(
+              nameTopField,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3E762F),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: validate_ ? 60 : 40,
+            child: TextField(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(
+                  Icons.calendar_today,
+                  color: ColorSelect.color1,
+                ),
+                iconColor: ColorSelect.color1,
+                labelText: "Seleccionar la fecha de llegada",
+                labelStyle: const TextStyle(color: ColorSelect.color5),
+                errorText: validate_ ? 'El campo esta vacio' : null,
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color5, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+              ),
+              controller: dateinput,
+
+              readOnly:
+                  true, //Para que el usuario no pueda editar en el textField
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(
+                      2001, //Fecha limite para seleccionar
+                    ),
+                    lastDate: DateTime(2101),
+                    //Fecha limite para seleccionar
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: const ColorScheme.light(
+                            primary: ColorSelect.color5,
+                            onPrimary: Colors.white,
+                            onSecondary: ColorSelect.color1,
+                          ),
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              primary: ColorSelect.color1, // button text color
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    });
+                if (pickedDate != null) {
+                  String formattedDate = DateFormat('yyyy-MM-dd')
+                      .format(pickedDate); //La fecha se mostrar en este formato
+                  setState(
+                    () {
+                      dateinput.text =
+                          formattedDate; //Fecha de salida en el textField
+                    },
+                  );
+
+                  print(dateinput.text);
+                } else {
+                  validate_ = true;
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool valid() {
+    bool lleno = true;
+    if (nombreVacaToroEditar.text.isEmpty) {
+      _validateNombre = true;
+      lleno = false;
+    } else {
+      _validateNombre = false;
+    }
+
+    if (descripcionVacaToroEditar.text.isEmpty) {
+      _validateDescripcion = true;
+      lleno = false;
+    } else {
+      _validateDescripcion = false;
+    }
+
+    if (razaVacaToroEditar.text.isEmpty) {
+      _validateRaza = true;
+      lleno = false;
+    } else {
+      _validateRaza = false;
+    }
+
+    if (numeroAreteVacaToroEditar.text.isEmpty) {
+      _validateNumeroArete = true;
+      lleno = false;
+    } else {
+      _validateNumeroArete = false;
+    }
+
+    if (edadToroVacaEditar.text.isEmpty) {
+      _validateEdad = true;
+      lleno = false;
+    } else {
+      _validateEdad = false;
+    }
+
+    if (dateinputEditar.text.isEmpty) {
+      _validateDate = true;
+      lleno = false;
+    } else {
+      _validateDate = false;
+    }
+    return lleno;
+  }
+
+  void _getVaca(id) {
+    // vaca_id(id).then((value) {
+    //   print(value);
+    // });
+    // vaca_id(id).then(
+    //   (data) {
+    //final items = jsonDecode(data);
+    //print(items);
+    // var listaDatos = items.map<FormField>((json) {
+    //   return FormField.fromJson(json);
+    // }).toList();
+
+    //print(fieldListData[0]);
+    // _selectedField = fieldListData[0].description;
+    // // update widget
+    // setState(
+    //   () {
+    //     // _fieldList = fieldListData;
+    //   },
+    //   // );
+    // },
+    // );
   }
 }
