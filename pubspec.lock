@@ -226,6 +226,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.2.0"
   google_sign_in:
     dependency: "direct main"
     description:
@@ -554,16 +561,5 @@ packages:
     source: hosted
     version: "6.1.0"
 sdks:
-<<<<<<< HEAD
-<<<<<<< HEAD
-  dart: ">=2.17.0-0 <3.0.0"
-  flutter: ">=3.0.0"
-
-=======
   dart: ">=2.17.0 <3.0.0"
   flutter: ">=3.0.0"
->>>>>>> feature/VACORO-55
-=======
-  dart: ">=2.17.0 <3.0.0"
-  flutter: ">=3.0.0"
->>>>>>> 5f39512cf7628717eada963a026dbde58b021c60
