@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:vacoro_proyect/src/pages/date.dart';
+
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
 class EditarPerfil extends StatefulWidget {
