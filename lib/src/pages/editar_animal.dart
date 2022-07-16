@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:vacoro_proyect/src/services/deleteAnimalVacaToro.dart';
 import 'package:vacoro_proyect/src/services/editarAnimalVacaToro.dart';
+import 'package:vacoro_proyect/src/services/generate_image_url.dart';
 import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
+import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
 class EditarAnimal extends StatefulWidget {
@@ -24,6 +27,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
   File? image;
   late bool isSwitched = false;
   int estado = 0;
+  late String url_img = imageAnimal;
   TextEditingController nombreVacaToroEditar = TextEditingController();
   TextEditingController descripcionVacaToroEditar = TextEditingController();
   TextEditingController razaVacaToroEditar = TextEditingController();
@@ -40,45 +44,14 @@ class _EditarAnimalState extends State<EditarAnimal> {
 
   late int id;
   late int id_usuario;
-
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-
-      //final imageTemporary = File(image.path);
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future pickCamera() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
-    } on PlatformException catch (e) {
-      print('Failed to pick camera: $e');
-    }
-  }
-
-  Future<File> saveImagePermanently(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-    return File(imagePath).copy(image.path);
-  }
+  late var imageAnimal =
+      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     vacatoro_id(widget.id, widget.tipoAnimal).then((value) {
-      print(value);
       nombreVacaToroEditar.text = value.nombre;
       descripcionVacaToroEditar.text = value.descripcion;
       razaVacaToroEditar.text = value.raza;
@@ -87,6 +60,13 @@ class _EditarAnimalState extends State<EditarAnimal> {
       edadToroVacaEditar.text = value.edad.toString();
       id = value.id;
       id_usuario = value.id_usuario;
+
+      setState(() {
+        imageAnimal = value.url_img.toString();
+        if (value.estado == 1) {
+          isSwitched = true;
+        }
+      });
     });
   }
 
@@ -155,7 +135,20 @@ class _EditarAnimalState extends State<EditarAnimal> {
                       color: Colors.transparent, // button color
                       child: InkWell(
                         splashColor: Colors.green, // splash color
-                        onTap: () {}, // button pressed
+                        onTap: () {
+                          servicedeletevacatoro(widget.tipoAnimal, id)
+                              .then((value) {
+                            if (value['status'] == 'ok') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  duration: Duration(milliseconds: 1000),
+                                  content:
+                                      Text('Animal eliminado correctamente'),
+                                ),
+                              );
+                            }
+                          });
+                        }, // button pressed
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const <Widget>[
@@ -197,7 +190,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
                                         descripcionVacaToroEditar.text,
                                         razaVacaToroEditar.text,
                                         numeroAreteVacaToroEditar.text,
-                                        "url_img",
+                                        url_img,
                                         estado,
                                         int.parse(edadToroVacaEditar.text),
                                         dateinputEditar.text)
@@ -339,10 +332,10 @@ class _EditarAnimalState extends State<EditarAnimal> {
                       height: 150,
                       fit: BoxFit.cover,
                     )
-                  : const Image(
+                  : Image(
                       width: 160,
                       height: 150,
-                      image: AssetImage('assets/images/logo.png'),
+                      image: NetworkImage(imageAnimal),
                     ),
             ),
           ],
@@ -637,27 +630,93 @@ class _EditarAnimalState extends State<EditarAnimal> {
     return lleno;
   }
 
-  void _getVaca(id) {
-    // vaca_id(id).then((value) {
-    //   print(value);
-    // });
-    // vaca_id(id).then(
-    //   (data) {
-    //final items = jsonDecode(data);
-    //print(items);
-    // var listaDatos = items.map<FormField>((json) {
-    //   return FormField.fromJson(json);
-    // }).toList();
+  Future pickCamera() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
 
-    //print(fieldListData[0]);
-    // _selectedField = fieldListData[0].description;
-    // // update widget
-    // setState(
-    //   () {
-    //     // _fieldList = fieldListData;
-    //   },
-    //   // );
-    // },
-    // );
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+      print(isUploaded);
+
+      setState(
+        () => this.image = imageTemporary,
+      );
+
+      // String fileExtension = path.extension(image.path);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<File> saveImagePermanently(String imagePath) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final name = path.basename(imagePath);
+    final image = File('${directory.path}/$name');
+
+    return File(imagePath).copy(image.path);
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      //final imageTemporary = File(image.path);
+      final imageTemporary = await saveImagePermanently(image.path);
+      setState(() => this.image = imageTemporary);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+      print(isUploaded);
+      print("url");
+      print(url_img);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<bool> uploadFile(context, String url, File image) async {
+    try {
+      UploadFile uploadFile = UploadFile();
+      await uploadFile.call(url, image);
+
+      if (uploadFile.isUploaded != null && uploadFile.isUploaded) {
+        return true;
+      } else {
+        throw uploadFile.message;
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 }
