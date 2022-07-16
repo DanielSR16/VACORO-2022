@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:vacoro_proyect/src/pages/date.dart';
+
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
 class AnadirBecerro extends StatefulWidget {
@@ -21,6 +22,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
   TextEditingController descripcionBecerro = TextEditingController();
   TextEditingController razaBecerro = TextEditingController();
   TextEditingController numeroAreteBecerro = TextEditingController();
+  TextEditingController dateinput = TextEditingController();
 
   Future pickImage() async {
     try {
@@ -102,7 +104,8 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                       "Raza", "Ingrese la raza del animal", size, razaBecerro),
                   inputs("Número de arete", "Ingrese el número de arete", size,
                       numeroAreteBecerro),
-                  date(),
+                  //date(),
+                  fecha(context, 'Fecha de llegada', dateinput),
                   selectMadre("Seleccionar vaca madre", size),
                   edadEstado("Edad", "Buen estado", size),
                   selectImage(),
@@ -420,6 +423,114 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                   );
                 }).toList(),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget fecha(
+    BuildContext context,
+    String nameTopField,
+    TextEditingController dateinput,
+    //bool validate_,
+  ) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 5),
+            width: size.width,
+            child: Text(
+              nameTopField,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3E762F),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 40,
+            //height: validate_ ? 60 : 40,
+            child: TextField(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(
+                  Icons.calendar_today,
+                  color: ColorSelect.color1,
+                ),
+                iconColor: ColorSelect.color1,
+                labelText: "Seleccionar la fecha de llegada",
+                labelStyle: const TextStyle(color: ColorSelect.color5),
+                //errorText: validate_ ? 'El campo esta vacio' : null,
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color5, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+              ),
+              controller: dateinput,
+
+              readOnly:
+                  true, //Para que el usuario no pueda editar en el textField
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(
+                      2001, //Fecha limite para seleccionar
+                    ),
+                    lastDate: DateTime(2101),
+                    //Fecha limite para seleccionar
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: const ColorScheme.light(
+                            primary: ColorSelect.color5,
+                            onPrimary: Colors.white,
+                            onSecondary: ColorSelect.color1,
+                          ),
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              primary: ColorSelect.color1, // button text color
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    });
+                if (pickedDate != null) {
+                  String formattedDate = DateFormat('yyyy-MM-dd')
+                      .format(pickedDate); //La fecha se mostrar en este formato
+                  setState(
+                    () {
+                      dateinput.text =
+                          formattedDate; //Fecha de salida en el textField
+                    },
+                  );
+
+                  print(dateinput.text);
+                } else {
+                  //validate_ = true;
+                }
+              },
             ),
           ),
         ],
