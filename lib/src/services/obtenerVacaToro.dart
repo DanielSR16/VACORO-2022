@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:http/http.dart' as http;
 
-String ip = '192.168.0.3';
+String ip = '192.168.0.3:3001';
+
+int id_usuario = 0;
+
 Future vacatoro_id(int id, String tipoAnimal) async {
   try {
     String api;
@@ -11,7 +15,7 @@ Future vacatoro_id(int id, String tipoAnimal) async {
       api = '/toro/getTorobyId/';
     }
 
-    final response = await http.post(Uri.http(ip + ':3001', api),
+    final response = await http.post(Uri.http(ip, api),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: json.encode({"id": id}));
 
@@ -112,5 +116,36 @@ class GeneralModel {
   @override
   String toString() {
     return '${JsonEncoder.withIndent(' ').convert(this)}';
+  }
+}
+
+Future<List> getVacasbyIdUser() async {
+  Map<String, String> headers = {'Content-Type': 'application/json'};
+
+  String path = '/vaca/getVacasbyIdUser';
+
+  final response = await http.post(
+    Uri.http(ip, path),
+    headers: headers,
+    body: json.encode(
+      {'id_usuario': id_usuario},
+    ),
+  );
+
+  if (response.statusCode == 200) {
+    List map = json.decode(response.body);
+
+    Map<int, String> listavacas = Map();
+
+    for (var i = 0; i < map.length; i++) {
+      listavacas[map[i]['id']] = map[i]['nombre'];
+    }
+
+    return [
+      [listavacas],
+      map
+    ];
+  } else {
+    return [];
   }
 }

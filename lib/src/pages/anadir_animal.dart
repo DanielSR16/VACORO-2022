@@ -21,7 +21,8 @@ class AnadirAnimal extends StatefulWidget {
 
 class _AnadirAnimalState extends State<AnadirAnimal> {
   File? image;
-  late String url_img;
+  late String url_img =
+      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
   bool isSwitched = false;
   int estado = 0;
   TextEditingController nombreToroVaca = TextEditingController();
