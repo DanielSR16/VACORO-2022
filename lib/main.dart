@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/anadir_medicamento_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_becerro.dart';
+import 'package:vacoro_proyect/src/pages/editar_perfil.dart';
+import 'package:vacoro_proyect/src/pages/editar_medicamento_animal.dart';
 
 import 'package:vacoro_proyect/src/pages/medication.dart';
 
@@ -74,7 +77,12 @@ class MyApp extends StatelessWidget {
           'medication': (BuildContext context) => Medication(),
 
           'medication_history': (BuildContext context) => MedicationHistory(),
-          'EditarBecerro': (BuildContext context) => EditarBecerro(id: 6)
+          'EditarBecerro': (BuildContext context) => EditarBecerro(id: 6),
+          'EditarPerfil': (BuildContext context) => EditarPerfil(),
+          'AnadirMedicamentoAnimal': (BuildContext context) =>
+              AnadirMedicamentoAnimal(),
+          'EditarMedicamentoAnimal': (BuildContext context) =>
+              EditarMedicamentoAnimal(),
         });
   }
 }
