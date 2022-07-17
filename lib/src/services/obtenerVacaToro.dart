@@ -1,11 +1,7 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:http/http.dart' as http;
 
-String ip = '192.168.0.3:3001';
-
-int id_usuario = 0;
-
+String ip = '192.168.0.4:3001';
 Future vacatoro_id(int id, String tipoAnimal) async {
   try {
     String api;
@@ -120,6 +116,7 @@ class GeneralModel {
 }
 
 Future<List> getVacasbyIdUser() async {
+  int id_usuario = 1;
   Map<String, String> headers = {'Content-Type': 'application/json'};
 
   String path = '/vaca/getVacasbyIdUser';
