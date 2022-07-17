@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_medicamento_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
+import 'package:vacoro_proyect/src/pages/editar_medicamento_animal.dart';
 
 import 'package:vacoro_proyect/src/pages/medication.dart';
 
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'AnadirMedicamentoAnimal',
+        initialRoute: 'EditarMedicamentoAnimal',
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -75,7 +76,9 @@ class MyApp extends StatelessWidget {
 
           'medication_history': (BuildContext context) => MedicationHistory(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
-              AnadirMedicamentoAnimal()
+              AnadirMedicamentoAnimal(),
+          'EditarMedicamentoAnimal': (BuildContext context) =>
+              EditarMedicamentoAnimal(),
         });
   }
 }
