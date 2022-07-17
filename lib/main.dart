@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
 import 'package:vacoro_proyect/src/pages/anadir_medicamento_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_becerro.dart';
@@ -78,6 +79,7 @@ class MyApp extends StatelessWidget {
 
           'medication_history': (BuildContext context) => MedicationHistory(),
           'EditarBecerro': (BuildContext context) => EditarBecerro(id: 6),
+          'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
           'EditarPerfil': (BuildContext context) => EditarPerfil(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
               AnadirMedicamentoAnimal(),
