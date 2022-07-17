@@ -2,13 +2,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:vacoro_proyect/src/pages/date.dart';
+import 'package:vacoro_proyect/src/services/editarBecerro.dart';
+import 'package:vacoro_proyect/src/services/generate_image_url.dart';
+import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
+import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
 class EditarBecerro extends StatefulWidget {
-  const EditarBecerro({Key? key}) : super(key: key);
+  int id;
+  EditarBecerro({Key? key, required this.id}) : super(key: key);
 
   @override
   State<EditarBecerro> createState() => _EditarBecerroState();
@@ -16,39 +21,67 @@ class EditarBecerro extends StatefulWidget {
 
 class _EditarBecerroState extends State<EditarBecerro> {
   File? image;
-  bool isSwitched = false;
+  late bool isSwitched = false;
+  int estado = 0;
+  late String url_img = imageAnimal;
   TextEditingController nombreBecerroEditar = TextEditingController();
   TextEditingController descripcionBecerroEditar = TextEditingController();
   TextEditingController razaBecerroEditar = TextEditingController();
   TextEditingController numeroAreteBecerroEditar = TextEditingController();
+  TextEditingController edadBecerro = TextEditingController();
+  TextEditingController dateinput = TextEditingController();
 
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
+  late bool _validateNombre = false;
+  late bool _validateDescripcion = false;
+  late bool _validateRaza = false;
+  late bool _validateNumeroArete = false;
+  late bool _validateEdad = false;
+  late bool _validateDate = false;
 
-  Future pickCamera() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
+  String? dropdownValue = null;
+  late Map<int, String> listaVacas = {0: 'vaca'};
 
-  Future<File> saveImagePermanently(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-    return File(imagePath).copy(image.path);
+  late int id;
+  late int id_usuario;
+  late var imageAnimal =
+      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getVacasbyIdUser().then((value) {
+      listaVacas = value[0][0];
+      List map = value[1];
+    });
+    becerro_id(widget.id).then((value) {
+      nombreBecerroEditar.text = value.nombre;
+      descripcionBecerroEditar.text = value.descripcion;
+      razaBecerroEditar.text = value.raza;
+      numeroAreteBecerroEditar.text = value.num_arete;
+      dateinput.text = value.fecha_llegada;
+      edadBecerro.text = value.edad.toString();
+      id = value.id;
+      id_usuario = value.id_usuario;
+
+      setState(() {
+        imageAnimal = value.url_img.toString();
+        if (value.estado == 1) {
+          isSwitched = true;
+        }
+        if (value.id_vaca != -1) {
+          vacatoro_id(value.id_vaca, "Vaca").then((value) {
+            setState(() {
+              dropdownValue = value.nombre;
+            });
+          });
+        } else {
+          setState(() {
+            dropdownValue = 'Sin madre';
+          });
+        }
+      });
+    });
   }
 
   @override
@@ -95,16 +128,17 @@ class _EditarBecerroState extends State<EditarBecerro> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   inputs("Nombre", "Ingrese nombre del becerro", size,
-                      nombreBecerroEditar),
+                      nombreBecerroEditar, _validateNombre),
                   inputs("Descripción", "Ingrese una descripción del becerro",
-                      size, descripcionBecerroEditar),
+                      size, descripcionBecerroEditar, _validateDescripcion),
                   inputs("Raza", "Ingrese la raza del animal", size,
-                      razaBecerroEditar),
+                      razaBecerroEditar, _validateRaza),
                   inputs("Número de arete", "Ingrese el número de arete", size,
-                      numeroAreteBecerroEditar),
-                  date(),
+                      numeroAreteBecerroEditar, _validateNumeroArete),
+                  fecha(context, 'Fecha de llegada', dateinput, _validateDate),
                   selectMadre("Seleccionar vaca madre", size),
-                  edadEstado("Edad", "Buen estado", size),
+                  edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
+                      "Buen estado", size, edadBecerro, _validateEdad),
                   selectImage(),
                   Container(
                     width: 220,
@@ -145,7 +179,37 @@ class _EditarBecerroState extends State<EditarBecerro> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            print(obtenerIdVacaSelect());
+                            setState(() {
+                              late bool res = valid();
+                              if (res == true) {
+                                serviceeditarbecerro(
+                                        id,
+                                        nombreBecerroEditar.text,
+                                        descripcionBecerroEditar.text,
+                                        razaBecerroEditar.text,
+                                        numeroAreteBecerroEditar.text,
+                                        url_img,
+                                        estado,
+                                        int.parse(edadBecerro.text),
+                                        obtenerIdVacaSelect(),
+                                        dateinput.text)
+                                    .then((value) {
+                                  if (value['status'] == 'success') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(milliseconds: 1000),
+                                        content:
+                                            Text('Actualizado correctamente'),
+                                      ),
+                                    );
+                                    //Navigator.pop(context);
+                                  }
+                                });
+                              }
+                            });
+                          },
                           style: ElevatedButton.styleFrom(
                               primary: ColorSelect.color5,
                               shape: RoundedRectangleBorder(
@@ -161,8 +225,13 @@ class _EditarBecerroState extends State<EditarBecerro> {
     );
   }
 
-  Widget inputs(String nameTopField, String nameInField, Size size,
-      TextEditingController controllerInput) {
+  Widget inputs(
+    String nameTopField,
+    String nameInField,
+    Size size,
+    TextEditingController controllerInput,
+    bool validate_,
+  ) {
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Column(
@@ -181,11 +250,17 @@ class _EditarBecerroState extends State<EditarBecerro> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: validate_ ? 60 : 40,
             child: TextField(
               controller: controllerInput,
               decoration: InputDecoration(
                 labelStyle: const TextStyle(color: ColorSelect.color5),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
                   borderRadius: BorderRadius.all(
@@ -199,6 +274,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                   ),
                 ),
                 labelText: nameInField,
+                errorText: validate_ ? 'El campo esta vacio' : null,
               ),
             ),
           ),
@@ -257,10 +333,10 @@ class _EditarBecerroState extends State<EditarBecerro> {
                       height: 150,
                       fit: BoxFit.cover,
                     )
-                  : const Image(
+                  : Image(
                       width: 160,
                       height: 150,
-                      image: AssetImage('assets/images/logo.png'),
+                      image: NetworkImage(imageAnimal),
                     ),
             ),
           ],
@@ -297,8 +373,14 @@ class _EditarBecerroState extends State<EditarBecerro> {
     );
   }
 
-  Widget edadEstado(String nameTopField, String nameTopField2, Size size) {
-    var dropdownValue = "1 años";
+  Widget edadEstado(
+    String nameTopField,
+    String nameInField,
+    String nameTopField2,
+    Size size,
+    TextEditingController edadToroVaca,
+    bool validate_,
+  ) {
     return Row(
       children: <Widget>[
         Container(
@@ -320,37 +402,35 @@ class _EditarBecerroState extends State<EditarBecerro> {
                 ),
               ),
               SizedBox(
-                height: 45,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: ColorSelect.color1, width: 2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                        enabledBorder: InputBorder.none,
-                        fillColor: Colors.white),
-                    value: dropdownValue,
-                    iconSize: 25,
-                    iconEnabledColor: ColorSelect.color1,
-                    icon: Container(
-                        margin: const EdgeInsets.only(right: 30),
-                        child: const Icon(Icons.arrow_drop_down)),
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
-                    },
-                    items: <String>['1 años', '2 años', '3 años', '4 años']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: Text(value)),
-                      );
-                    }).toList(),
+                height: validate_ ? 60 : 45,
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  controller: edadToroVaca,
+                  decoration: InputDecoration(
+                    labelStyle: const TextStyle(color: ColorSelect.color5),
+                    border: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: ColorSelect.color1, width: 2.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: ColorSelect.color1, width: 2.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: ColorSelect.color5, width: 2.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    labelText: nameInField,
+                    errorText: validate_ ? 'El campo esta vacio' : null,
                   ),
                 ),
               ),
@@ -381,6 +461,11 @@ class _EditarBecerroState extends State<EditarBecerro> {
                   onChanged: (value) {
                     setState(() {
                       isSwitched = value;
+                      if (isSwitched == false) {
+                        estado = 0;
+                      } else {
+                        estado = 1;
+                      }
                     });
                   },
                   activeTrackColor: ColorSelect.color5,
@@ -394,8 +479,14 @@ class _EditarBecerroState extends State<EditarBecerro> {
     );
   }
 
+  int obtenerIdVacaSelect() {
+    var id = listaVacas.keys.firstWhere(
+        (element) => listaVacas[element] == dropdownValue,
+        orElse: () => -1);
+    return id;
+  }
+
   Widget selectMadre(String nameTopField, Size size) {
-    var dropdownValue = "Margarita";
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
       child: Column(
@@ -435,7 +526,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                     dropdownValue = newValue!;
                   });
                 },
-                items: <String>['Margarita', 'Lola', 'Vanessa', 'Pilly']
+                items: listaVacas.values
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -450,5 +541,241 @@ class _EditarBecerroState extends State<EditarBecerro> {
         ],
       ),
     );
+  }
+
+  Widget fecha(
+    BuildContext context,
+    String nameTopField,
+    TextEditingController dateinput,
+    bool validate_,
+  ) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 5),
+            width: size.width,
+            child: Text(
+              nameTopField,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3E762F),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: validate_ ? 60 : 40,
+            child: TextField(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(
+                  Icons.calendar_today,
+                  color: ColorSelect.color1,
+                ),
+                iconColor: ColorSelect.color1,
+                labelText: "Seleccionar la fecha de llegada",
+                labelStyle: const TextStyle(color: ColorSelect.color5),
+                errorText: validate_ ? 'El campo esta vacio' : null,
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color5, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+              ),
+              controller: dateinput,
+
+              readOnly:
+                  true, //Para que el usuario no pueda editar en el textField
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(
+                      2001, //Fecha limite para seleccionar
+                    ),
+                    lastDate: DateTime(2101),
+                    //Fecha limite para seleccionar
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: const ColorScheme.light(
+                            primary: ColorSelect.color5,
+                            onPrimary: Colors.white,
+                            onSecondary: ColorSelect.color1,
+                          ),
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              primary: ColorSelect.color1, // button text color
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    });
+                if (pickedDate != null) {
+                  String formattedDate = DateFormat('yyyy-MM-dd')
+                      .format(pickedDate); //La fecha se mostrar en este formato
+                  setState(
+                    () {
+                      dateinput.text =
+                          formattedDate; //Fecha de salida en el textField
+                    },
+                  );
+                } else {
+                  validate_ = true;
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool valid() {
+    bool lleno = true;
+    if (nombreBecerroEditar.text.isEmpty) {
+      _validateNombre = true;
+      lleno = false;
+    } else {
+      _validateNombre = false;
+    }
+
+    if (descripcionBecerroEditar.text.isEmpty) {
+      _validateDescripcion = true;
+      lleno = false;
+    } else {
+      _validateDescripcion = false;
+    }
+
+    if (razaBecerroEditar.text.isEmpty) {
+      _validateRaza = true;
+      lleno = false;
+    } else {
+      _validateRaza = false;
+    }
+
+    if (numeroAreteBecerroEditar.text.isEmpty) {
+      _validateNumeroArete = true;
+      lleno = false;
+    } else {
+      _validateNumeroArete = false;
+    }
+
+    if (edadBecerro.text.isEmpty) {
+      _validateEdad = true;
+      lleno = false;
+    } else {
+      _validateEdad = false;
+    }
+
+    if (dateinput.text.isEmpty) {
+      _validateDate = true;
+      lleno = false;
+    } else {
+      _validateDate = false;
+    }
+    return lleno;
+  }
+
+  Future pickCamera() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+
+      setState(
+        () => this.image = imageTemporary,
+      );
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<File> saveImagePermanently(String imagePath) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final name = path.basename(imagePath);
+    final image = File('${directory.path}/$name');
+
+    return File(imagePath).copy(image.path);
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      //final imageTemporary = File(image.path);
+      final imageTemporary = await saveImagePermanently(image.path);
+      setState(() => this.image = imageTemporary);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<bool> uploadFile(context, String url, File image) async {
+    try {
+      UploadFile uploadFile = UploadFile();
+      await uploadFile.call(url, image);
+
+      if (uploadFile.isUploaded != null && uploadFile.isUploaded) {
+        return true;
+      } else {
+        throw uploadFile.message;
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 }
