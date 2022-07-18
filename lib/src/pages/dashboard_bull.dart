@@ -126,10 +126,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("LISTA TOROS");
-          getAllBull();
-        },
+        onPressed: () {},
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
       ),
