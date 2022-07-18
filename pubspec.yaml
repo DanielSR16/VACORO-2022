@@ -35,7 +35,9 @@ dependencies:
   #store image
   path_provider: ^2.0.11
 
-
+  # store & load data securely
+  flutter_secure_storage: ^5.0.2
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

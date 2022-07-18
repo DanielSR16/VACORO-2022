@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/services/servicios_user.dart';
+import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import '../metodos/regularExpresion.dart';
 
 class registroUser extends StatefulWidget {
@@ -136,22 +137,35 @@ class _registroUserState extends State<registroUser> {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: _validatedad ? 60 : 40,
                   child: TextField(
                     controller: edad_,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Color(0xFF68C24E)),
+                      border: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: ColorSelect.color1, width: 2.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
                       enabledBorder: const OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                            BorderSide(color: ColorSelect.color1, width: 2.0),
                         borderRadius: BorderRadius.all(
                           Radius.circular(12),
                         ),
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                            BorderSide(color: ColorSelect.color5, width: 2.0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                      errorBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 2.0),
                         borderRadius: BorderRadius.all(
                           Radius.circular(12),
                         ),
@@ -232,7 +246,6 @@ class _registroUserState extends State<registroUser> {
       TextEditingController controller_,
       bool validate_,
       TextInputType tipeKeyboard) {
-    // print(validate_);
     return Container(
       padding: EdgeInsets.only(left: bordes, right: bordes),
       child: Column(
@@ -251,20 +264,26 @@ class _registroUserState extends State<registroUser> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: validate_ ? 60 : 40,
             child: TextField(
               keyboardType: tipeKeyboard,
               controller: controller_,
               decoration: InputDecoration(
                 labelStyle: const TextStyle(color: Color(0xFF68C24E)),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
                 enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),
                 ),
                 focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                  borderSide: BorderSide(color: ColorSelect.color5, width: 2.0),
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),
@@ -296,7 +315,6 @@ class _registroUserState extends State<registroUser> {
       bool validate_,
       TextInputType tipeKeyboard,
       String _errorCorreo) {
-    // print(validate_);
     return Container(
       padding: EdgeInsets.only(left: bordes, right: bordes),
       child: Column(
@@ -315,20 +333,26 @@ class _registroUserState extends State<registroUser> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: validate_ ? 60 : 40,
             child: TextField(
               keyboardType: tipeKeyboard,
               controller: controller_,
               decoration: InputDecoration(
                 labelStyle: const TextStyle(color: Color(0xFF68C24E)),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
                 enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),
                 ),
                 focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                  borderSide: BorderSide(color: ColorSelect.color5, width: 2.0),
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),
@@ -360,7 +384,6 @@ class _registroUserState extends State<registroUser> {
       bool validate_,
       TextInputType tipeKeyboard,
       String _errorContrasenia) {
-    // print(validate_);
     return Container(
       padding: EdgeInsets.only(left: bordes, right: bordes),
       child: Column(
@@ -379,20 +402,26 @@ class _registroUserState extends State<registroUser> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: validate_ ? 60 : 40,
             child: TextField(
               keyboardType: tipeKeyboard,
               controller: controller_,
               decoration: InputDecoration(
                 labelStyle: const TextStyle(color: Color(0xFF68C24E)),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
                 enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),
                 ),
                 focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF3E762F), width: 2.0),
+                  borderSide: BorderSide(color: ColorSelect.color5, width: 2.0),
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),
@@ -579,6 +608,15 @@ class _registroUserState extends State<registroUser> {
       _errorContrasenia = 'El campo esta vacio';
     } else {
       _validateContrasenia = false;
+      Iterable<RegExpMatch> matches2 =
+          expressionRegularPassword.allMatches(contrasenia_.text);
+
+      if (matches2.isEmpty == true) {
+        _validateContrasenia = true;
+        lleno = false;
+        _errorContrasenia =
+            'Incluir may., minúsc., núm., símb.(\$@!%*?&#¿¡), min. 8 caracteres';
+      }
     }
 
     if (repetirContrasenia_.text.isEmpty) {
@@ -589,7 +627,6 @@ class _registroUserState extends State<registroUser> {
     }
 
     if (contrasenia_.text != repetirContrasenia_.text) {
-      print('hola entre a validar iguales');
       _validateRepetirContra = true;
       _validateContrasenia = true;
       lleno = false;
