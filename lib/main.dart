@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'dash_cow',
+        initialRoute: 'dash_bull',
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
