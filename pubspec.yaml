@@ -52,6 +52,7 @@ dependencies:
   multi_select_flutter: ^4.1.2
   syncfusion_flutter_pdf: ^20.2.38
 
+  animate_do:
 
 dev_dependencies:
   flutter_test:
