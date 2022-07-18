@@ -69,6 +69,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
         if (value.estado == 1) {
           isSwitched = true;
         }
+
         if (value.id_vaca != -1) {
           vacatoro_id(value.id_vaca, "Vaca").then((value) {
             setState(() {
@@ -149,7 +150,19 @@ class _EditarBecerroState extends State<EditarBecerro> {
                       color: Colors.transparent, // button color
                       child: InkWell(
                         splashColor: Colors.green, // splash color
-                        onTap: () {}, // button pressed
+                        onTap: () {
+                          servicedeletebecerro(widget.id).then((value) {
+                            if (value['status'] == 'ok') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  duration: Duration(milliseconds: 1000),
+                                  content:
+                                      Text('Animal eliminado correctamente'),
+                                ),
+                              );
+                            }
+                          });
+                        }, // button pressed
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const <Widget>[
@@ -180,7 +193,6 @@ class _EditarBecerroState extends State<EditarBecerro> {
                             ),
                           ),
                           onPressed: () {
-                            print(obtenerIdVacaSelect());
                             setState(() {
                               late bool res = valid();
                               if (res == true) {
@@ -196,7 +208,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                                         obtenerIdVacaSelect(),
                                         dateinput.text)
                                     .then((value) {
-                                  if (value['status'] == 'success') {
+                                  if (value['status'] == 'ok') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         duration: Duration(milliseconds: 1000),
