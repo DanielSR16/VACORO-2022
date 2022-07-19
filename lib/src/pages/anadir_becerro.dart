@@ -285,16 +285,13 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
             ),
           ],
         ),
-        const SizedBox(
-          width: 10,
-        ),
         Container(
           padding: const EdgeInsets.only(
             //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 140,
+            width: 155,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -308,6 +305,19 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                   title: 'Tomar fotografía',
                   icon: Icons.image_outlined,
                   onClicked: () => pickCamera(),
+                ),
+                buildButton(
+                  title: 'Cancelar selección',
+                  icon: Icons.image_outlined,
+                  onClicked: () {
+                    setState(() {
+                      print(url_img);
+                      image = null;
+                      url_img =
+                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                      print(url_img);
+                    });
+                  },
                 ),
               ],
             ),
