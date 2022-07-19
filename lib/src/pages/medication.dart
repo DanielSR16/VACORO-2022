@@ -79,11 +79,14 @@ class _MedicationState extends State<Medication> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+
           // print("Agregar Medicamento");
           await showDialog(
             context: context,
             builder: (_) => DialogContainerAddMedication(),
           );
+
+
         },
         child: const Icon(Icons.add),
         backgroundColor: ColorSelect.color5,
@@ -150,6 +153,7 @@ class _MedicationState extends State<Medication> {
                       margin: const EdgeInsets.only(left: 40, right: 0),
                       child: GestureDetector(
                         onTap: () async {
+
                           // print("Edit Medicina");
 
                           await showDialog(
