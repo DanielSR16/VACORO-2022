@@ -125,7 +125,9 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                     print("Detalles VACAS");
                     await showDialog(
                         context: context,
-                        builder: (_) => ContainerDialogModalCalfDetail());
+                        builder: (_) => ContainerDialogModalCalfDetail(
+                              id: 2,
+                            ));
                   },
                   child: Column(
                     children: [

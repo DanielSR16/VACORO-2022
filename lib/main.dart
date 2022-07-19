@@ -34,6 +34,9 @@ import 'package:vacoro_proyect/src/pages/registro_user2.dart';
 
 import 'package:vacoro_proyect/src/pages/splash.dart';
 import 'package:vacoro_proyect/src/pages/splash_canva.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_bull_details.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_calf_details.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_detail.dart';
 // import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 import 'firebase_options.dart';
 import 'src/pages/homepage.dart';
@@ -56,7 +59,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'EditarMedicamentoAnimal',
+        initialRoute: 'ContainerDialogModalCalfDetail',
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -83,6 +86,12 @@ class MyApp extends StatelessWidget {
               AnadirMedicamentoAnimal(),
           'EditarMedicamentoAnimal': (BuildContext context) =>
               EditarMedicamentoAnimal(),
+          'ContainerDialogModalBullDetail': (BuildContext context) =>
+              ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
+          'ContainerDialogModalCowDetail': (BuildContext context) =>
+              ContainerDialogModalCowDetail(tipoAnimal: "Vaca", id: 2),
+          'ContainerDialogModalCalfDetail': (BuildContext context) =>
+              ContainerDialogModalCalfDetail(id: 1),
         });
   }
 }

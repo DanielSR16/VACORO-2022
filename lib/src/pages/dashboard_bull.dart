@@ -125,7 +125,8 @@ class _DashBoardBullState extends State<DashBoardBull> {
                     print("Detalles Toros");
                     await showDialog(
                         context: context,
-                        builder: (_) => ContainerDialogModalBullDetail());
+                        builder: (_) => ContainerDialogModalBullDetail(
+                            tipoAnimal: "Toro", id: 2));
                   },
                   child: Column(
                     children: [
