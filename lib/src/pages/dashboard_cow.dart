@@ -1,10 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:vacoro_proyect/src/model/listCards.dart';
 import 'package:vacoro_proyect/src/services/animal_service_cow.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
-import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_calf_details.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_detail.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 
@@ -16,13 +13,13 @@ class DashBoardCow extends StatefulWidget {
 }
 
 class _DashBoardCowState extends State<DashBoardCow> {
-  bool? value;
+  bool? value1;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    value = false;
+    value1 = false;
   }
 
   @override
@@ -58,81 +55,48 @@ class _DashBoardCowState extends State<DashBoardCow> {
             padding: const EdgeInsets.only(left: 90),
           )
         ],
-        backgroundColor: const Color(0xff68C34E),
+        backgroundColor: ColorSelect.color5,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Center(
-                  child: Container(
-                    height: 35,
-                    width: 350,
-                    margin: const EdgeInsets.only(top: 40),
-                    decoration: BoxDecoration(
-                      color: const Color(0xffBDF7AD),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.bottom,
-                      onChanged: (text) {},
-                      decoration: const InputDecoration(
-                        // focusColor: Colors.grey,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.pink,
-                            width: 1,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        suffixIcon: Icon(
-                          Icons.search,
-                          color: Color(0xff229567),
-                        ),
-                        hintText: 'Buscar Vacas...',
-                      ),
-                    ),
-                  ),
+        child: FutureBuilder(
+          future: getAllCow(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 5,
+                  backgroundColor: ColorSelect.color5,
+                  color: Colors.white,
                 ),
-                FutureBuilder(
-                  future: getAllCow(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 5,
-                          backgroundColor: ColorSelect.color5,
-                          color: Colors.white,
-                        ),
-                      );
-                      // return Container();
-                    } else {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Container(
-                          height: size.height,
-                          width: size.width,
-                          child: ListView.builder(
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return FadeInLeft(
-                                  duration: Duration(milliseconds: 200 * index),
-                                  child: _createdCardCow(size, snapshot, index),
-                                );
-                              }),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
+              );
+              // return Container();
+            } else {
+              return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return FadeIn(
+                      duration: Duration(milliseconds: 200 * index),
+                      child: _createdCardCow(size, snapshot, index),
+                    );
+                  });
+            }
+          },
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: ColorSelect.color5,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 1,
+        elevation: 2.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 0),
+              height: 50,
+              width: size.width,
+            )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -140,6 +104,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -186,7 +151,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
                         containerLabel(
                             "Nombre: ${snapshot.data[index]['nombre']}", index),
                         containerLabel(
-                            'Número De Arete: ${snapshot.data[index]['num_arete']}',
+                            'Nº Arete: ${snapshot.data[index]['num_arete']}',
                             index),
                         containerLabel(
                             'Raza: ${snapshot.data[index]['raza']}', index)
@@ -218,8 +183,8 @@ class _DashBoardCowState extends State<DashBoardCow> {
                               value: snapshot.data[index]['estado'],
                               onChanged: (value) {
                                 setState(() {
-                                  value = value;
-                                  print("$value");
+                                  value1 = value;
+                                  print("$value1");
                                 });
                               },
                               activeColor: const Color(0xff68C34E),
@@ -234,7 +199,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
                         margin: const EdgeInsets.only(right: 0),
                         child: GestureDetector(
                             onTap: () {
-                              print("otra TAP");
+                              print("Vacunas");
                             },
                             child: Image.asset(
                               'assets/images/vaccine.png',
@@ -244,7 +209,9 @@ class _DashBoardCowState extends State<DashBoardCow> {
                       ),
                       Container(
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            print("Becerros");
+                          },
                           child: Image.asset(
                             'assets/images/logo_calf.png',
                             height: 30,
