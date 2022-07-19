@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class ContainerDialogEdit extends StatelessWidget {
-  ContainerDialogEdit({Key? key, required this.text}) : super(key: key);
-  String text;
+class ContainerDialogEditMedication extends StatelessWidget {
+  ContainerDialogEditMedication({Key? key})
+      : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {

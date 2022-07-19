@@ -13,8 +13,7 @@ Future<String> register_user(
     String nombreRancho,
     String urlImage) async {
   try {
-    print('/////////////////////////////////////////');
-    print(nombreRancho);
+
 
     final response = await http.post(
       Uri.http(ip + ':3000', '/usuario/usuarioNuevo'),

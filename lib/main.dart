@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
+import 'package:vacoro_proyect/src/pages/anadir_medicamento_animal.dart';
+import 'package:vacoro_proyect/src/pages/editar_animal.dart';
+import 'package:vacoro_proyect/src/pages/editar_perfil.dart';
+import 'package:vacoro_proyect/src/pages/editar_medicamento_animal.dart';
 
 import 'package:vacoro_proyect/src/pages/medication.dart';
-
-
 
 import 'package:vacoro_proyect/src/pages/dashboard_category.dart';
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
@@ -66,7 +69,8 @@ class MyApp extends StatelessWidget {
           'splash_canva': (BuildContext context) => SplashCanva(),
           'login': (BuildContext context) => const Login(),
           'pre_login': (BuildContext context) => const preLogin(),
-          'anadir_animal': (BuildContext context) => const AnadirAnimal(),
+          'anadir_animal': (BuildContext context) =>
+              AnadirAnimal(tipoAnimal: "Vaca"),
           'dash_cow': (BuildContext context) => DashBoardCow(),
           'dash_bull': (BuildContext context) => DashBoardBull(),
           'dash_calf': (BuildContext context) => DashBoardCalf(),
@@ -76,9 +80,14 @@ class MyApp extends StatelessWidget {
 
           'dash_medication': (BuildContext context) => Medication(),
 
-          'medication_history': (BuildContext context) => MedicationHistory()
-
-
+          
+          'medication_history': (BuildContext context) => MedicationHistory(),
+          'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
+          'EditarPerfil': (BuildContext context) => EditarPerfil(),
+          'AnadirMedicamentoAnimal': (BuildContext context) =>
+              AnadirMedicamentoAnimal(),
+          'EditarMedicamentoAnimal': (BuildContext context) =>
+              EditarMedicamentoAnimal(),
         });
   }
 }

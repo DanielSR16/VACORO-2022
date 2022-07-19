@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class DialogContainer extends StatelessWidget {
-  DialogContainer({Key? key, required this.text}) : super(key: key);
-  String text;
+class DialogContainerAddMedication extends StatelessWidget {
+  DialogContainerAddMedication({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
