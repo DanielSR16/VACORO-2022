@@ -13,8 +13,6 @@ Future<String> register_user(
     String nombreRancho,
     String urlImage) async {
   try {
-
-
     final response = await http.post(
       Uri.http(ip + ':3000', '/usuario/usuarioNuevo'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
@@ -91,6 +89,38 @@ Future municipios_id(int id) async {
     }
   } catch (e) {
     print(e);
+    return 'Error';
+  }
+}
+
+Future<String> getEmail(
+  String correo_electronico,
+) async {
+  try {
+    final response = await http.post(
+      Uri.http(ip + ':3000', '/usuario/correo_electronico'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: json.encode(
+        {
+          "correo_electronico": correo_electronico,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      // final data = json.decode(response.body);
+      late String resultado = "Existe";
+      var data = response.body;
+      print(data);
+      if (data == '') {
+        resultado = "no existe";
+      }
+
+      return resultado;
+    } else {
+      return 'No se ha podido conectar al servidor';
+    }
+  } catch (e) {
     return 'Error';
   }
 }

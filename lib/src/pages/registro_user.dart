@@ -198,8 +198,6 @@ class _registroUserState extends State<registroUser> {
                 ),
               ),
               onPressed: () {
-                print('controlador: ' + correo_electronico_.text);
-                //  print('controlador b: ' + nombre_.text);
                 setState(() {
                   late bool res = valid();
 
@@ -222,8 +220,6 @@ class _registroUserState extends State<registroUser> {
                         arguments: usuario);
                   }
                 });
-
-                //
               },
               child: const Text(
                 'Siguiente',
@@ -600,6 +596,17 @@ class _registroUserState extends State<registroUser> {
         lleno = false;
         _errorCorreo = 'Correo invalido';
       }
+
+      getEmail(correo_electronico_.text).then((value) {
+        setState(() {
+          print(value);
+          if (value == "Existe") {
+            _validateCorreo = true;
+            lleno = false;
+            _errorCorreo = 'Este correo ya se encuentra registrado';
+          }
+        });
+      });
     }
 
     if (contrasenia_.text.isEmpty) {
