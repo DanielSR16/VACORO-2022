@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:vacoro_proyect/src/model/listCardsBull.dart';
 import 'package:vacoro_proyect/src/services/animal_service_bull.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
@@ -14,12 +13,12 @@ class DashBoardBull extends StatefulWidget {
 }
 
 class _DashBoardBullState extends State<DashBoardBull> {
-  bool? value;
+  bool? value1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    value = false;
+    value1 = false;
   }
 
   @override
@@ -58,71 +57,44 @@ class _DashBoardBullState extends State<DashBoardBull> {
         backgroundColor: const Color(0xff68C34E),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
-                child: Container(
-                  height: 35,
-                  width: 350,
-                  margin: const EdgeInsets.only(top: 40),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffBDF7AD),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: TextField(
-                    textAlignVertical: TextAlignVertical.bottom,
-                    onChanged: (text) {},
-                    decoration: const InputDecoration(
-                      // focusColor: Colors.grey,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.pink,
-                          width: 1,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      suffixIcon: Icon(
-                        Icons.search,
-                        color: Color(0xff229567),
-                      ),
-                      hintText: 'Buscar Toros...',
-                    ),
-                  ),
+        child: FutureBuilder(
+          future: getAllBull(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 5,
+                  backgroundColor: ColorSelect.color5,
+                  color: Colors.white,
                 ),
-              ),
-              FutureBuilder(
-                future: getAllBull(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 5,
-                        backgroundColor: ColorSelect.color5,
-                        color: Colors.white,
-                      ),
+              );
+            } else {
+              return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return FadeInLeft(
+                      duration: Duration(milliseconds: 100 * index),
+                      child: _createdCardBull(size, snapshot, index),
                     );
-                  } else {
-                    return Container(
-                      height: size.height,
-                      width: size.width,
-                      child: ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return FadeIn(
-                              duration: Duration(milliseconds: 200 * index),
-                              child: _createdCardBull(size, snapshot, index),
-                            );
-                          }),
-                    );
-                  }
-                },
-              )
-            ],
-          ),
+                  });
+            }
+          },
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: ColorSelect.color5,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 1,
+        elevation: 2.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 0),
+              height: 50,
+              width: size.width,
+            )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -130,6 +102,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -176,7 +149,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
                         containerLabel(
                             "Nombre: ${snapshot.data[index]['nombre']}", index),
                         containerLabel(
-                            "Número De Arete: ${snapshot.data[index]['num_arete']}",
+                            "Nº Arete: ${snapshot.data[index]['num_arete']}",
                             index),
                         containerLabel(
                             "Raza: ${snapshot.data[index]['raza']}", index),
@@ -208,8 +181,8 @@ class _DashBoardBullState extends State<DashBoardBull> {
                               value: snapshot.data[index]['estado'],
                               onChanged: (value) {
                                 setState(() {
-                                  value = value;
-                                  print("$value");
+                                  value1 = value;
+                                  print("$value1");
                                 });
                               },
                               activeColor: const Color(0xff68C34E),
