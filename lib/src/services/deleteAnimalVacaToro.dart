@@ -1,30 +1,34 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-Future<Map<String, dynamic>> servicelogin(
-    TextEditingController email, TextEditingController password) async {
+Future<Map<String, dynamic>> servicedeletevacatoro(
+  String tipoAnimal,
+  int id,
+) async {
   Map<String, String> headers = {'Content-Type': 'application/json'};
-  String loginAPI = '/usuario/getUserlogin/';
-  String host = '192.168.0.5:3000';
+  String host = '192.168.0.3:3001';
+  String loginAPI;
+  if (tipoAnimal == "Vaca") {
+    loginAPI = '/vaca/delete/';
+  } else {
+    loginAPI = '/toro/delete/';
+  }
 
   try {
     final response = await http.post(
       Uri.http(host, loginAPI),
       headers: headers,
-      body: json.encode(
-        {'correo_electronico': email.text, 'contrasenia': password.text},
-      ),
+      body: json.encode({'id': id}),
     );
+
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      print(data);
       Map<String, dynamic> responseMap = {
-        'token': data['token'],
-        'id': data['usuario']['id'],
-        'nombre': data['usuario']['nombre'],
-        'correo_electronico': data['usuario']['correo_electronico'],
+        'status': data['status'],
       };
       print(responseMap);
+
       return responseMap;
     } else {
       return {'status': 'Error'};
