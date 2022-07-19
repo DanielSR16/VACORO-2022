@@ -74,8 +74,8 @@ class _DashBoardCowState extends State<DashBoardCow> {
               return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return FadeIn(
-                      duration: Duration(milliseconds: 200 * index),
+                    return FadeInLeft(
+                      duration: Duration(milliseconds: 100 * index),
                       child: _createdCardCow(size, snapshot, index),
                     );
                   });
