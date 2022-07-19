@@ -353,16 +353,13 @@ class _EditarBecerroState extends State<EditarBecerro> {
             ),
           ],
         ),
-        const SizedBox(
-          width: 10,
-        ),
         Container(
           padding: const EdgeInsets.only(
             //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 140,
+            width: 160,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -376,6 +373,19 @@ class _EditarBecerroState extends State<EditarBecerro> {
                   title: 'Tomar fotografía',
                   icon: Icons.image_outlined,
                   onClicked: () => pickCamera(),
+                ),
+                buildButton(
+                  title: 'Cancelar selección',
+                  icon: Icons.image_outlined,
+                  onClicked: () {
+                    setState(() {
+                      print(imageAnimal);
+                      image = null;
+                      imageAnimal =
+                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                      print(imageAnimal);
+                    });
+                  },
                 ),
               ],
             ),
