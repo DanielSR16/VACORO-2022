@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/becerrosCategorias.dart';
 import 'package:vacoro_proyect/src/model/torosCategorias.dart';
-import 'package:vacoro_proyect/src/model/vacas.dart';
 import 'package:vacoro_proyect/src/services/DAO/becerros.dart';
 import 'package:vacoro_proyect/src/services/DAO/toros.dart';
 import 'package:vacoro_proyect/src/services/DAO/vacas.dart';
 import 'package:vacoro_proyect/src/widgets/HomePage/buttonSave.dart';
 import 'package:vacoro_proyect/src/widgets/HomePage/textfield.dart';
 import 'package:multiple_search_selection/multiple_search_selection.dart';
+import '../model/vacasCategorias.dart';
 import '../widgets/HomePage/appBar.dart';
 
 
@@ -26,9 +26,9 @@ class _addCategories extends State<addCategories> {
 
   @override
   void initState() {
-    listaB = listaBecerros("http://192.168.100.6:3000/categoria/allCategorias/allBecerros");
-    listaV = listaVacas("http://192.168.100.6:3000/categoria/allCategorias/allVacas");
-    listaT = listaToros("http://192.168.100.6:3000/categoria/allCategorias/allToros");
+    listaB = listaBecerros("http://192.168.100.6:3006/categoria/allCategorias/allBecerros");
+    listaV = listaVacas("http://192.168.100.6:3006/categoria/allCategorias/allVacas");
+    listaT = listaToros("http://192.168.100.6:3006/categoria/allCategorias/allToros");
     super.initState();
   }
 
@@ -85,7 +85,7 @@ class _addCategories extends State<addCategories> {
   }
 
   Future <List<dynamic>> generarListaVaca()async {
-    List<Vac> listaV = await listaVacas("http://192.168.100.6:3000/categoria/allCategorias/allVacas");
+    List<Vacas> listaV = await listaVacas("http://192.168.100.6:3006/categoria/allCategorias/allVacas");
     List<Vacas> vacas = List<Vacas>.generate(
       listaV.length,
       (index) => Vacas(
@@ -105,7 +105,7 @@ class _addCategories extends State<addCategories> {
   }
 
   Future <List<dynamic>> generarListaToro()async {
-    List<Toros> listaT = await listaToros("http://192.168.100.6:3000/categoria/allCategorias/allToros");
+    List<Toros> listaT = await listaToros("http://192.168.100.6:3006/categoria/allCategorias/allToros");
     List<Toros> toros = List<Toros>.generate(
       listaT.length,
       (index) => Toros(
@@ -125,7 +125,7 @@ class _addCategories extends State<addCategories> {
   }
 
   Future <List<dynamic>> generarListaBecerro() async{
-    List<Becerros> listaB = await listaBecerros("http://192.168.100.6:3000/categoria/allCategorias/allBecerros");
+    List<Becerros> listaB = await listaBecerros("http://192.168.100.6:3006/categoria/allCategorias/allBecerros");
     List<Becerros> becerros = List<Becerros>.generate(
       listaB.length,
       (index) => Becerros(

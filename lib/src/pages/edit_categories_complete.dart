@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:vacoro_proyect/src/model/categorias.dart';
-import 'package:vacoro_proyect/src/model/vacas.dart';
+import 'package:vacoro_proyect/src/model/vacasCategorias.dart';
 import 'package:vacoro_proyect/src/model/torosCategorias.dart';
 import 'package:vacoro_proyect/src/model/becerrosCategorias.dart';
 import 'package:dropdown_search/dropdown_search.dart';
