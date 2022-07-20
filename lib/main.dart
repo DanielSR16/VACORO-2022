@@ -57,7 +57,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
+
         initialRoute: 'EditarBecerro',
+
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -77,6 +79,7 @@ class MyApp extends StatelessWidget {
 
           'medication': (BuildContext context) => Medication(),
 
+          
           'medication_history': (BuildContext context) => MedicationHistory(),
           'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
           'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
