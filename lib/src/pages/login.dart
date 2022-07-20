@@ -215,6 +215,8 @@ class _LoginState extends State<Login> {
                                 } else {
                                   await UserSecureStorage.setId(value['id']
                                       .toString()); //Se guarda el id en el local storage
+                                  await UserSecureStorage.setToken(
+                                      value['token'].toString());
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       duration: Duration(milliseconds: 1000),

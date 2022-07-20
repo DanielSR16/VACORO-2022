@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
 import 'package:vacoro_proyect/src/pages/anadir_medicamento_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
+import 'package:vacoro_proyect/src/pages/editar_becerro.dart';
 import 'package:vacoro_proyect/src/pages/editar_perfil.dart';
 import 'package:vacoro_proyect/src/pages/editar_medicamento_animal.dart';
 
@@ -57,7 +58,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
 
-        initialRoute: 'dash_medication',
+
+        initialRoute: 'login',
+
+
+
+
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -77,14 +83,20 @@ class MyApp extends StatelessWidget {
 
           'dash_medication': (BuildContext context) => Medication(),
 
-          
+
           'medication_history': (BuildContext context) => MedicationHistory(),
+          'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
           'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
           'EditarPerfil': (BuildContext context) => EditarPerfil(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
               AnadirMedicamentoAnimal(),
           'EditarMedicamentoAnimal': (BuildContext context) =>
               EditarMedicamentoAnimal(),
+          'EditarAnimal': (BuildContext context) => EditarAnimal(
+                tipoAnimal: "Vaca",
+                id: 2,
+              ),
+
         });
   }
 }
