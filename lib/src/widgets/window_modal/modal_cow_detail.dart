@@ -34,6 +34,7 @@ class _ContainerDialogModalCowDetailState
     super.initState();
 
     vacatoro_id(widget.id, widget.tipoAnimal).then((value) {
+      
       setState(() {
         nombre = value.nombre;
         descripcion = value.descripcion;

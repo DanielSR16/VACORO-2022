@@ -60,17 +60,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-
-
         initialRoute: 'login',
-
-
-
-
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
-          // 'homePage': (BuildContext context) => homePage(),
+
           // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
+      
           'splash': (BuildContext context) => Splash(),
           'splash_canva': (BuildContext context) => SplashCanva(),
           'login': (BuildContext context) => const Login(),
@@ -85,7 +80,6 @@ class MyApp extends StatelessWidget {
           'registroUser2': (BuildContext context) => registroUser2(),
 
           'dash_medication': (BuildContext context) => Medication(),
-
 
           'medication_history': (BuildContext context) => MedicationHistory(),
           'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
@@ -105,7 +99,6 @@ class MyApp extends StatelessWidget {
                 tipoAnimal: "Vaca",
                 id: 2,
               ),
-
         });
   }
 }

@@ -3,16 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:vacoro_proyect/src/services/medicamentos.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-
-class DialogContainerAddMedication extends StatelessWidget {
+class DialogContainerAddMedication extends StatefulWidget {
   DialogContainerAddMedication({Key? key}) : super(key: key);
 
-
   @override
-  State<DialogContainer> createState() => _DialogContainerState();
+  State<DialogContainerAddMedication> createState() => _DialogContainerState();
 }
 
-class _DialogContainerState extends State<DialogContainer> {
+class _DialogContainerState extends State<DialogContainerAddMedication> {
   TextEditingController nombre_medicamento = TextEditingController();
   TextEditingController descripcion_medicamento = TextEditingController();
   TextEditingController cantidad_medicamento = TextEditingController();

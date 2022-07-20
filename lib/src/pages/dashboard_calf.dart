@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCardsCalf.dart';
 import 'package:vacoro_proyect/src/services/animal_service_calf.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_calf_details.dart';
 
@@ -15,10 +16,20 @@ class DashBoardCalf extends StatefulWidget {
 
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
+  var id_usuario = 0;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    UserSecureStorage.getId().then((value) {
+      int id_cast = int.parse(value!);
+      setState(() {
+        id_usuario = id_cast;
+      });
+    });
+
+    // TODO: implement initState
+
     value1 = false;
   }
 
@@ -30,7 +41,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
         leading: IconButton(
           padding: const EdgeInsets.only(right: 0),
           onPressed: () {
-            // Navigator.pop(context);
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -59,7 +70,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllCalf(),
+          future: getAllCalf(id_usuario),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -125,7 +136,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
           await showDialog(
               context: context,
               builder: (_) => ContainerDialogModalCalfDetail(
-                    id: 1,
+                    id: snapshot.data[index]['id'],
                   ));
         },
         child: Column(

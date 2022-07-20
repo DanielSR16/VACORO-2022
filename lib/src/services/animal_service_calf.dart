@@ -2,15 +2,16 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.31";
+String ip = "192.168.56.1";
 // String ip = "10.0.2.2";
 
-Future<List<Map<String, dynamic>>> getAllCalf() async {
+Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario) async {
+  print(id_usuario);
   try {
-    final response = await http.get(
-      Uri.http(ip + ":3001", "/becerro/all"),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-    );
+    final response = await http.post(
+        Uri.http(ip + ":3001", "/becerro/getBecerrosUsuario"),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: json.encode({"id_usuario": id_usuario}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -41,12 +42,16 @@ Future<List<Map<String, dynamic>>> getAllCalf() async {
       // print(listCalf);
       return listCalf;
     } else {
+      print('a');
+      print(response.statusCode);
       return [
         {"status": "${response.statusCode}"},
         {"message": "No se puede conectar al servidor"}
       ];
     }
   } catch (e) {
+    print('b');
+    print(e);
     return [
       {"error": "Error: $e"}
     ];

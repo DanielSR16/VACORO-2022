@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
-String ip = "192.168.0.31";
+String ip = "192.168.56.1";
 // String ip = '10.0.2.2';
 
-Future<List<Map<String, dynamic>>> getAllCow() async {
+Future<List<Map<String, dynamic>>> getAllCow(int id_usuario) async {
+  print(id_usuario);
   try {
-    final response = await http.get(
-      Uri.http(ip + ':3001', '/vaca/all'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-    );
+    final response = await http.post(
+        Uri.http(ip + ':3001', '/vaca/getVacasbyIdUser'),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: json.encode({"id_usuario": id_usuario}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -18,7 +20,6 @@ Future<List<Map<String, dynamic>>> getAllCow() async {
 
       if (data != null) {
         for (Map cow in data) {
-          // if (cow['id_usuario'] == 1) {
           if (cow['estado'] == 1) {
             bool estado = true;
             cow['estado'] = estado;
@@ -35,18 +36,19 @@ Future<List<Map<String, dynamic>>> getAllCow() async {
             'estado': cow['estado']
           };
           listCow.add(mapListCow);
-          // }
         }
       }
       // print(listCow);
       return listCow;
     } else {
+      print(response.statusCode);
       return [
         {"status": "${response.statusCode}"},
         {"message": "No se puede conectar al servidor :("}
       ];
     }
   } catch (e) {
+    print(e);
     return [
       {"error": "Error: $e"}
     ];

@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/services/animal_service_bull.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_bull_details.dart';
 
@@ -14,10 +15,20 @@ class DashBoardBull extends StatefulWidget {
 
 class _DashBoardBullState extends State<DashBoardBull> {
   bool? value1;
+  var id_usuario = 0;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    UserSecureStorage.getId().then((value) {
+      int id_cast = int.parse(value!);
+      setState(() {
+        id_usuario = id_cast;
+      });
+    });
+
+    // TODO: implement initState
+
     value1 = false;
   }
 
@@ -29,7 +40,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
         leading: IconButton(
           padding: const EdgeInsets.only(right: 0),
           onPressed: () {
-            // Navigator.pop(context);
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -58,7 +69,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllBull(),
+          future: getAllBull(id_usuario),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -123,8 +134,8 @@ class _DashBoardBullState extends State<DashBoardBull> {
           await showDialog(
               context: context,
               builder: (_) => ContainerDialogModalBullDetail(
-                    tipoAnimal: "Vaca",
-                    id: 1,
+                    tipoAnimal: "Toro",
+                    id: snapshot.data[index]['id'],
                   ));
         },
         child: Column(
