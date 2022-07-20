@@ -85,6 +85,10 @@ class MyApp extends StatelessWidget {
               AnadirMedicamentoAnimal(),
           'EditarMedicamentoAnimal': (BuildContext context) =>
               EditarMedicamentoAnimal(),
+          'EditarAnimal': (BuildContext context) => EditarAnimal(
+                tipoAnimal: "Vaca",
+                id: 2,
+              ),
         });
   }
 }
