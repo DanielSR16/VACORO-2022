@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCardsCalf.dart';
+import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
 import 'package:vacoro_proyect/src/services/animal_service_calf.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -16,7 +17,7 @@ class DashBoardCalf extends StatefulWidget {
 
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
-  var id_usuario = 0;
+  var id_usuario = 10;
 
   @override
   void initState() {
@@ -111,7 +112,15 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) =>
+                  AnadirBecerro(id_usuario: id_usuario),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
       ),

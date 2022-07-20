@@ -11,9 +11,11 @@ import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
 
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class AnadirBecerro extends StatefulWidget {
-  const AnadirBecerro({Key? key}) : super(key: key);
+  int id_usuario;
+  AnadirBecerro({Key? key, required this.id_usuario}) : super(key: key);
 
   @override
   State<AnadirBecerro> createState() => _AnadirBecerroState();
@@ -38,19 +40,28 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
   late bool _validateNumeroArete = false;
   late bool _validateEdad = false;
   late bool _validateDate = false;
-
+  // late int id_usuario = 0;
   String? dropdownValue = null;
   late Map<int, String> listaVacas = {0: 'vaca'};
+  late int id_usuario = 1;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getVacasbyIdUser().then((value) {
-      listaVacas = value[0][0];
-      List map = value[1];
+
+    UserSecureStorage.getId().then((value) {
       setState(() {
-        dropdownValue = listaVacas[map[0]['id']];
+        int id_cast = int.parse(value!);
+
+        id_usuario = id_cast;
+        getVacasbyIdUser(id_usuario).then((value) {
+          listaVacas = value[0][0];
+          List map = value[1];
+          setState(() {
+            dropdownValue = listaVacas[map[0]['id']];
+          });
+        });
       });
     });
   }
@@ -130,6 +141,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                               late bool res = valid();
                               if (res == true) {
                                 serviceanadirbecerro(
+                                        id_usuario,
                                         nombreBecerro.text,
                                         descripcionBecerro.text,
                                         razaBecerro.text,

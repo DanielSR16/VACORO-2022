@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String host = '192.168.0.5:3001';
-int id_usuario = 0;
+String host = '192.168.56.1:3001';
+
 
 Future<Map<String, dynamic>> serviceanadirbecerro(
+  int id_usuario,
   String nombre,
   String descripcion,
   String raza,

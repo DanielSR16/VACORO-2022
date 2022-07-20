@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
 
           'medication_history': (BuildContext context) => MedicationHistory(),
           'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
-          'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
+          // 'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
           'EditarPerfil': (BuildContext context) => EditarPerfil(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
               AnadirMedicamentoAnimal(),

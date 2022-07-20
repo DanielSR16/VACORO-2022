@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:vacoro_proyect/src/services/generate_image_url.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 import '../services/anadirAnimalVacaToro.dart';
 
@@ -38,6 +39,22 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
   late bool _validateNumeroArete = false;
   late bool _validateEdad = false;
   late bool _validateDate = false;
+
+  late int id_usuario = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    UserSecureStorage.getId().then((value) {
+      setState(() {
+        int id_cast = int.parse(value!);
+
+        id_usuario = id_cast;
+      });
+    });
+
+    // TODO: implement initState
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +131,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                               late bool res = valid();
                               if (res == true) {
                                 serviceanadirvacatoro(
+                                        id_usuario,
                                         widget.tipoAnimal,
                                         nombreToroVaca.text,
                                         descripcionToroVaca.text,

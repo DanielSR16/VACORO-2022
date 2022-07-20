@@ -10,6 +10,7 @@ import 'package:vacoro_proyect/src/services/generate_image_url.dart';
 import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class EditarBecerro extends StatefulWidget {
   int id;
@@ -48,12 +49,20 @@ class _EditarBecerroState extends State<EditarBecerro> {
 
   @override
   void initState() {
+    UserSecureStorage.getId().then((value) {
+      setState(() {
+        int id_cast = int.parse(value!);
+
+        id_usuario = id_cast;
+      });
+    });
     // TODO: implement initState
     super.initState();
-    getVacasbyIdUser().then((value) {
+    getVacasbyIdUser(id_usuario).then((value) {
       listaVacas = value[0][0];
       List map = value[1];
     });
+
     becerro_id(widget.id).then((value) {
       nombreBecerroEditar.text = value.nombre;
       descripcionBecerroEditar.text = value.descripcion;
