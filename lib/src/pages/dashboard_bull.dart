@@ -122,7 +122,10 @@ class _DashBoardBullState extends State<DashBoardBull> {
         onTap: () async {
           await showDialog(
               context: context,
-              builder: (_) => ContainerDialogModalBullDetail());
+              builder: (_) => ContainerDialogModalBullDetail(
+                    tipoAnimal: "Vaca",
+                    id: 1,
+                  ));
         },
         child: Column(
           children: [

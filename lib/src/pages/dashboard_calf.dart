@@ -124,7 +124,9 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
         onTap: () async {
           await showDialog(
               context: context,
-              builder: (_) => ContainerDialogModalCalfDetail());
+              builder: (_) => ContainerDialogModalCalfDetail(
+                    id: 1,
+                  ));
         },
         child: Column(
           children: [
