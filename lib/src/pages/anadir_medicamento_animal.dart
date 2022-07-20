@@ -24,7 +24,7 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
   late String name_medicamento;
   late int id_medicina;
   late String _selectedFieldMedicamento = "";
-  late List<FormField> _fieldListMunicipio = [];
+  late List<FormField> _fieldListMedicamentos = [];
 
   late bool _validateMedicamento = false;
   late bool _validateDescripcion = false;
@@ -115,7 +115,7 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
                               if (_validateMedicamento == false) {
                                 name_medicamento = _selectedFieldMedicamento;
                               }
-                              medicamentos_name_byID(name_medicamento)
+                              medicamentos_name_byName(name_medicamento)
                                   .then((id_medicamento) {
                                 int dosis_parse = int.parse(dosis.text);
                                 register_historia_animal(
@@ -254,7 +254,7 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
                     _validateMedicamento = true;
                   });
                 },
-                items: _fieldListMunicipio.map((value) {
+                items: _fieldListMedicamentos.map((value) {
                   return DropdownMenuItem<String>(
                     value: value.nombre,
                     child: Container(
@@ -380,7 +380,7 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
         setState(
           () {
             _selectedFieldMedicamento = fieldListData[0].nombre;
-            _fieldListMunicipio = fieldListData;
+            _fieldListMedicamentos = fieldListData;
           },
         );
       },

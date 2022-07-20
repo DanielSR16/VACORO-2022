@@ -20,7 +20,7 @@ class registroUser2 extends StatefulWidget {
 class _registroUser2State extends State<registroUser2> {
   File? image;
   bool isSwitched = false;
-  late String url_img;
+  late String url_img = '';
   @override
   var size, height_media, width_media;
   late double bordes = 30;
@@ -127,12 +127,11 @@ class _registroUser2State extends State<registroUser2> {
         ),
         Container(
           padding: const EdgeInsets.only(
-            //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 140,
-            height: 150,
+            width: 152,
+            height: 160,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -145,6 +144,17 @@ class _registroUser2State extends State<registroUser2> {
                   title: 'Tomar fotografía',
                   icon: Icons.image_outlined,
                   onClicked: () => pickCamera(),
+                ),
+                buildButton(
+                  title: 'Cancelar selección',
+                  icon: Icons.image_outlined,
+                  onClicked: () {
+                    setState(() {
+                      image = null;
+                      url_img =
+                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                    });
+                  },
                 ),
               ],
             ),
@@ -177,9 +187,7 @@ class _registroUser2State extends State<registroUser2> {
 
               register_user(nombre, apellidos, correoElectronico, contrasenia,
                       estado, ciudad, edad_int, nombreRancho, url_img)
-                  .then((value) {
-                print(value);
-              });
+                  .then((value) {});
 
               Navigator.pushNamed(
                 context,

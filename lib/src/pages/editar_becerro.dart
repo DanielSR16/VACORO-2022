@@ -5,30 +5,29 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:vacoro_proyect/src/services/anadirBecerro.dart';
+import 'package:vacoro_proyect/src/services/editarBecerro.dart';
 import 'package:vacoro_proyect/src/services/generate_image_url.dart';
 import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
-
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class AnadirBecerro extends StatefulWidget {
-  const AnadirBecerro({Key? key}) : super(key: key);
+class EditarBecerro extends StatefulWidget {
+  int id;
+  EditarBecerro({Key? key, required this.id}) : super(key: key);
 
   @override
-  State<AnadirBecerro> createState() => _AnadirBecerroState();
+  State<EditarBecerro> createState() => _EditarBecerroState();
 }
 
-class _AnadirBecerroState extends State<AnadirBecerro> {
+class _EditarBecerroState extends State<EditarBecerro> {
   File? image;
-  bool isSwitched = false;
-  late String url_img =
-      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+  late bool isSwitched = false;
   int estado = 0;
-  TextEditingController nombreBecerro = TextEditingController();
-  TextEditingController descripcionBecerro = TextEditingController();
-  TextEditingController razaBecerro = TextEditingController();
-  TextEditingController numeroAreteBecerro = TextEditingController();
+  late String url_img = imageAnimal;
+  TextEditingController nombreBecerroEditar = TextEditingController();
+  TextEditingController descripcionBecerroEditar = TextEditingController();
+  TextEditingController razaBecerroEditar = TextEditingController();
+  TextEditingController numeroAreteBecerroEditar = TextEditingController();
   TextEditingController edadBecerro = TextEditingController();
   TextEditingController dateinput = TextEditingController();
 
@@ -42,6 +41,11 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
   String? dropdownValue = null;
   late Map<int, String> listaVacas = {0: 'vaca'};
 
+  late int id;
+  late int id_usuario;
+  late var imageAnimal =
+      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -49,8 +53,34 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
     getVacasbyIdUser().then((value) {
       listaVacas = value[0][0];
       List map = value[1];
+    });
+    becerro_id(widget.id).then((value) {
+      nombreBecerroEditar.text = value.nombre;
+      descripcionBecerroEditar.text = value.descripcion;
+      razaBecerroEditar.text = value.raza;
+      numeroAreteBecerroEditar.text = value.num_arete;
+      dateinput.text = value.fecha_llegada;
+      edadBecerro.text = value.edad.toString();
+      id = value.id;
+      id_usuario = value.id_usuario;
+
       setState(() {
-        dropdownValue = listaVacas[map[0]['id']];
+        imageAnimal = value.url_img.toString();
+        if (value.estado == 1) {
+          isSwitched = true;
+        }
+
+        if (value.id_vaca != -1) {
+          vacatoro_id(value.id_vaca, "Vaca").then((value) {
+            setState(() {
+              dropdownValue = value.nombre;
+            });
+          });
+        } else {
+          setState(() {
+            dropdownValue = 'Sin madre';
+          });
+        }
       });
     });
   }
@@ -64,7 +94,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'AÑADIR BECERRO',
+            'EDITAR BECERRO',
             style: TextStyle(fontSize: 18),
           ),
         ),
@@ -99,18 +129,55 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   inputs("Nombre", "Ingrese nombre del becerro", size,
-                      nombreBecerro, _validateNombre),
+                      nombreBecerroEditar, _validateNombre),
                   inputs("Descripción", "Ingrese una descripción del becerro",
-                      size, descripcionBecerro, _validateDescripcion),
+                      size, descripcionBecerroEditar, _validateDescripcion),
                   inputs("Raza", "Ingrese la raza del animal", size,
-                      razaBecerro, _validateRaza),
+                      razaBecerroEditar, _validateRaza),
                   inputs("Número de arete", "Ingrese el número de arete", size,
-                      numeroAreteBecerro, _validateNumeroArete),
+                      numeroAreteBecerroEditar, _validateNumeroArete),
                   fecha(context, 'Fecha de llegada', dateinput, _validateDate),
                   selectMadre("Seleccionar vaca madre", size),
                   edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
                       "Buen estado", size, edadBecerro, _validateEdad),
                   selectImage(),
+                  Container(
+                    width: 220,
+                    margin: const EdgeInsets.only(left: 88),
+                    padding:
+                        const EdgeInsets.only(left: 20, bottom: 20, top: 25),
+                    child: Material(
+                      color: Colors.transparent, // button color
+                      child: InkWell(
+                        splashColor: Colors.green, // splash color
+                        onTap: () {
+                          servicedeletebecerro(widget.id).then((value) {
+                            if (value['status'] == 'ok') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  duration: Duration(milliseconds: 1000),
+                                  content:
+                                      Text('Animal eliminado correctamente'),
+                                ),
+                              );
+                            }
+                          });
+                        }, // button pressed
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Text("Borrar animal de mi lista",
+                                style: TextStyle(
+                                    fontSize: 16, color: ColorSelect.color5)),
+                            Icon(
+                              Icons.delete,
+                              color: ColorSelect.color1,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
                     padding: const EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 20),
@@ -119,7 +186,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                       height: 50,
                       child: ElevatedButton(
                           child: const Text(
-                            'Agregar',
+                            'Editar',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -129,23 +196,24 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                             setState(() {
                               late bool res = valid();
                               if (res == true) {
-                                serviceanadirbecerro(
-                                        nombreBecerro.text,
-                                        descripcionBecerro.text,
-                                        razaBecerro.text,
-                                        numeroAreteBecerro.text,
+                                serviceeditarbecerro(
+                                        id,
+                                        nombreBecerroEditar.text,
+                                        descripcionBecerroEditar.text,
+                                        razaBecerroEditar.text,
+                                        numeroAreteBecerroEditar.text,
                                         url_img,
                                         estado,
                                         int.parse(edadBecerro.text),
                                         obtenerIdVacaSelect(),
                                         dateinput.text)
                                     .then((value) {
-                                  if (value['status'] == 'success') {
+                                  if (value['status'] == 'ok') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         duration: Duration(milliseconds: 1000),
                                         content:
-                                            Text('Se agrego correctamente'),
+                                            Text('Actualizado correctamente'),
                                       ),
                                     );
                                     //Navigator.pop(context);
@@ -277,10 +345,10 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                       height: 150,
                       fit: BoxFit.cover,
                     )
-                  : const Image(
+                  : Image(
                       width: 160,
                       height: 150,
-                      image: AssetImage('assets/images/logo.png'),
+                      image: NetworkImage(imageAnimal),
                     ),
             ),
           ],
@@ -291,7 +359,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
             right: 1,
           ),
           child: SizedBox(
-            width: 155,
+            width: 160,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -311,11 +379,11 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                   icon: Icons.image_outlined,
                   onClicked: () {
                     setState(() {
-                      print(url_img);
+                      print(imageAnimal);
                       image = null;
-                      url_img =
+                      imageAnimal =
                           'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
-                      print(url_img);
+                      print(imageAnimal);
                     });
                   },
                 ),
@@ -604,28 +672,28 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
 
   bool valid() {
     bool lleno = true;
-    if (nombreBecerro.text.isEmpty) {
+    if (nombreBecerroEditar.text.isEmpty) {
       _validateNombre = true;
       lleno = false;
     } else {
       _validateNombre = false;
     }
 
-    if (descripcionBecerro.text.isEmpty) {
+    if (descripcionBecerroEditar.text.isEmpty) {
       _validateDescripcion = true;
       lleno = false;
     } else {
       _validateDescripcion = false;
     }
 
-    if (razaBecerro.text.isEmpty) {
+    if (razaBecerroEditar.text.isEmpty) {
       _validateRaza = true;
       lleno = false;
     } else {
       _validateRaza = false;
     }
 
-    if (numeroAreteBecerro.text.isEmpty) {
+    if (numeroAreteBecerroEditar.text.isEmpty) {
       _validateNumeroArete = true;
       lleno = false;
     } else {
