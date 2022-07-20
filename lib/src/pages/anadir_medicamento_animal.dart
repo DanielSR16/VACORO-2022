@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/services/medicamentosAnimal.dart';
 import 'package:intl/intl.dart';
 
 class AnadirMedicamentoAnimal extends StatefulWidget {
@@ -14,13 +17,33 @@ class AnadirMedicamentoAnimal extends StatefulWidget {
 class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
   File? image;
   bool isSwitched = false;
+
   TextEditingController descripcion = TextEditingController();
   TextEditingController dosis = TextEditingController();
   TextEditingController dateinputFechaAplicacion = TextEditingController();
+  late String name_medicamento;
+  late int id_medicina;
+  late String _selectedFieldMedicamento = "";
+  late List<FormField> _fieldListMedicamentos = [];
+
+  late bool _validateMedicamento = false;
+  late bool _validateDescripcion = false;
+  late bool _validateDosis = false;
+  late bool _validateFecha = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    _getFieldsData();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    var typeNumber = TextInputType.number;
+    var typeNormal = TextInputType.text;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -62,28 +85,58 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
                 children: [
                   selectMedicamento("Medicamento", size),
                   inputs("Descripción", "Ingrese una descripción", size,
-                      descripcion),
-                  inputs("Dosis", "Ingrese la dosis", size, dosis),
-                  date(context, size),
+                      descripcion, _validateDescripcion, typeNormal),
+                  inputs("Dosis", "Ingrese la dosis", size, dosis,
+                      _validateDosis, typeNumber),
+                  date(context, size, _validateFecha),
                   Container(
                     padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 280),
+                        const EdgeInsets.only(left: 20, right: 20, top: 150),
                     child: SizedBox(
                       width: size.width - 50,
                       height: 50,
                       child: ElevatedButton(
-                          child: const Text(
-                            'Agregar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        child: const Text(
+                          'Agregar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              primary: ColorSelect.color5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)))),
+                        ),
+                        onPressed: () {
+                          // medicamentos_all().then((value) {
+                          //   print(value);
+                          // });
+                          // medicamentos_name_byID('Medicinaxd');
+
+                          setState(() {
+                            late bool respuestaValidate = validate();
+                            if (respuestaValidate == true) {
+                              if (_validateMedicamento == false) {
+                                name_medicamento = _selectedFieldMedicamento;
+                              }
+                              medicamentos_name_byName(name_medicamento)
+                                  .then((id_medicamento) {
+                                int dosis_parse = int.parse(dosis.text);
+                                register_historia_animal(
+                                    1,
+                                    1,
+                                    id_medicamento,
+                                    dosis_parse,
+                                    descripcion.text,
+                                    dateinputFechaAplicacion.text,
+                                    1);
+                              });
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: ColorSelect.color5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -95,8 +148,13 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
     );
   }
 
-  Widget inputs(String nameTopField, String nameInField, Size size,
-      TextEditingController controllerInput) {
+  Widget inputs(
+      String nameTopField,
+      String nameInField,
+      Size size,
+      TextEditingController controllerInput,
+      bool error_input,
+      TextInputType type) {
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Column(
@@ -115,25 +173,34 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: error_input ? 60 : 40,
             child: TextField(
+              keyboardType: type,
               controller: controllerInput,
               decoration: InputDecoration(
-                labelStyle: const TextStyle(color: ColorSelect.color5),
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
+                  labelStyle: const TextStyle(color: ColorSelect.color5),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: ColorSelect.color1, width: 2.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
                   ),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: ColorSelect.color5, width: 2.0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
+                  errorBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red, width: 2.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
                   ),
-                ),
-                labelText: nameInField,
-              ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: ColorSelect.color5, width: 2.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                  labelText: error_input ? "" : nameInField,
+                  errorText: error_input ? "Campo incompleto" : null),
             ),
           ),
           const Divider(
@@ -145,7 +212,7 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
   }
 
   Widget selectMedicamento(String nameTopField, Size size) {
-    var dropdownValue = "Medicamento 1";
+    var dropdownValue = _selectedFieldMedicamento;
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 15),
       child: Column(
@@ -183,19 +250,16 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownValue = newValue!;
+                    name_medicamento = dropdownValue;
+                    _validateMedicamento = true;
                   });
                 },
-                items: <String>[
-                  'Medicamento 1',
-                  'Medicamento 2',
-                  'Medicamento 3',
-                  'Medicamento 4'
-                ].map<DropdownMenuItem<String>>((String value) {
+                items: _fieldListMedicamentos.map((value) {
                   return DropdownMenuItem<String>(
-                    value: value,
+                    value: value.nombre,
                     child: Container(
                         margin: const EdgeInsets.only(left: 20),
-                        child: Text(value)),
+                        child: Text(value.nombre!)),
                   );
                 }).toList(),
               ),
@@ -206,7 +270,7 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
     );
   }
 
-  Widget date(BuildContext context, Size size) {
+  Widget date(BuildContext context, Size size, bool error_input) {
     //Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20),
@@ -226,28 +290,35 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: error_input ? 60 : 40,
             child: TextField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(
                   Icons.calendar_today,
                   color: ColorSelect.color1,
                 ),
                 iconColor: ColorSelect.color1,
-                enabledBorder: OutlineInputBorder(
+                errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),
                 ),
-                labelText: "Seleccionar la fecha",
-                labelStyle: TextStyle(color: ColorSelect.color5),
+                labelText: error_input ? "" : "Seleccionar la fecha",
+                errorText: error_input ? "Campo incompleto" : null,
+                labelStyle: const TextStyle(color: ColorSelect.color5),
               ),
               controller: dateinputFechaAplicacion,
               readOnly:
@@ -295,5 +366,72 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
         ],
       ),
     );
+  }
+
+  void _getFieldsData() {
+    medicamentos_all().then(
+      (data) {
+        final items = jsonDecode(data).cast<Map<String, dynamic>>();
+        var fieldListData = items.map<FormField>((json) {
+          return FormField.fromJson(json);
+        }).toList();
+
+        // update widget
+        setState(
+          () {
+            _selectedFieldMedicamento = fieldListData[0].nombre;
+            _fieldListMedicamentos = fieldListData;
+          },
+        );
+      },
+    );
+  }
+
+  bool validate() {
+    late bool validate = true;
+
+    if (descripcion.text.isEmpty) {
+      _validateDescripcion = true;
+      validate = false;
+    } else {
+      _validateDescripcion = false;
+    }
+
+    if (dosis.text.isEmpty) {
+      _validateDosis = true;
+      validate = false;
+    } else {
+      _validateDosis = false;
+    }
+    print(dateinputFechaAplicacion.text);
+    if (dateinputFechaAplicacion.text.isEmpty) {
+      _validateFecha = true;
+      validate = false;
+    } else {
+      _validateFecha = false;
+    }
+
+    // if (_validateMedicamento == false) {
+    //   validate = false;
+    // }
+
+    return validate;
+  }
+}
+
+// Model Class
+class FormField {
+  String? nombre;
+
+  FormField({this.nombre});
+
+  FormField.fromJson(Map<String, dynamic> json) {
+    nombre = json['nombre'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['description'] = nombre;
+    return data;
   }
 }
