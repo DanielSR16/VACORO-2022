@@ -9,7 +9,7 @@ Future<List<Map<String, dynamic>>> getAllCow(int id_usuario) async {
   print(id_usuario);
   try {
     final response = await http.post(
-        Uri.http(ip + ':3001', '/vaca/getVacasbyIdUser'),
+        Uri.http(ip + ':3001', '/vaca/getVacaUsuario'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: json.encode({"id_usuario": id_usuario}));
 

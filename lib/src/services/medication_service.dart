@@ -2,17 +2,19 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.31";
+String ip = "192.168.56.1";
 
-Future getMedicationAll() async {
+Future getMedicationAll(id_usuario) async {
+  print(id_usuario);
   try {
-    final response = await http.get(
-      Uri.http(ip + ":3004", "/medicamento/allMedicamentos"),
-      headers: {"Content-Type": "application/json; charset=UTF-8"},
-    );
+    final response = await http.post(
+        Uri.http(ip + ":3004", "/medicamento/allMedicamentosbyUser"),
+        headers: {"Content-Type": "application/json; charset=UTF-8"},
+        body: json.encode({"id_usuario": id_usuario}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      print(data);
 
       return data;
     } else {

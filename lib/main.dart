@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
 
           // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
-      
+
           'splash': (BuildContext context) => Splash(),
           'splash_canva': (BuildContext context) => SplashCanva(),
           'login': (BuildContext context) => const Login(),
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
           'dash_medication': (BuildContext context) => Medication(),
 
           'medication_history': (BuildContext context) => MedicationHistory(),
-          'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
+          // 'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
           // 'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
           'EditarPerfil': (BuildContext context) => EditarPerfil(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
@@ -95,10 +95,10 @@ class MyApp extends StatelessWidget {
               ContainerDialogModalCowDetail(tipoAnimal: "Vaca", id: 2),
           'ContainerDialogModalCalfDetail': (BuildContext context) =>
               ContainerDialogModalCalfDetail(id: 1),
-          'EditarAnimal': (BuildContext context) => EditarAnimal(
-                tipoAnimal: "Vaca",
-                id: 2,
-              ),
+          // 'EditarAnimal': (BuildContext context) => EditarAnimal(
+          //       tipoAnimal: "Vaca",
+          //       id: 2,
+          //     ),
         });
   }
 }

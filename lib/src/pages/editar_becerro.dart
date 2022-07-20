@@ -43,7 +43,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
   late Map<int, String> listaVacas = {0: 'vaca'};
 
   late int id;
-  late int id_usuario;
+  late int id_usuario = 0;
   late var imageAnimal =
       'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
 
@@ -55,13 +55,13 @@ class _EditarBecerroState extends State<EditarBecerro> {
 
         id_usuario = id_cast;
       });
+      getVacasbyIdUser(id_usuario).then((value) {
+        listaVacas = value[0][0];
+        List map = value[1];
+      });
     });
     // TODO: implement initState
     super.initState();
-    getVacasbyIdUser(id_usuario).then((value) {
-      listaVacas = value[0][0];
-      List map = value[1];
-    });
 
     becerro_id(widget.id).then((value) {
       nombreBecerroEditar.text = value.nombre;
@@ -160,7 +160,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                       child: InkWell(
                         splashColor: Colors.green, // splash color
                         onTap: () {
-                          servicedeletebecerro(widget.id).then((value) {
+                          servicedeletebecerro(id).then((value) {
                             if (value['status'] == 'ok') {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -171,6 +171,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                               );
                             }
                           });
+                          Navigator.pop(context);
                         }, // button pressed
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -206,6 +207,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                               late bool res = valid();
                               if (res == true) {
                                 serviceeditarbecerro(
+                                        id_usuario,
                                         id,
                                         nombreBecerroEditar.text,
                                         descripcionBecerroEditar.text,

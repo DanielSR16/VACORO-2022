@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
+import 'package:vacoro_proyect/src/pages/editar_animal.dart';
 import 'package:vacoro_proyect/src/services/animal_service_cow.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -189,7 +190,16 @@ class _DashBoardCowState extends State<DashBoardCow> {
                         margin: const EdgeInsets.only(right: 10),
                         child: GestureDetector(
                           onTap: () {
-                            print("EDIT");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) => EditarAnimal(
+                                  tipoAnimal: "Vaca",
+                                  id: snapshot.data[index]["id"],
+                               
+                                ),
+                              ),
+                            );
                           },
                           child: Image.asset(
                             'assets/images/edit_logo.png',

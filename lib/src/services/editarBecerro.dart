@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 String host = '192.168.56.1:3001';
-int id_usuario = 1;
 
 Future<Map<String, dynamic>> serviceeditarbecerro(
+  int id_usuario,
   int id,
   String nombre,
   String descripcion,
@@ -65,6 +65,8 @@ Future<Map<String, dynamic>> servicedeletebecerro(
   String animalAPI = '/becerro/delete/';
 
   try {
+    print('borrar');
+    print(id);
     final response = await http.post(
       Uri.http(host, animalAPI),
       headers: headers,

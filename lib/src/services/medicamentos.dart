@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 String ip = '192.168.56.1';
 Future<dynamic> registerMedicina(
+  int idUsuario,
   String nombre,
   String descripcion,
   int cantidad,
@@ -14,6 +15,7 @@ Future<dynamic> registerMedicina(
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
       body: json.encode(
         {
+          "id_usuario": idUsuario,
           "nombre": nombre,
           "descripcion": descripcion,
           "cantidad": cantidad,

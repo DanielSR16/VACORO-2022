@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vacoro_proyect/src/services/medicamentos.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class DialogContainerAddMedication extends StatefulWidget {
   DialogContainerAddMedication({Key? key}) : super(key: key);
@@ -20,12 +21,28 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
   late bool _validateDescripcion = false;
   late bool _validateCantidad = false;
   late bool _validateFecha = false;
+  var id_usuario = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    UserSecureStorage.getId().then((value) {
+      int id_cast = int.parse(value!);
+      setState(() {
+        id_usuario = id_cast;
+      });
+    });
+
+    // TODO: implement initState
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(id_usuario);
     Size size = MediaQuery.of(context).size;
     TextEditingController dateinput = TextEditingController();
     late bool _validateDate = false;
+
     return Dialog(
       child: SingleChildScrollView(
         child: SizedBox(
@@ -205,7 +222,10 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
                           if (validateIntputs() == true) {
                             int par_cantidad =
                                 int.parse(cantidad_medicamento.text);
+                            print("afuerta");
+                            print(id_usuario);
                             registerMedicina(
+                                    id_usuario,
                                     nombre_medicamento.text,
                                     descripcion_medicamento.text,
                                     par_cantidad,

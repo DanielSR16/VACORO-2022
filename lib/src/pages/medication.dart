@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/services/medication_service.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_add_medication.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_edit_medication.dart';
@@ -14,14 +15,32 @@ class Medication extends StatefulWidget {
 }
 
 class _MedicationState extends State<Medication> {
+  late int id_usuario = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    UserSecureStorage.getId().then((value) {
+      int id_cast = int.parse(value!);
+      setState(() {
+        id_usuario = id_cast;
+      });
+    });
+
+    // TODO: implement initState
+  }
+
   @override
   Widget build(BuildContext context) {
+   
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: const Text('MEDICAMENTOS'),
         centerTitle: true,
@@ -37,7 +56,7 @@ class _MedicationState extends State<Medication> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getMedicationAll(),
+          future: getMedicationAll(id_usuario),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -79,14 +98,11 @@ class _MedicationState extends State<Medication> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-
           // print("Agregar Medicamento");
           await showDialog(
             context: context,
             builder: (_) => DialogContainerAddMedication(),
           );
-
-
         },
         child: const Icon(Icons.add),
         backgroundColor: ColorSelect.color5,
@@ -116,18 +132,6 @@ class _MedicationState extends State<Medication> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Container(
-                //   width: size.width * 0.3,
-                //   height: 150,
-                //   margin: const EdgeInsets.only(
-                //       left: 5, top: 0, bottom: 0),
-                //   child: FadeInImage.assetNetwork(
-                //     placeholder:
-                //         'assets/images/loading_green.gif',
-                //     image:
-                //         'https://secure.ganaderia.com/productos/Producto_logo_598b9d21e0bdb.png',
-                //   ),
-                // ),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -153,7 +157,6 @@ class _MedicationState extends State<Medication> {
                       margin: const EdgeInsets.only(left: 40, right: 0),
                       child: GestureDetector(
                         onTap: () async {
-
                           // print("Edit Medicina");
 
                           await showDialog(

@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCardsCalf.dart';
 import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
+import 'package:vacoro_proyect/src/pages/editar_becerro.dart';
 import 'package:vacoro_proyect/src/services/animal_service_calf.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -187,7 +188,14 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                         margin: const EdgeInsets.only(right: 10),
                         child: GestureDetector(
                           onTap: () {
-                            print("Edit Calf");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    EditarBecerro(
+                                        id: snapshot.data[index]['id']),
+                              ),
+                            );
                           },
                           child: Image.asset(
                             'assets/images/edit_logo.png',
