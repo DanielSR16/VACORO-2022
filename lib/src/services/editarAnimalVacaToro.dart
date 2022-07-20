@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 Future<Map<String, dynamic>> serviceeditarvacatoro(
   String tipoAnimal,
   int id,
-  int id_usuario,
   String nombre,
   String descripcion,
   String raza,
@@ -14,8 +13,9 @@ Future<Map<String, dynamic>> serviceeditarvacatoro(
   int edad,
   String fecha_llegada,
 ) async {
+  int id_usuario = 0;
   Map<String, String> headers = {'Content-Type': 'application/json'};
-  String host = '192.168.0.3:3001';
+  String host = '192.168.0.5:3001';
   String loginAPI;
   if (tipoAnimal == "Vaca") {
     loginAPI = '/vaca/update/';
