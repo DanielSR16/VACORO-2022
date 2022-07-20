@@ -58,7 +58,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
 
-        initialRoute: 'EditarBecerro',
+        initialRoute: 'login',
+
+
 
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
@@ -79,7 +81,7 @@ class MyApp extends StatelessWidget {
 
           'medication': (BuildContext context) => Medication(),
 
-          
+
           'medication_history': (BuildContext context) => MedicationHistory(),
           'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
           'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
@@ -92,6 +94,7 @@ class MyApp extends StatelessWidget {
                 tipoAnimal: "Vaca",
                 id: 2,
               ),
+
         });
   }
 }
