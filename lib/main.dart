@@ -58,7 +58,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
 
+
         initialRoute: 'login',
+
 
 
 
@@ -79,7 +81,7 @@ class MyApp extends StatelessWidget {
           'registroUser': (BuildContext context) => registroUser(),
           'registroUser2': (BuildContext context) => registroUser2(),
 
-          'medication': (BuildContext context) => Medication(),
+          'dash_medication': (BuildContext context) => Medication(),
 
 
           'medication_history': (BuildContext context) => MedicationHistory(),

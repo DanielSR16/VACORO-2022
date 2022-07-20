@@ -3,9 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:vacoro_proyect/src/services/medicamentos.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class DialogContainer extends StatefulWidget {
-  DialogContainer({Key? key, required this.text}) : super(key: key);
-  String text;
+
+class DialogContainerAddMedication extends StatelessWidget {
+  DialogContainerAddMedication({Key? key}) : super(key: key);
+
 
   @override
   State<DialogContainer> createState() => _DialogContainerState();
