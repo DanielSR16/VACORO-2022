@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 String ip = '192.168.56.1';
 Future<dynamic> registerMedicina(
+  token,
   int idUsuario,
   String nombre,
   String descripcion,
@@ -12,7 +13,10 @@ Future<dynamic> registerMedicina(
   try {
     final response = await http.post(
       Uri.http(ip + ':3004', '/medicamento/newMedicamento'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        "authorization": 'Bearer $token'
+      },
       body: json.encode(
         {
           "id_usuario": idUsuario,

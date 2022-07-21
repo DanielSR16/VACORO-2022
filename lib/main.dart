@@ -89,12 +89,12 @@ class MyApp extends StatelessWidget {
               AnadirMedicamentoAnimal(),
           'EditarMedicamentoAnimal': (BuildContext context) =>
               EditarMedicamentoAnimal(),
-          'ContainerDialogModalBullDetail': (BuildContext context) =>
-              ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
-          'ContainerDialogModalCowDetail': (BuildContext context) =>
-              ContainerDialogModalCowDetail(tipoAnimal: "Vaca", id: 2),
-          'ContainerDialogModalCalfDetail': (BuildContext context) =>
-              ContainerDialogModalCalfDetail(id: 1),
+          // 'ContainerDialogModalBullDetail': (BuildContext context) =>
+          //     ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
+          // 'ContainerDialogModalCowDetail': (BuildContext context) =>
+          //     ContainerDialogModalCowDetail(tipoAnimal: "Vaca", id: 2),
+          // 'ContainerDialogModalCalfDetail': (BuildContext context) =>
+          //     ContainerDialogModalCalfDetail(id: 1),
           // 'EditarAnimal': (BuildContext context) => EditarAnimal(
           //       tipoAnimal: "Vaca",
           //       id: 2,

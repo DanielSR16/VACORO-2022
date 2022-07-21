@@ -22,14 +22,17 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
   late bool _validateCantidad = false;
   late bool _validateFecha = false;
   var id_usuario = 0;
-
+  var token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      int id_cast = int.parse(value!);
-      setState(() {
-        id_usuario = id_cast;
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
+          id_usuario = id_cast;
+          token = token_!;
+        });
       });
     });
 
@@ -225,6 +228,7 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
                             print("afuerta");
                             print(id_usuario);
                             registerMedicina(
+                                    token,
                                     id_usuario,
                                     nombre_medicamento.text,
                                     descripcion_medicamento.text,

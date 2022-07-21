@@ -16,14 +16,18 @@ class Medication extends StatefulWidget {
 
 class _MedicationState extends State<Medication> {
   late int id_usuario = 0;
-
+  late String token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      int id_cast = int.parse(value!);
-      setState(() {
-        id_usuario = id_cast;
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
+
+          id_usuario = id_cast;
+          token = token_!;
+        });
       });
     });
 
@@ -32,7 +36,6 @@ class _MedicationState extends State<Medication> {
 
   @override
   Widget build(BuildContext context) {
-   
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +59,7 @@ class _MedicationState extends State<Medication> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getMedicationAll(id_usuario),
+          future: getMedicationAll(id_usuario,token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

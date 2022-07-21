@@ -15,7 +15,9 @@ import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class AnadirBecerro extends StatefulWidget {
   int id_usuario;
-  AnadirBecerro({Key? key, required this.id_usuario}) : super(key: key);
+  String token;
+  AnadirBecerro({Key? key, required this.id_usuario, required this.token})
+      : super(key: key);
 
   @override
   State<AnadirBecerro> createState() => _AnadirBecerroState();
@@ -52,16 +54,20 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
 
     UserSecureStorage.getId().then((value) {
       setState(() {
-        int id_cast = int.parse(value!);
+    
+          int id_cast = int.parse(value!);
 
-        id_usuario = id_cast;
-        getVacasbyIdUser(id_usuario).then((value) {
-          listaVacas = value[0][0];
-          List map = value[1];
-          setState(() {
-            dropdownValue = listaVacas[map[0]['id']];
+          id_usuario = id_cast;
+          getVacasbyIdUser(id_usuario, widget.token).then((value) {
+            listaVacas = value[0][0];
+            print(listaVacas);
+            List map = value[1];
+
+            setState(() {
+              dropdownValue = listaVacas[map[0]['id']];
+            });
           });
-        });
+
       });
     });
   }
@@ -141,6 +147,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                               late bool res = valid();
                               if (res == true) {
                                 serviceanadirbecerro(
+                                  widget.token,
                                         id_usuario,
                                         nombreBecerro.text,
                                         descripcionBecerro.text,

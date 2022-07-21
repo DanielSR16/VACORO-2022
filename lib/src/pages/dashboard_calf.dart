@@ -19,14 +19,18 @@ class DashBoardCalf extends StatefulWidget {
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
   var id_usuario = 10;
-
+  var token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      int id_cast = int.parse(value!);
-      setState(() {
-        id_usuario = id_cast;
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
+
+          id_usuario = id_cast;
+          token = token_!;
+        });
       });
     });
 
@@ -72,7 +76,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllCalf(id_usuario),
+          future: getAllCalf(id_usuario,token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -118,7 +122,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
             context,
             MaterialPageRoute<void>(
               builder: (BuildContext context) =>
-                  AnadirBecerro(id_usuario: id_usuario),
+                  AnadirBecerro(id_usuario: id_usuario,token: token),
             ),
           );
         },
@@ -147,6 +151,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
               context: context,
               builder: (_) => ContainerDialogModalCalfDetail(
                     id: snapshot.data[index]['id'],
+                    token: token,
                   ));
         },
         child: Column(
@@ -193,7 +198,9 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) =>
                                     EditarBecerro(
-                                        id: snapshot.data[index]['id']),
+                                  id: snapshot.data[index]['id'],
+                                  token: token,
+                                ),
                               ),
                             );
                           },

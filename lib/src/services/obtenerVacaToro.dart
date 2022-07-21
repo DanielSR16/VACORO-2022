@@ -3,18 +3,20 @@ import 'package:http/http.dart' as http;
 
 String ip = '192.168.56.1:3001';
 
-
-Future vacatoro_id(int id, String tipoAnimal) async {
+Future vacatoro_id(int id, String tipoAnimal, token) async {
   try {
     String api;
     if (tipoAnimal == "Vaca") {
-      api = '/vaca/getVacabyId/';
+      api = '/vaca/getVacabyId';
     } else {
-      api = '/toro/getTorobyId/';
+      api = '/toro/getTorobyId';
     }
 
     final response = await http.post(Uri.http(ip, api),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
         body: json.encode({"id": id}));
 
     if (response.statusCode == 200) {
@@ -26,6 +28,7 @@ Future vacatoro_id(int id, String tipoAnimal) async {
 
       return generalNames[0];
     } else {
+      
       return 'No se ha podido conectar al servidor';
     }
   } catch (e) {
@@ -117,8 +120,11 @@ class GeneralModel {
   }
 }
 
-Future<List> getVacasbyIdUser(int id_usuario) async {
-  Map<String, String> headers = {'Content-Type': 'application/json'};
+Future<List> getVacasbyIdUser(int id_usuario, token) async {
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
+  };
 
   String path = '/vaca/getVacasbyIdUser';
 
@@ -129,7 +135,7 @@ Future<List> getVacasbyIdUser(int id_usuario) async {
       {'id_usuario': id_usuario},
     ),
   );
-
+  print(response.statusCode);
   if (response.statusCode == 200) {
     List map = json.decode(response.body);
 

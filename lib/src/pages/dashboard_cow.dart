@@ -18,15 +18,18 @@ class DashBoardCow extends StatefulWidget {
 class _DashBoardCowState extends State<DashBoardCow> {
   bool? value1;
   var id_usuario = 0;
-
+  var token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      setState(() {
-        int id_cast = int.parse(value!);
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
 
-        id_usuario = id_cast;
+          id_usuario = id_cast;
+          token = token_!;
+        });
       });
     });
 
@@ -72,7 +75,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllCow(id_usuario),
+          future: getAllCow(id_usuario, token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -149,6 +152,8 @@ class _DashBoardCowState extends State<DashBoardCow> {
               builder: (_) => ContainerDialogModalCowDetail(
                     tipoAnimal: "Vaca",
                     id: snapshot.data[index]["id"],
+                    token: token,
+
                   ));
         },
         child: Column(
@@ -196,7 +201,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
                                 builder: (BuildContext context) => EditarAnimal(
                                   tipoAnimal: "Vaca",
                                   id: snapshot.data[index]["id"],
-                               
+                                  token: token,
                                 ),
                               ),
                             );

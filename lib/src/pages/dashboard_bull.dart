@@ -18,14 +18,19 @@ class DashBoardBull extends StatefulWidget {
 class _DashBoardBullState extends State<DashBoardBull> {
   bool? value1;
   var id_usuario = 0;
-
+  String token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
       int id_cast = int.parse(value!);
-      setState(() {
-        id_usuario = id_cast;
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
+
+          id_usuario = id_cast;
+          token = token_!;
+        });
       });
     });
 
@@ -71,7 +76,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllBull(id_usuario),
+          future: getAllBull(id_usuario, token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -146,6 +151,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
               builder: (_) => ContainerDialogModalBullDetail(
                     tipoAnimal: "Toro",
                     id: snapshot.data[index]['id'],
+                    token: token,
                   ));
         },
         child: Column(
@@ -193,6 +199,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
                                 builder: (BuildContext context) => EditarAnimal(
                                   tipoAnimal: "Toro",
                                   id: snapshot.data[index]["id"],
+                                  token: token,
                                 ),
                               ),
                             );

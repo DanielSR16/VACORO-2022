@@ -41,15 +41,18 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
   late bool _validateDate = false;
 
   late int id_usuario = 0;
-
+  late String token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      setState(() {
-        int id_cast = int.parse(value!);
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          token = token_!;
+          int id_cast = int.parse(value!);
 
-        id_usuario = id_cast;
+          id_usuario = id_cast;
+        });
       });
     });
 
@@ -131,6 +134,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                               late bool res = valid();
                               if (res == true) {
                                 serviceanadirvacatoro(
+                                        token,
                                         id_usuario,
                                         widget.tipoAnimal,
                                         nombreToroVaca.text,
