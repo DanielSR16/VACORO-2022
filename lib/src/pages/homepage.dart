@@ -31,8 +31,12 @@ class _homePage extends State<homePage> {
         int id_cast = int.parse(value!);
 
         id_usuario = id_cast;
+        print(id_usuario);
         serviceusuario(id_usuario).then((value) {
-          imageUsuario = value['url_image'];
+          print(value);
+          setState(() {
+            imageUsuario = value['url_image'];
+          });
         });
       });
     });
@@ -65,7 +69,8 @@ class _homePage extends State<homePage> {
           ),
         ),
       ),
-      drawer: drawer(widget.nombre, widget.correo, imageUsuario),
+      drawer: drawer(
+          context, widget.nombre, widget.correo, imageUsuario, id_usuario),
     );
   }
 }

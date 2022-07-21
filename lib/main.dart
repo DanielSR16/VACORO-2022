@@ -58,6 +58,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    var correo;
+    var nombre;
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
@@ -66,7 +68,8 @@ class MyApp extends StatelessWidget {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
 
           // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
-
+          // 'homepage': (BuildContext context) =>
+          //     homePage(correo: correo, nombre: nombre),
           'splash': (BuildContext context) => Splash(),
           'splash_canva': (BuildContext context) => SplashCanva(),
           'login': (BuildContext context) => const Login(),
@@ -85,15 +88,15 @@ class MyApp extends StatelessWidget {
           'medication_history': (BuildContext context) => MedicationHistory(),
           // 'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
           // 'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
-          'EditarPerfil': (BuildContext context) => EditarPerfil(),
+          // 'EditarPerfil': (BuildContext context) => EditarPerfil(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
               AnadirMedicamentoAnimal(),
           'EditarMedicamentoAnimal': (BuildContext context) =>
               EditarMedicamentoAnimal(),
-          'EditarPerfil': (BuildContext context) => EditarPerfil(),
+          // 'EditarPerfil': (BuildContext context) => EditarPerfil(),
           'ContainerdDialogCowCalfDetails': (BuildContext context) =>
               ContainerdDialogCowCalfDetails(),
-          'EditarContrasena': (BuildContext context) => EditarContrasena(),
+          // 'EditarContrasena': (BuildContext context) => EditarContrasena(),
           // 'ContainerDialogModalBullDetail': (BuildContext context) =>
           //     ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
           // 'ContainerDialogModalCowDetail': (BuildContext context) =>
