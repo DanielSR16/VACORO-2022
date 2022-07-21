@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-Drawer drawer(nombre, correo) {
+Drawer drawer(nombre, correo, imageUsuario) {
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
@@ -43,7 +43,8 @@ Drawer drawer(nombre, correo) {
             ),
           ),
           currentAccountPicture: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/image.png'),
+            backgroundImage: NetworkImage(imageUsuario),
+            //backgroundImage: AssetImage('assets/images/image.png'),
           ),
         ),
         ListTile(

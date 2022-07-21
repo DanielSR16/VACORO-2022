@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/services/generate_image_url.dart';
+import 'package:vacoro_proyect/src/services/servicios_user.dart';
+import 'package:vacoro_proyect/src/services/upload_file.dart';
 
 class registroUser2 extends StatefulWidget {
   const registroUser2({super.key});
@@ -16,10 +20,15 @@ class registroUser2 extends StatefulWidget {
 class _registroUser2State extends State<registroUser2> {
   File? image;
   bool isSwitched = false;
+  late String url_img = '';
   @override
   var size, height_media, width_media;
   late double bordes = 30;
   Widget build(BuildContext context) {
+    var con;
+    var args = ModalRoute.of(context)!.settings.arguments;
+    Usuario? usuario = args as Usuario?;
+
     size = MediaQuery.of(context).size;
     height_media = size.height;
     width_media = size.width;
@@ -51,7 +60,7 @@ class _registroUser2State extends State<registroUser2> {
                 ),
               ),
             ),
-            selectImage()
+            selectImage(usuario)
           ],
         ),
       ),
@@ -80,7 +89,7 @@ class _registroUser2State extends State<registroUser2> {
         onPressed: onClicked,
       );
 
-  Widget selectImage() {
+  Widget selectImage(var usuario) {
     return Column(
       children: <Widget>[
         Column(
@@ -88,7 +97,7 @@ class _registroUser2State extends State<registroUser2> {
             Container(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
               child: const Text(
-                'Ingresar fotogria',
+                'Ingresar fotografia',
                 style: TextStyle(
                   color: Color(0xFF3E752F),
                   fontSize: 16,
@@ -118,12 +127,11 @@ class _registroUser2State extends State<registroUser2> {
         ),
         Container(
           padding: const EdgeInsets.only(
-            //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 140,
-            height: 150,
+            width: 152,
+            height: 160,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -136,6 +144,17 @@ class _registroUser2State extends State<registroUser2> {
                   title: 'Tomar fotografía',
                   icon: Icons.image_outlined,
                   onClicked: () => pickCamera(),
+                ),
+                buildButton(
+                  title: 'Cancelar selección',
+                  icon: Icons.image_outlined,
+                  onClicked: () {
+                    setState(() {
+                      image = null;
+                      url_img =
+                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                    });
+                  },
                 ),
               ],
             ),
@@ -155,7 +174,26 @@ class _registroUser2State extends State<registroUser2> {
                 ),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              var nombre = usuario!.nombre.text;
+              var apellidos = usuario!.apellidos.text;
+              var correoElectronico = usuario!.correoElectronico.text;
+              var contrasenia = usuario!.contrasenia.text;
+              var estado = usuario!.estado;
+              var ciudad = usuario!.ciudad;
+              var edad = usuario!.edad.text;
+              late int edad_int = int.parse(edad);
+              var nombreRancho = usuario!.nombreRancho.text;
+
+              register_user(nombre, apellidos, correoElectronico, contrasenia,
+                      estado, ciudad, edad_int, nombreRancho, url_img)
+                  .then((value) {});
+
+              Navigator.pushNamed(
+                context,
+                'login',
+              );
+            },
             child: const Text(
               'Siguiente',
               style: TextStyle(
@@ -173,10 +211,33 @@ class _registroUser2State extends State<registroUser2> {
   Future pickCamera() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
       if (image == null) return;
 
       final imageTemporary = File(image.path);
-      setState(() => this.image = imageTemporary);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+      print(isUploaded);
+
+      setState(
+        () => this.image = imageTemporary,
+      );
+
+      // String fileExtension = path.extension(image.path);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -184,8 +245,9 @@ class _registroUser2State extends State<registroUser2> {
 
   Future<File> saveImagePermanently(String imagePath) async {
     final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
+    final name = path.basename(imagePath);
     final image = File('${directory.path}/$name');
+
     return File(imagePath).copy(image.path);
   }
 
@@ -197,8 +259,40 @@ class _registroUser2State extends State<registroUser2> {
       //final imageTemporary = File(image.path);
       final imageTemporary = await saveImagePermanently(image.path);
       setState(() => this.image = imageTemporary);
+
+      String fileExtension = path.extension(image.path);
+
+      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+      await generateImageUrl.call(fileExtension);
+
+      url_img = generateImageUrl.downloadUrl;
+      var uploadUrl;
+      if (generateImageUrl.isGenerated != null &&
+          generateImageUrl.isGenerated) {
+        uploadUrl = generateImageUrl.uploadUrl;
+      } else {
+        throw generateImageUrl.message;
+      }
+
+      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+      print(isUploaded);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
+    }
+  }
+
+  Future<bool> uploadFile(context, String url, File image) async {
+    try {
+      UploadFile uploadFile = UploadFile();
+      await uploadFile.call(url, image);
+
+      if (uploadFile.isUploaded != null && uploadFile.isUploaded) {
+        return true;
+      } else {
+        throw uploadFile.message;
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }
