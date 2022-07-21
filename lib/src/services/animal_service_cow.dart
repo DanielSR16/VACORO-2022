@@ -5,13 +5,16 @@ import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 String ip = "192.168.56.1";
 // String ip = '10.0.2.2';
 
-Future<List<Map<String, dynamic>>> getAllCow(int id_usuario) async {
+Future<List<Map<String, dynamic>>> getAllCow(int id_usuario, token) async {
   print(id_usuario);
   try {
-    final response = await http.post(
-        Uri.http(ip + ':3001', '/vaca/getVacaUsuario'),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: json.encode({"id_usuario": id_usuario}));
+    final response =
+        await http.post(Uri.http(ip + ':3001', '/vaca/getVacaUsuario'),
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer $token',
+            },
+            body: json.encode({"id_usuario": id_usuario}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

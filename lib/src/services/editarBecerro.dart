@@ -90,12 +90,15 @@ Future<Map<String, dynamic>> servicedeletebecerro(
   }
 }
 
-Future becerro_id(int id) async {
+Future becerro_id(int id, token) async {
   try {
-    String api = '/becerro/getBecerrobyId/';
+    String api = '/becerro/getBecerrobyId';
 
     final response = await http.post(Uri.http(host, api),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
         body: json.encode({"id": id}));
 
     if (response.statusCode == 200) {

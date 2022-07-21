@@ -7,8 +7,12 @@ import '../../services/obtenerVacaToro.dart';
 class ContainerDialogModalBullDetail extends StatefulWidget {
   String tipoAnimal;
   int id;
+  String token;
   ContainerDialogModalBullDetail(
-      {Key? key, required this.tipoAnimal, required this.id})
+      {Key? key,
+      required this.tipoAnimal,
+      required this.id,
+      required this.token})
       : super(key: key);
 
   @override
@@ -31,9 +35,10 @@ class _ContainerDialogModalBullDetailState
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
 
-    vacatoro_id(widget.id, widget.tipoAnimal).then((value) {
+    vacatoro_id(widget.id, widget.tipoAnimal, widget.token).then((value) {
       setState(() {
         nombre = value.nombre;
         descripcion = value.descripcion;

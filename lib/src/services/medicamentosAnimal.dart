@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 String ip = '192.168.56.1';
+
 Future medicamentos_all() async {
   try {
     final response = await http.get(

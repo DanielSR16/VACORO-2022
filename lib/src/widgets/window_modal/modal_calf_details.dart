@@ -6,7 +6,9 @@ import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 //BECERROS
 class ContainerDialogModalCalfDetail extends StatefulWidget {
   int id;
-  ContainerDialogModalCalfDetail({Key? key, required this.id})
+  String token;
+  ContainerDialogModalCalfDetail(
+      {Key? key, required this.id, required this.token})
       : super(key: key);
 
   @override
@@ -33,7 +35,7 @@ class _ContainerDialogModalCalfDetailState
     // TODO: implement initState
     super.initState();
 
-    becerro_id(widget.id).then((value) {
+    becerro_id(widget.id,widget.token).then((value) {
       print(value);
       setState(() {
         nombre = value.nombre;
@@ -50,7 +52,7 @@ class _ContainerDialogModalCalfDetailState
           estado = 'No esta enfermo';
         }
         if (value.id_vaca != -1) {
-          vacatoro_id(value.id_vaca, "Vaca").then((value) {
+          vacatoro_id(value.id_vaca, "Vaca", widget.token).then((value) {
             print(value);
             setState(() {
               nombre_madre = value.nombre;

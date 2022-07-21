@@ -18,9 +18,14 @@ import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 class EditarAnimal extends StatefulWidget {
   String tipoAnimal;
   int id;
+  String token;
 
-  EditarAnimal({Key? key, required this.tipoAnimal, required this.id})
-      : super(key: key);
+  EditarAnimal({
+    Key? key,
+    required this.tipoAnimal,
+    required this.id,
+    required this.token,
+  }) : super(key: key);
 
   @override
   State<EditarAnimal> createState() => _EditarAnimalState();
@@ -47,12 +52,13 @@ class _EditarAnimalState extends State<EditarAnimal> {
   late int id_usuario = 0;
   late var imageAnimal =
       'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+  late String token = '';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    vacatoro_id(widget.id, widget.tipoAnimal).then((value) {
+    vacatoro_id(widget.id, widget.tipoAnimal, widget.token).then((value) {
       nombreVacaToroEditar.text = value.nombre;
       descripcionVacaToroEditar.text = value.descripcion;
       razaVacaToroEditar.text = value.raza;
@@ -67,10 +73,13 @@ class _EditarAnimalState extends State<EditarAnimal> {
         }
 
         UserSecureStorage.getId().then((value) {
-          setState(() {
-            int id_cast = int.parse(value!);
+          UserSecureStorage.getToken().then((token_) {
+            setState(() {
+              int id_cast = int.parse(value!);
 
-            id_usuario = id_cast;
+              id_usuario = id_cast;
+              token = token_!;
+            });
           });
         });
       });
@@ -99,7 +108,18 @@ class _EditarAnimalState extends State<EditarAnimal> {
               size: 40,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              setState(() {
+                String ruta_pop = '';
+                if (widget.tipoAnimal == 'Vaca') {
+                  ruta_pop = 'dash_cow';
+                } else {
+                  ruta_pop = 'dash_bull';
+                }
+                Navigator.popAndPushNamed(
+                  context,
+                  ruta_pop,
+                );
+              });
             },
           ),
         ),
@@ -186,7 +206,6 @@ class _EditarAnimalState extends State<EditarAnimal> {
                             ),
                           ),
                           onPressed: () {
-                            print('aaaa');
                             setState(() {
                               late bool res = valid();
                               print(res);
@@ -202,7 +221,8 @@ class _EditarAnimalState extends State<EditarAnimal> {
                                         url_img,
                                         estado,
                                         int.parse(edadToroVacaEditar.text),
-                                        dateinputEditar.text)
+                                        dateinputEditar.text,
+                                        token)
                                     .then((value) {
                                   if (value['status'] == 'ok') {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -212,6 +232,24 @@ class _EditarAnimalState extends State<EditarAnimal> {
                                             Text('Actualizado correctamente'),
                                       ),
                                     );
+
+                                    Future.delayed(
+                                        const Duration(milliseconds: 200), () {
+                                      String ruta = '';
+                                      if (widget.tipoAnimal == 'Vaca') {
+                                        ruta = 'dash_cow';
+                                      } else {
+                                        ruta = 'dash_bull';
+                                      }
+                                      Navigator.popAndPushNamed(
+                                        context,
+                                        ruta,
+                                      );
+
+                                      setState(() {
+                                        // Here you can write your code for open new view
+                                      });
+                                    });
                                   }
                                   print(value);
                                 });

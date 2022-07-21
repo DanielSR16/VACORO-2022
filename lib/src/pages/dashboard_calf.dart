@@ -16,19 +16,26 @@ class DashBoardCalf extends StatefulWidget {
   State<DashBoardCalf> createState() => _DashBoardCalfState();
 }
 
+
+
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
   var id_usuario = 10;
-
+  var token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      int id_cast = int.parse(value!);
-      setState(() {
-        id_usuario = id_cast;
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
+
+          id_usuario = id_cast;
+          token = token_!;
+        });
       });
     });
+
 
     // TODO: implement initState
 
@@ -72,7 +79,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllCalf(id_usuario),
+          future: getAllCalf(id_usuario, token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -114,13 +121,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) =>
-                  AnadirBecerro(id_usuario: id_usuario),
-            ),
-          );
+          Navigator.pushReplacementNamed(context, 'Editar_becerro');
         },
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
@@ -147,6 +148,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
               context: context,
               builder: (_) => ContainerDialogModalCalfDetail(
                     id: snapshot.data[index]['id'],
+                    token: token,
                   ));
         },
         child: Column(
@@ -193,7 +195,9 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) =>
                                     EditarBecerro(
-                                        id: snapshot.data[index]['id']),
+                                  id: snapshot.data[index]['id'],
+                                  token: token,
+                                ),
                               ),
                             );
                           },
