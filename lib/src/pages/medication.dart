@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/services/medication_service.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -17,16 +18,30 @@ class Medication extends StatefulWidget {
 class _MedicationState extends State<Medication> {
   late int id_usuario = 0;
   late String token = '';
+  late String correo = "";
+  late String name = "";
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
       UserSecureStorage.getToken().then((token_) {
-        setState(() {
-          int id_cast = int.parse(value!);
+        UserSecureStorage.getName().then((name_) {
+          UserSecureStorage.getCorreo().then((correo_) {
+            setState(() {
+              int id_cast = int.parse(value!);
 
-          id_usuario = id_cast;
-          token = token_!;
+              id_usuario = id_cast;
+              token = token_!;
+              correo = correo_!;
+              name = name_!;
+            });
+          });
+        });
+        setState(() {
+          // int id_cast = int.parse(value!);
+
+          // id_usuario = id_cast;
+          // token = token_!;
         });
       });
     });
@@ -42,7 +57,16 @@ class _MedicationState extends State<Medication> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            print('atras medicamentos');
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => homePage(
+                        nombre: name,
+                        correo: correo,
+                      )),
+            );
           },
         ),
         title: const Text('MEDICAMENTOS'),
@@ -59,7 +83,7 @@ class _MedicationState extends State<Medication> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getMedicationAll(id_usuario,token),
+          future: getMedicationAll(id_usuario, token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -101,10 +125,11 @@ class _MedicationState extends State<Medication> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // print("Agregar Medicamento");
-          await showDialog(
-            context: context,
-            builder: (_) => DialogContainerAddMedication(),
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => DialogContainerAddMedication(),
+            ),
           );
         },
         child: const Icon(Icons.add),

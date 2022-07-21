@@ -19,12 +19,13 @@ class EditarAnimal extends StatefulWidget {
   String tipoAnimal;
   int id;
   String token;
-  EditarAnimal(
-      {Key? key,
-      required this.tipoAnimal,
-      required this.id,
-      required this.token})
-      : super(key: key);
+
+  EditarAnimal({
+    Key? key,
+    required this.tipoAnimal,
+    required this.id,
+    required this.token,
+  }) : super(key: key);
 
   @override
   State<EditarAnimal> createState() => _EditarAnimalState();
@@ -107,7 +108,18 @@ class _EditarAnimalState extends State<EditarAnimal> {
               size: 40,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              setState(() {
+                String ruta_pop = '';
+                if (widget.tipoAnimal == 'Vaca') {
+                  ruta_pop = 'dash_cow';
+                } else {
+                  ruta_pop = 'dash_bull';
+                }
+                Navigator.popAndPushNamed(
+                  context,
+                  ruta_pop,
+                );
+              });
             },
           ),
         ),
@@ -194,7 +206,6 @@ class _EditarAnimalState extends State<EditarAnimal> {
                             ),
                           ),
                           onPressed: () {
-                            print('aaaa');
                             setState(() {
                               late bool res = valid();
                               print(res);
@@ -221,6 +232,24 @@ class _EditarAnimalState extends State<EditarAnimal> {
                                             Text('Actualizado correctamente'),
                                       ),
                                     );
+
+                                    Future.delayed(
+                                        const Duration(milliseconds: 200), () {
+                                      String ruta = '';
+                                      if (widget.tipoAnimal == 'Vaca') {
+                                        ruta = 'dash_cow';
+                                      } else {
+                                        ruta = 'dash_bull';
+                                      }
+                                      Navigator.popAndPushNamed(
+                                        context,
+                                        ruta,
+                                      );
+
+                                      setState(() {
+                                        // Here you can write your code for open new view
+                                      });
+                                    });
                                   }
                                   print(value);
                                 });

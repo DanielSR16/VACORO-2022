@@ -14,6 +14,7 @@ import '../services/anadirAnimalVacaToro.dart';
 
 class AnadirAnimal extends StatefulWidget {
   String tipoAnimal;
+
   AnadirAnimal({Key? key, required this.tipoAnimal}) : super(key: key);
 
   @override
@@ -154,7 +155,24 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                                             Text('Se agrego correctamente'),
                                       ),
                                     );
-                                    Navigator.pop(context);
+
+                                    Future.delayed(
+                                        const Duration(milliseconds: 200), () {
+                                      String ruta = '';
+                                      if (widget.tipoAnimal == 'Vaca') {
+                                        ruta = 'dash_cow';
+                                      } else {
+                                        ruta = 'dash_bull';
+                                      }
+                                      Navigator.popAndPushNamed(
+                                        context,
+                                        ruta,
+                                      );
+
+                                      setState(() {
+                                        // Here you can write your code for open new view
+                                      });
+                                    });
                                   }
                                 });
                               }

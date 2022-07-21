@@ -14,10 +14,9 @@ import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class AnadirBecerro extends StatefulWidget {
-  int id_usuario;
-  String token;
-  AnadirBecerro({Key? key, required this.id_usuario, required this.token})
-      : super(key: key);
+  AnadirBecerro({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<AnadirBecerro> createState() => _AnadirBecerroState();
@@ -46,19 +45,21 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
   String? dropdownValue = null;
   late Map<int, String> listaVacas = {0: 'vaca'};
   late int id_usuario = 1;
-
+  String token = '';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     UserSecureStorage.getId().then((value) {
-      setState(() {
-    
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          token = token_!;
           int id_cast = int.parse(value!);
 
           id_usuario = id_cast;
-          getVacasbyIdUser(id_usuario, widget.token).then((value) {
+
+          getVacasbyIdUser(id_usuario, token_).then((value) {
             listaVacas = value[0][0];
             print(listaVacas);
             List map = value[1];
@@ -67,7 +68,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
               dropdownValue = listaVacas[map[0]['id']];
             });
           });
-
+        });
       });
     });
   }
@@ -94,7 +95,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
               size: 40,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, 'dash_calf');
             },
           ),
         ),
@@ -147,7 +148,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                               late bool res = valid();
                               if (res == true) {
                                 serviceanadirbecerro(
-                                  widget.token,
+                                        token,
                                         id_usuario,
                                         nombreBecerro.text,
                                         descripcionBecerro.text,
@@ -167,7 +168,11 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                                             Text('Se agrego correctamente'),
                                       ),
                                     );
-                                    //Navigator.pop(context);
+                                    Future.delayed(
+                                        const Duration(milliseconds: 100), () {
+                                      Navigator.popAndPushNamed(
+                                          context, 'dash_calf');
+                                    });
                                   }
                                 });
                               }

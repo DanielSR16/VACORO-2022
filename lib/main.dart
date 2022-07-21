@@ -70,8 +70,8 @@ class MyApp extends StatelessWidget {
           'splash_canva': (BuildContext context) => SplashCanva(),
           'login': (BuildContext context) => const Login(),
           'pre_login': (BuildContext context) => const preLogin(),
-          'anadir_animal': (BuildContext context) =>
-              AnadirAnimal(tipoAnimal: "Vaca"),
+          // 'anadir_animal': (BuildContext context) =>
+          //     AnadirAnimal(tipoAnimal: "Vaca"),
           'dash_cow': (BuildContext context) => DashBoardCow(),
           'dash_bull': (BuildContext context) => DashBoardBull(),
           'dash_calf': (BuildContext context) => DashBoardCalf(),
@@ -89,6 +89,7 @@ class MyApp extends StatelessWidget {
               AnadirMedicamentoAnimal(),
           'EditarMedicamentoAnimal': (BuildContext context) =>
               EditarMedicamentoAnimal(),
+          'Editar_becerro': (BuildContext context) => AnadirBecerro()
           // 'ContainerDialogModalBullDetail': (BuildContext context) =>
           //     ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
           // 'ContainerDialogModalCowDetail': (BuildContext context) =>

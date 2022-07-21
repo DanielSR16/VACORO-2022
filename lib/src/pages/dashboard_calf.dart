@@ -16,6 +16,8 @@ class DashBoardCalf extends StatefulWidget {
   State<DashBoardCalf> createState() => _DashBoardCalfState();
 }
 
+
+
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
   var id_usuario = 10;
@@ -33,6 +35,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
         });
       });
     });
+
 
     // TODO: implement initState
 
@@ -76,7 +79,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllCalf(id_usuario,token),
+          future: getAllCalf(id_usuario, token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -118,13 +121,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) =>
-                  AnadirBecerro(id_usuario: id_usuario,token: token),
-            ),
-          );
+          Navigator.pushReplacementNamed(context, 'Editar_becerro');
         },
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
