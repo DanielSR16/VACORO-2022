@@ -22,14 +22,18 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
   late bool _validateCantidad = false;
   late bool _validateFecha = false;
   var id_usuario = 0;
+  var token = '';
 
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      int id_cast = int.parse(value!);
-      setState(() {
-        id_usuario = id_cast;
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
+          id_usuario = id_cast;
+          token = token_!;
+        });
       });
     });
 
@@ -43,29 +47,46 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
     TextEditingController dateinput = TextEditingController();
     late bool _validateDate = false;
 
-    return Dialog(
-      child: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Center(
+          child: Text(
+            'Agregar medicamento',
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+        leading: SizedBox(
+          child: IconButton(
+            splashRadius: 15,
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 40,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        actions: [
+          Container(
+            padding: const EdgeInsets.only(left: 30),
+            width: 85,
+            child: Image.asset('assets/images/logo_blanco.png'),
+          )
+        ],
+        backgroundColor: ColorSelect.color5,
+      ),
+      body: SingleChildScrollView(
         child: SizedBox(
-          width: size.width * 0.8,
-          height: size.height * 0.75,
+          width: size.width,
+          height: size.height,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CloseButton(
-                      color: const Color(0xff2F6622),
-                      onPressed: () {
-                        print("Salir");
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                ),
                 Center(
                   child: Container(
                     margin: const EdgeInsets.only(top: 10, bottom: 40),
@@ -85,14 +106,14 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
                     "Nombre",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 16,
                       color: Color(0xff2F6622),
                     ),
                   ),
                 ),
                 Center(
                   child: Container(
-                    width: size.width * 0.75,
+                    width: size.width * 0.90,
                     height: _validateNombre ? 70 : 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -128,12 +149,12 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
                       children: [
                         Container(
                           margin: const EdgeInsets.only(
-                              left: 20, bottom: 10, top: 20),
+                              left: 16, bottom: 10, top: 20),
                           child: const Text(
                             "Descripción",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Color(0xff2F6622),
                             ),
                           ),
@@ -142,7 +163,7 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
                     ),
                     Center(
                       child: Container(
-                        width: size.width * 0.75,
+                        width: size.width * 0.90,
                         height: _validateDescripcion ? 100 : 120,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
@@ -184,14 +205,14 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
                     "Cantidad",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 16,
                       color: Color(0xff2F6622),
                     ),
                   ),
                 ),
                 Center(
                   child: Container(
-                    width: size.width * 0.75,
+                    width: size.width * 0.90,
                     height: _validateCantidad ? 70 : 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -218,26 +239,28 @@ class _DialogContainerState extends State<DialogContainerAddMedication> {
                       ),
                       onPressed: () {
                         print("AGREGAR MEDICAMENTOS");
-                        setState(() {
-                          if (validateIntputs() == true) {
-                            int par_cantidad =
-                                int.parse(cantidad_medicamento.text);
-                            print("afuerta");
-                            print(id_usuario);
-                            registerMedicina(
-                                    id_usuario,
-                                    nombre_medicamento.text,
-                                    descripcion_medicamento.text,
-                                    par_cantidad,
-                                    fecha_medicamento.text)
-                                .then((value) {
-                              print(value);
-                              Navigator.pop(
-                                context,
+                        setState(
+                          () {
+                            if (validateIntputs() == true) {
+                              int par_cantidad =
+                                  int.parse(cantidad_medicamento.text);
+                              registerMedicina(
+                                      token,
+                                      id_usuario,
+                                      nombre_medicamento.text,
+                                      descripcion_medicamento.text,
+                                      par_cantidad,
+                                      fecha_medicamento.text)
+                                  .then(
+                                (value) {
+                                  print(value);
+                                  Navigator.popAndPushNamed(
+                                      context, 'dash_medication');
+                                },
                               );
-                            });
-                          }
-                        });
+                            }
+                          },
+                        );
                       },
                       child: const Text(
                         "Agregar",

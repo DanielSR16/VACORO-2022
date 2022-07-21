@@ -220,6 +220,14 @@ class _LoginState extends State<Login> {
                                       .toString()); //Se guarda el id en el local storage
                                   await UserSecureStorage.setToken(
                                       value['token'].toString());
+
+                                      
+                                  await UserSecureStorage.setName(
+                                      value['nombre'].toString());
+
+                                  await UserSecureStorage.setCorreo(
+                                      value['correo_electronico'].toString());
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       duration: Duration(milliseconds: 1000),

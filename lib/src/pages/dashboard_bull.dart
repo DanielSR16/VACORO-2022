@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/services/animal_service_bull.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -18,14 +19,26 @@ class DashBoardBull extends StatefulWidget {
 class _DashBoardBullState extends State<DashBoardBull> {
   bool? value1;
   var id_usuario = 0;
-
+  String token = '';
+  var name = '';
+  var correo = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      int id_cast = int.parse(value!);
-      setState(() {
-        id_usuario = id_cast;
+      UserSecureStorage.getToken().then((token_) {
+        UserSecureStorage.getName().then((name_) {
+          UserSecureStorage.getCorreo().then((correo_) {
+            setState(() {
+              int id_cast = int.parse(value!);
+
+              id_usuario = id_cast;
+              token = token_!;
+              correo = correo_!;
+              name = name_!;
+            });
+          });
+        });
       });
     });
 
@@ -34,15 +47,31 @@ class _DashBoardBullState extends State<DashBoardBull> {
     value1 = false;
   }
 
+  List data_ = [];
   @override
   Widget build(BuildContext context) {
+    // final Object? data = ModalRoute.of(context)!.settings.arguments;
+    // if (data != null) {
+    //   setState(() {
+    //     data_ = data as List;
+    //   });
+    // }
+
+    // print(data_);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           padding: const EdgeInsets.only(right: 0),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => homePage(
+                        nombre: name,
+                        correo: correo,
+                      )),
+            );
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -71,7 +100,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllBull(id_usuario),
+          future: getAllBull(id_usuario, token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -146,6 +175,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
               builder: (_) => ContainerDialogModalBullDetail(
                     tipoAnimal: "Toro",
                     id: snapshot.data[index]['id'],
+                    token: token,
                   ));
         },
         child: Column(
@@ -193,6 +223,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
                                 builder: (BuildContext context) => EditarAnimal(
                                   tipoAnimal: "Toro",
                                   id: snapshot.data[index]["id"],
+                                  token: token,
                                 ),
                               ),
                             );

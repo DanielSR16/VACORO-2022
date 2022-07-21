@@ -14,6 +14,7 @@ import '../services/anadirAnimalVacaToro.dart';
 
 class AnadirAnimal extends StatefulWidget {
   String tipoAnimal;
+
   AnadirAnimal({Key? key, required this.tipoAnimal}) : super(key: key);
 
   @override
@@ -41,15 +42,18 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
   late bool _validateDate = false;
 
   late int id_usuario = 0;
-
+  late String token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      setState(() {
-        int id_cast = int.parse(value!);
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          token = token_!;
+          int id_cast = int.parse(value!);
 
-        id_usuario = id_cast;
+          id_usuario = id_cast;
+        });
       });
     });
 
@@ -131,6 +135,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                               late bool res = valid();
                               if (res == true) {
                                 serviceanadirvacatoro(
+                                        token,
                                         id_usuario,
                                         widget.tipoAnimal,
                                         nombreToroVaca.text,
@@ -150,7 +155,24 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                                             Text('Se agrego correctamente'),
                                       ),
                                     );
-                                    Navigator.pop(context);
+
+                                    Future.delayed(
+                                        const Duration(milliseconds: 200), () {
+                                      String ruta = '';
+                                      if (widget.tipoAnimal == 'Vaca') {
+                                        ruta = 'dash_cow';
+                                      } else {
+                                        ruta = 'dash_bull';
+                                      }
+                                      Navigator.popAndPushNamed(
+                                        context,
+                                        ruta,
+                                      );
+
+                                      setState(() {
+                                        // Here you can write your code for open new view
+                                      });
+                                    });
                                   }
                                 });
                               }

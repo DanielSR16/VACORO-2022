@@ -31,11 +31,11 @@ class _homePage extends State<homePage> {
                   textoBienvenida(context,
                       "Seleccione el tipo de ganado que desea visualizar"),
                   botones(
-                      context, "assets/images/vaca.png", "Vacas", "dash_cow"),
+                      context, "assets/images/vaca.png", "Vacas", "dash_cow",widget.nombre,widget.correo),
                   botones(
-                      context, "assets/images/toro.png", "Toros", "dash_bull"),
+                      context, "assets/images/toro.png", "Toros", "dash_bull",widget.nombre,widget.correo),
                   botones(context, "assets/images/becerro.png", "Becerros",
-                      "dash_calf"),
+                      "dash_calf",widget.nombre,widget.correo),
                   listaCards(context)
                 ],
               ),

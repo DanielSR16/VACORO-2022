@@ -14,7 +14,9 @@ import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class EditarBecerro extends StatefulWidget {
   int id;
-  EditarBecerro({Key? key, required this.id}) : super(key: key);
+  String token;
+  EditarBecerro({Key? key, required this.id, required this.token})
+      : super(key: key);
 
   @override
   State<EditarBecerro> createState() => _EditarBecerroState();
@@ -39,7 +41,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
   late bool _validateEdad = false;
   late bool _validateDate = false;
 
-  String? dropdownValue = null;
+  String? dropdownValue;
   late Map<int, String> listaVacas = {0: 'vaca'};
 
   late int id;
@@ -49,21 +51,23 @@ class _EditarBecerroState extends State<EditarBecerro> {
 
   @override
   void initState() {
+    super.initState();
     UserSecureStorage.getId().then((value) {
       setState(() {
         int id_cast = int.parse(value!);
-
         id_usuario = id_cast;
       });
-      getVacasbyIdUser(id_usuario).then((value) {
-        listaVacas = value[0][0];
-        List map = value[1];
+
+      getVacasbyIdUser(id_usuario, widget.token).then((value) {
+        setState(() {
+          listaVacas = value[0][0];
+          List map = value[1];
+        });
       });
     });
     // TODO: implement initState
-    super.initState();
 
-    becerro_id(widget.id).then((value) {
+    becerro_id(widget.id, widget.token).then((value) {
       nombreBecerroEditar.text = value.nombre;
       descripcionBecerroEditar.text = value.descripcion;
       razaBecerroEditar.text = value.raza;
@@ -77,10 +81,11 @@ class _EditarBecerroState extends State<EditarBecerro> {
         imageAnimal = value.url_img.toString();
         if (value.estado == 1) {
           isSwitched = true;
+
         }
 
         if (value.id_vaca != -1) {
-          vacatoro_id(value.id_vaca, "Vaca").then((value) {
+          vacatoro_id(value.id_vaca, "Vaca", widget.token).then((value) {
             setState(() {
               dropdownValue = value.nombre;
             });
