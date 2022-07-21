@@ -1,8 +1,14 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/services/service_medication_history.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 
 class MedicationHistory extends StatefulWidget {
-  MedicationHistory({Key? key}) : super(key: key);
+  int id_animal;
+  String nombre;
+  MedicationHistory({Key? key, required this.id_animal, required this.nombre})
+      : super(key: key);
 
   @override
   State<MedicationHistory> createState() => _MedicationHistoryState();
@@ -18,7 +24,7 @@ class _MedicationHistoryState extends State<MedicationHistory> {
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              print("Regresar");
+              Navigator.pop(context);
             }),
         title: const Text("HISTORIAL DE MEDICAMENTOS"),
         centerTitle: true,
@@ -32,148 +38,156 @@ class _MedicationHistoryState extends State<MedicationHistory> {
         backgroundColor: ColorSelect.color5,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Center(
-                  child: Container(
-                    height: 35,
-                    width: 350,
-                    margin: const EdgeInsets.only(top: 40),
-                    decoration: BoxDecoration(
-                      color: ColorSelect.color2,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.bottom,
-                      onChanged: (text) {},
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(
-                              color: Colors.purple,
-                              width: 1,
-                              strokeAlign: StrokeAlign.inside,
-                            ),
-                          ),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              print("Buscar medicamentos");
-                            },
-                            child: const Icon(
-                              Icons.search,
-                              color: Color(0xff229567),
-                            ),
-                          ),
-                          hintText: "Buscar Historial de medicamentos"),
-                    ),
-                  ),
-                ),
-                _createdCardMedicationHistory(size, "Dipirona",
-                    "Para los dolores e inflamación.", 1, "10/07/2022"),
-                _createdCardMedicationHistory(size, "Dipirona",
-                    "Para los dolores e inflamación.", 1, "10/07/2022"),
-                _createdCardMedicationHistory(size, "Dipirona",
-                    "Para los dolores e inflamación.", 1, "10/07/2022"),
-                _createdCardMedicationHistory(size, "Dipirona",
-                    "Para los dolores e inflamación.", 1, "10/07/2022"),
-                _createdCardMedicationHistory(size, "Dipirona",
-                    "Para los dolores e inflamación.", 1, "10/07/2022"),
-                _createdCardMedicationHistory(size, "Dipirona",
-                    "Para los dolores e inflamación.", 1, "10/07/2022"),
-              ],
-            ),
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("AGREGAR MEDICAMENTOS??");
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: ColorSelect.color5,
+        child: _futureBuildCowHistory(size),
       ),
     );
   }
 
-  Card _createdCardMedicationHistory(Size size, String medicamento,
-      String description, int dosis, String fecha_aplicacion) {
+  FutureBuilder<dynamic> _futureBuildCowHistory(Size size) {
+    return FutureBuilder(
+      future: getMedicationHistoryByIdCow(widget.id_animal),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 5,
+              backgroundColor: ColorSelect.color5,
+              color: Colors.white,
+            ),
+          );
+        } else {
+          if (snapshot.data.length > 0) {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return FadeInLeft(
+                  child:
+                      _createdCardMedicationHistoryCow(size, snapshot, index),
+                );
+              },
+            );
+          } else {
+            return Center(
+              child: _alertDialogCow(context),
+            );
+          }
+        }
+      },
+    );
+  }
+
+  AlertDialog _alertDialogCow(BuildContext context) {
+    return AlertDialog(
+      title: Chip(
+        backgroundColor: ColorSelect.color2,
+        avatar: CircleAvatar(
+          backgroundColor: ColorSelect.color5,
+          foregroundColor: Colors.white,
+          child: Text(
+            "${widget.nombre[0].toUpperCase()}",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        label: Text("${widget.nombre.toUpperCase()}."),
+      ),
+      content: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: '',
+          style: DefaultTextStyle.of(context).style,
+          children: <TextSpan>[
+            const TextSpan(
+              text: 'No hay historial medico de la vaca ',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            TextSpan(
+              text: '${widget.nombre} ',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const TextSpan(
+              text: 'debe registrar medicamentos a esta vaca.',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          child: const Text(
+            "Ok",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: ColorSelect.color5,
+            ),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
+
+  Card _createdCardMedicationHistoryCow(
+      Size size, AsyncSnapshot<dynamic> snapshot, int index) {
     return Card(
       shadowColor: Colors.grey,
-      // shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(30)),
-      margin: const EdgeInsets.all(15),
-      elevation: 10,
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(
+          color: ColorSelect.color5,
+          width: 2,
+          style: BorderStyle.solid,
+        ),
+        borderRadius: BorderRadius.circular(40),
+      ),
+      elevation: 20,
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            // margin: const EdgeInsets.only(top: 0),
+            margin: const EdgeInsets.only(top: 0),
             width: size.width,
             height: 200,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  // margin: const EdgeInsets.only(left: 20),
-                  child: const Image(
-                    image: AssetImage('assets/images/cow.png'),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      containerLabel(
+                          "Dosis: ${snapshot.data[index]['dosis']}", index),
+                      containerLabel(
+                          'Descripción: ${snapshot.data[index]['descripcion']}',
+                          index),
+                      containerLabel(
+                          'Fecha de apliación: ${snapshot.data[index]['fecha_aplicacion']}',
+                          index)
+                    ],
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      // margin: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Medicamento: $medicamento',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        'Descripcion: $description',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        'Dosis: $dosis',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        'Fecha aplicada: $fecha_aplicacion',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                      // margin: const EdgeInsets.only(left: 50),
-                      child: GestureDetector(
-                        onTap: (() => {
-                              print("Editar Medicamento!"),
-                            }),
-                        child: Image.asset('assets/images/edit_logo.png'),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          child: GestureDetector(
+                            onTap: () {
+                              print("Edit historial");
+                            },
+                            child: Image.asset(
+                              'assets/images/edit_logo.png',
+                              height: 30,
+                              scale: 0.7,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
