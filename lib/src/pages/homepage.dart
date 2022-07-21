@@ -30,9 +30,12 @@ class _homePage extends State<homePage> {
                 children: [
                   textoBienvenida(context,
                       "Seleccione el tipo de ganado que desea visualizar"),
-                  botones(context, "assets/images/vaca.png", "Vacas"),
-                  botones(context, "assets/images/toro.png", "Toros"),
-                  botones(context, "assets/images/becerro.png", "Becerros"),
+                  botones(
+                      context, "assets/images/vaca.png", "Vacas", "dash_cow"),
+                  botones(
+                      context, "assets/images/toro.png", "Toros", "dash_bull"),
+                  botones(context, "assets/images/becerro.png", "Becerros",
+                      "dash_calf"),
                   listaCards(context)
                 ],
               ),

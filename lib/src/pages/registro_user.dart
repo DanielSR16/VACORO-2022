@@ -71,6 +71,19 @@ class _registroUserState extends State<registroUser> {
             ),
           ),
         ],
+        leading: SizedBox(
+          child: IconButton(
+            splashRadius: 15,
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 25,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
       ),
       body: ListView(
         children: [

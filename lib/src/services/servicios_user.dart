@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String ip = '192.168.56.1';
+String ip = '192.168.0.5';
 Future<String> register_user(
     String name,
     String apellidos,
@@ -13,8 +13,7 @@ Future<String> register_user(
     String nombreRancho,
     String urlImage) async {
   try {
-    print('/////////////////////////////////////////');
-    print(nombreRancho);
+
 
     final response = await http.post(
       Uri.http(ip + ':3000', '/usuario/usuarioNuevo'),
