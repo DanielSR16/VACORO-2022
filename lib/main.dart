@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'login',
+        initialRoute: 'splash',
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
 
@@ -95,7 +95,8 @@ class MyApp extends StatelessWidget {
           'ContainerdDialogCowCalfDetails': (BuildContext context) =>
               ContainerdDialogCowCalfDetails(),
           'EditarContrasena': (BuildContext context) => EditarContrasena(),
-          // 'ContainerDialogModalBullDetail': (BuildContext context) =>
+          // 'ContainerDialogMod++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    +0++6
+          //3alBullDetail': (BuildContext context) =>
           //     ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
           // 'ContainerDialogModalCowDetail': (BuildContext context) =>
           //     ContainerDialogModalCowDetail(tipoAnimal: "Vaca", id: 2),
