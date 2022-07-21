@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/services/anadirBecerro.dart';
 import 'package:vacoro_proyect/src/services/servicios_user.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
@@ -16,7 +17,8 @@ import 'package:vacoro_proyect/src/services/upload_file.dart';
 import '../services/usuario.dart';
 
 class EditarPerfil extends StatefulWidget {
-  const EditarPerfil({Key? key}) : super(key: key);
+  int id_usuario;
+  EditarPerfil({Key? key, required this.id_usuario}) : super(key: key);
 
   @override
   State<EditarPerfil> createState() => _EditarPerfilState();
@@ -56,7 +58,6 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
   late String correo = "";
   late String contrasena = "";
-  int id_usuario = 3;
 
   @override
   void initState() {
@@ -66,7 +67,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
       _getFieldsData();
     });
 
-    serviceusuario(id_usuario).then((value) {
+    serviceusuario(widget.id_usuario).then((value) {
       setState(() {
         nombre_.text = value['nombre'];
         apellidos_.text = value['apellido'];
@@ -215,13 +216,13 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
                         if (res == true) {
                           serviceeditarusuario(
-                            id_usuario,
+                            widget.id_usuario,
                             nombre_.text,
                             apellidos_.text,
                             correo,
                             contrasena,
-                            ciudad_,
                             estado_,
+                            ciudad_,
                             int.parse(edad_.text),
                             nombreRancho_.text,
                             url_img,
@@ -233,7 +234,22 @@ class _EditarPerfilState extends State<EditarPerfil> {
                                   content: Text('Se actualizo correctamente'),
                                 ),
                               );
-                              //Navigator.pop(context);
+                              Future.delayed(const Duration(milliseconds: 100),
+                                  () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (BuildContext context) => homePage(
+                                      correo: correo,
+                                      nombre: nombre_.text,
+                                    ),
+                                  ),
+                                );
+
+                                setState(() {
+                                  // Here you can write your code for open new view
+                                });
+                              });
                             }
                           });
                         }
