@@ -18,6 +18,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+
   late bool _validateEmail = false;
   late bool _validatePassword = false;
   late String _errorCorreo = '';
@@ -27,6 +28,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    email.text = 'dulce@gmail.com';
+    password.text = 'Dulce123%';
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -215,6 +218,8 @@ class _LoginState extends State<Login> {
                                 } else {
                                   await UserSecureStorage.setId(value['id']
                                       .toString()); //Se guarda el id en el local storage
+                                  await UserSecureStorage.setToken(
+                                      value['token'].toString());
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       duration: Duration(milliseconds: 1000),

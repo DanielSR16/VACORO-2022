@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 Future<Map<String, dynamic>> servicelogin(
     TextEditingController email, TextEditingController password) async {
   Map<String, String> headers = {'Content-Type': 'application/json'};
-  String loginAPI = '/usuario/getUserlogin/';
-  String host = '192.168.0.3:3000';
+  String loginAPI = '/usuario/getUserlogin';
+  String host = 'user-vacoro-1804981318.us-east-1.elb.amazonaws.com';
 
   try {
     final response = await http.post(
@@ -19,10 +19,12 @@ Future<Map<String, dynamic>> servicelogin(
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       Map<String, dynamic> responseMap = {
-        'id': data['id'],
-        'nombre': data['nombre'],
-        'correo_electronico': data['correo_electronico'],
+        'token': data['token'],
+        'id': data['usuario']['id'],
+        'nombre': data['usuario']['nombre'],
+        'correo_electronico': data['usuario']['correo_electronico'],
       };
+      print(responseMap);
       return responseMap;
     } else {
       return {'status': 'Error'};

@@ -4,6 +4,7 @@ import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
 import 'package:vacoro_proyect/src/pages/anadir_medicamento_animal.dart';
 import 'package:vacoro_proyect/src/pages/editarPerfilContrasena.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
+import 'package:vacoro_proyect/src/pages/editar_becerro.dart';
 import 'package:vacoro_proyect/src/pages/editar_perfil.dart';
 import 'package:vacoro_proyect/src/pages/editar_medicamento_animal.dart';
 
@@ -61,11 +62,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'EditarPerfil',
+        initialRoute: 'login',
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
-          // 'homePage': (BuildContext context) => homePage(),
+
           // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
+
           'splash': (BuildContext context) => Splash(),
           'splash_canva': (BuildContext context) => SplashCanva(),
           'login': (BuildContext context) => const Login(),
@@ -79,10 +81,11 @@ class MyApp extends StatelessWidget {
           'registroUser': (BuildContext context) => registroUser(),
           'registroUser2': (BuildContext context) => registroUser2(),
 
-          'medication': (BuildContext context) => Medication(),
+          'dash_medication': (BuildContext context) => Medication(),
 
           'medication_history': (BuildContext context) => MedicationHistory(),
-          'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
+          // 'EditarBecerro': (BuildContext context) => EditarBecerro(id: 11),
+          // 'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
           'EditarPerfil': (BuildContext context) => EditarPerfil(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
               AnadirMedicamentoAnimal(),
@@ -92,6 +95,16 @@ class MyApp extends StatelessWidget {
           'ContainerdDialogCowCalfDetails': (BuildContext context) =>
               ContainerdDialogCowCalfDetails(),
           'EditarContrasena': (BuildContext context) => EditarContrasena(),
+          // 'ContainerDialogModalBullDetail': (BuildContext context) =>
+          //     ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
+          // 'ContainerDialogModalCowDetail': (BuildContext context) =>
+          //     ContainerDialogModalCowDetail(tipoAnimal: "Vaca", id: 2),
+          // 'ContainerDialogModalCalfDetail': (BuildContext context) =>
+          //     ContainerDialogModalCalfDetail(id: 1),
+          // 'EditarAnimal': (BuildContext context) => EditarAnimal(
+          //       tipoAnimal: "Vaca",
+          //       id: 2,
+          //     ),
         });
   }
 }

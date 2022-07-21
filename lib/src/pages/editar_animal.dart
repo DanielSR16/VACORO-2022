@@ -8,14 +8,17 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:vacoro_proyect/src/services/deleteAnimalVacaToro.dart';
 import 'package:vacoro_proyect/src/services/editarAnimalVacaToro.dart';
+import 'package:vacoro_proyect/src/services/editarBecerro.dart';
 import 'package:vacoro_proyect/src/services/generate_image_url.dart';
 import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class EditarAnimal extends StatefulWidget {
   String tipoAnimal;
   int id;
+
   EditarAnimal({Key? key, required this.tipoAnimal, required this.id})
       : super(key: key);
 
@@ -41,9 +44,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
   late bool _validateNumeroArete = false;
   late bool _validateEdad = false;
   late bool _validateDate = false;
-
-  late int id;
-  late int id_usuario;
+  late int id_usuario = 0;
   late var imageAnimal =
       'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
 
@@ -58,14 +59,20 @@ class _EditarAnimalState extends State<EditarAnimal> {
       numeroAreteVacaToroEditar.text = value.num_arete;
       dateinputEditar.text = value.fecha_llegada;
       edadToroVacaEditar.text = value.edad.toString();
-      id = value.id;
-      id_usuario = value.id_usuario;
 
       setState(() {
         imageAnimal = value.url_img.toString();
         if (value.estado == 1) {
           isSwitched = true;
         }
+
+        UserSecureStorage.getId().then((value) {
+          setState(() {
+            int id_cast = int.parse(value!);
+
+            id_usuario = id_cast;
+          });
+        });
       });
     });
   }
@@ -136,7 +143,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
                       child: InkWell(
                         splashColor: Colors.green, // splash color
                         onTap: () {
-                          servicedeletevacatoro(widget.tipoAnimal, id)
+                          servicedeletevacatoro(widget.tipoAnimal, widget.id)
                               .then((value) {
                             if (value['status'] == 'ok') {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -179,13 +186,15 @@ class _EditarAnimalState extends State<EditarAnimal> {
                             ),
                           ),
                           onPressed: () {
+                            print('aaaa');
                             setState(() {
                               late bool res = valid();
+                              print(res);
                               if (res == true) {
                                 serviceeditarvacatoro(
-                                        widget.tipoAnimal,
-                                        id,
                                         id_usuario,
+                                        widget.tipoAnimal,
+                                        widget.id,
                                         nombreVacaToroEditar.text,
                                         descripcionVacaToroEditar.text,
                                         razaVacaToroEditar.text,
@@ -340,16 +349,13 @@ class _EditarAnimalState extends State<EditarAnimal> {
             ),
           ],
         ),
-        const SizedBox(
-          width: 10,
-        ),
         Container(
           padding: const EdgeInsets.only(
             //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 140,
+            width: 160,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -363,6 +369,19 @@ class _EditarAnimalState extends State<EditarAnimal> {
                   title: 'Tomar fotografía',
                   icon: Icons.image_outlined,
                   onClicked: () => pickCamera(),
+                ),
+                buildButton(
+                  title: 'Cancelar selección',
+                  icon: Icons.image_outlined,
+                  onClicked: () {
+                    setState(() {
+                      print(imageAnimal);
+                      image = null;
+                      imageAnimal =
+                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                      print(imageAnimal);
+                    });
+                  },
                 ),
               ],
             ),

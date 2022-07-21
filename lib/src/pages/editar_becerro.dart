@@ -5,32 +5,31 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:vacoro_proyect/src/services/editarBecerro.dart';
 import 'package:vacoro_proyect/src/services/generate_image_url.dart';
+import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
-import '../services/anadirAnimalVacaToro.dart';
-
-class AnadirAnimal extends StatefulWidget {
-  String tipoAnimal;
-  AnadirAnimal({Key? key, required this.tipoAnimal}) : super(key: key);
+class EditarBecerro extends StatefulWidget {
+  int id;
+  EditarBecerro({Key? key, required this.id}) : super(key: key);
 
   @override
-  State<AnadirAnimal> createState() => _AnadirAnimalState();
+  State<EditarBecerro> createState() => _EditarBecerroState();
 }
 
-class _AnadirAnimalState extends State<AnadirAnimal> {
+class _EditarBecerroState extends State<EditarBecerro> {
   File? image;
-  late String url_img =
-      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
-  bool isSwitched = false;
+  late bool isSwitched = false;
   int estado = 0;
-  TextEditingController nombreToroVaca = TextEditingController();
-  TextEditingController descripcionToroVaca = TextEditingController();
-  TextEditingController razaToroVaca = TextEditingController();
-  TextEditingController numeroAreteToroVaca = TextEditingController();
-  TextEditingController edadToroVaca = TextEditingController();
+  late String url_img = imageAnimal;
+  TextEditingController nombreBecerroEditar = TextEditingController();
+  TextEditingController descripcionBecerroEditar = TextEditingController();
+  TextEditingController razaBecerroEditar = TextEditingController();
+  TextEditingController numeroAreteBecerroEditar = TextEditingController();
+  TextEditingController edadBecerro = TextEditingController();
   TextEditingController dateinput = TextEditingController();
 
   late bool _validateNombre = false;
@@ -40,20 +39,59 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
   late bool _validateEdad = false;
   late bool _validateDate = false;
 
+  String? dropdownValue = null;
+  late Map<int, String> listaVacas = {0: 'vaca'};
+
+  late int id;
   late int id_usuario = 0;
+  late var imageAnimal =
+      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
 
   @override
   void initState() {
-    super.initState();
     UserSecureStorage.getId().then((value) {
       setState(() {
         int id_cast = int.parse(value!);
 
         id_usuario = id_cast;
       });
+      getVacasbyIdUser(id_usuario).then((value) {
+        listaVacas = value[0][0];
+        List map = value[1];
+      });
     });
-
     // TODO: implement initState
+    super.initState();
+
+    becerro_id(widget.id).then((value) {
+      nombreBecerroEditar.text = value.nombre;
+      descripcionBecerroEditar.text = value.descripcion;
+      razaBecerroEditar.text = value.raza;
+      numeroAreteBecerroEditar.text = value.num_arete;
+      dateinput.text = value.fecha_llegada;
+      edadBecerro.text = value.edad.toString();
+      id = value.id;
+      id_usuario = value.id_usuario;
+
+      setState(() {
+        imageAnimal = value.url_img.toString();
+        if (value.estado == 1) {
+          isSwitched = true;
+        }
+
+        if (value.id_vaca != -1) {
+          vacatoro_id(value.id_vaca, "Vaca").then((value) {
+            setState(() {
+              dropdownValue = value.nombre;
+            });
+          });
+        } else {
+          setState(() {
+            dropdownValue = 'Sin madre';
+          });
+        }
+      });
+    });
   }
 
   @override
@@ -63,9 +101,9 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Center(
+        title: const Center(
           child: Text(
-            'AÑADIR ANIMAL (' + widget.tipoAnimal + ")",
+            'EDITAR BECERRO',
             style: TextStyle(fontSize: 18),
           ),
         ),
@@ -99,19 +137,57 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  inputs("Nombre", "Ingrese nombre del animal", size,
-                      nombreToroVaca, _validateNombre),
-                  inputs("Descripción", "Ingrese una descripción del animal",
-                      size, descripcionToroVaca, _validateDescripcion),
+                  inputs("Nombre", "Ingrese nombre del becerro", size,
+                      nombreBecerroEditar, _validateNombre),
+                  inputs("Descripción", "Ingrese una descripción del becerro",
+                      size, descripcionBecerroEditar, _validateDescripcion),
                   inputs("Raza", "Ingrese la raza del animal", size,
-                      razaToroVaca, _validateRaza),
+                      razaBecerroEditar, _validateRaza),
                   inputs("Número de arete", "Ingrese el número de arete", size,
-                      numeroAreteToroVaca, _validateNumeroArete),
-                  //date(),
-                  fecha(context, "Fecha de llegada", dateinput, _validateDate),
+                      numeroAreteBecerroEditar, _validateNumeroArete),
+                  fecha(context, 'Fecha de llegada', dateinput, _validateDate),
+                  selectMadre("Seleccionar vaca madre", size),
                   edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
-                      "Buen estado", size, edadToroVaca, _validateEdad),
+                      "Buen estado", size, edadBecerro, _validateEdad),
                   selectImage(),
+                  Container(
+                    width: 220,
+                    margin: const EdgeInsets.only(left: 88),
+                    padding:
+                        const EdgeInsets.only(left: 20, bottom: 20, top: 25),
+                    child: Material(
+                      color: Colors.transparent, // button color
+                      child: InkWell(
+                        splashColor: Colors.green, // splash color
+                        onTap: () {
+                          servicedeletebecerro(id).then((value) {
+                            if (value['status'] == 'ok') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  duration: Duration(milliseconds: 1000),
+                                  content:
+                                      Text('Animal eliminado correctamente'),
+                                ),
+                              );
+                            }
+                          });
+                          Navigator.pop(context);
+                        }, // button pressed
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Text("Borrar animal de mi lista",
+                                style: TextStyle(
+                                    fontSize: 16, color: ColorSelect.color5)),
+                            Icon(
+                              Icons.delete,
+                              color: ColorSelect.color1,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
                     padding: const EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 20),
@@ -120,7 +196,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                       height: 50,
                       child: ElevatedButton(
                           child: const Text(
-                            'Agregar',
+                            'Editar',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -130,27 +206,28 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                             setState(() {
                               late bool res = valid();
                               if (res == true) {
-                                serviceanadirvacatoro(
+                                serviceeditarbecerro(
                                         id_usuario,
-                                        widget.tipoAnimal,
-                                        nombreToroVaca.text,
-                                        descripcionToroVaca.text,
-                                        razaToroVaca.text,
-                                        numeroAreteToroVaca.text,
+                                        id,
+                                        nombreBecerroEditar.text,
+                                        descripcionBecerroEditar.text,
+                                        razaBecerroEditar.text,
+                                        numeroAreteBecerroEditar.text,
                                         url_img,
                                         estado,
-                                        int.parse(edadToroVaca.text),
+                                        int.parse(edadBecerro.text),
+                                        obtenerIdVacaSelect(),
                                         dateinput.text)
                                     .then((value) {
-                                  if (value['status'] == 'success') {
+                                  if (value['status'] == 'ok') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         duration: Duration(milliseconds: 1000),
                                         content:
-                                            Text('Se agrego correctamente'),
+                                            Text('Actualizado correctamente'),
                                       ),
                                     );
-                                    Navigator.pop(context);
+                                    //Navigator.pop(context);
                                   }
                                 });
                               }
@@ -279,10 +356,10 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                       height: 150,
                       fit: BoxFit.cover,
                     )
-                  : const Image(
+                  : Image(
                       width: 160,
                       height: 150,
-                      image: AssetImage('assets/images/logo.png'),
+                      image: NetworkImage(imageAnimal),
                     ),
             ),
           ],
@@ -313,11 +390,11 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                   icon: Icons.image_outlined,
                   onClicked: () {
                     setState(() {
-                      print(url_img);
+                      print(imageAnimal);
                       image = null;
-                      url_img =
+                      imageAnimal =
                           'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
-                      print(url_img);
+                      print(imageAnimal);
                     });
                   },
                 ),
@@ -423,7 +500,6 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                         estado = 1;
                       }
                     });
-                    print(estado);
                   },
                   activeTrackColor: ColorSelect.color5,
                   activeColor: ColorSelect.color1,
@@ -433,6 +509,70 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
           ),
         ),
       ],
+    );
+  }
+
+  int obtenerIdVacaSelect() {
+    var id = listaVacas.keys.firstWhere(
+        (element) => listaVacas[element] == dropdownValue,
+        orElse: () => -1);
+    return id;
+  }
+
+  Widget selectMadre(String nameTopField, Size size) {
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 5),
+            width: size.width,
+            child: Text(
+              nameTopField,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: ColorSelect.color1,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 45,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: ColorSelect.color1, width: 2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: DropdownButtonFormField(
+                decoration: const InputDecoration(
+                    enabledBorder: InputBorder.none, fillColor: Colors.white),
+                value: dropdownValue,
+                iconSize: 25,
+                iconEnabledColor: ColorSelect.color1,
+                icon: Container(
+                    margin: const EdgeInsets.only(right: 30),
+                    child: const Icon(Icons.arrow_drop_down)),
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                  });
+                },
+                items: listaVacas.values
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Container(
+                        margin: const EdgeInsets.only(left: 20),
+                        child: Text(value)),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -530,8 +670,6 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
                           formattedDate; //Fecha de salida en el textField
                     },
                   );
-
-                  print(dateinput.text);
                 } else {
                   validate_ = true;
                 }
@@ -545,35 +683,35 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
 
   bool valid() {
     bool lleno = true;
-    if (nombreToroVaca.text.isEmpty) {
+    if (nombreBecerroEditar.text.isEmpty) {
       _validateNombre = true;
       lleno = false;
     } else {
       _validateNombre = false;
     }
 
-    if (descripcionToroVaca.text.isEmpty) {
+    if (descripcionBecerroEditar.text.isEmpty) {
       _validateDescripcion = true;
       lleno = false;
     } else {
       _validateDescripcion = false;
     }
 
-    if (razaToroVaca.text.isEmpty) {
+    if (razaBecerroEditar.text.isEmpty) {
       _validateRaza = true;
       lleno = false;
     } else {
       _validateRaza = false;
     }
 
-    if (numeroAreteToroVaca.text.isEmpty) {
+    if (numeroAreteBecerroEditar.text.isEmpty) {
       _validateNumeroArete = true;
       lleno = false;
     } else {
       _validateNumeroArete = false;
     }
 
-    if (edadToroVaca.text.isEmpty) {
+    if (edadBecerro.text.isEmpty) {
       _validateEdad = true;
       lleno = false;
     } else {
@@ -598,10 +736,9 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       final imageTemporary = File(image.path);
 
       String fileExtension = path.extension(image.path);
-      print(imageTemporary);
-      print(fileExtension);
+
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
-      print(generateImageUrl);
+
       await generateImageUrl.call(fileExtension);
 
       url_img = generateImageUrl.downloadUrl;
@@ -614,7 +751,6 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       }
 
       bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
-      print(isUploaded);
 
       setState(
         () => this.image = imageTemporary,
@@ -656,7 +792,6 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       }
 
       bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
-      print(isUploaded);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
