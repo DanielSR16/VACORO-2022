@@ -30,8 +30,5 @@ class GenerateImageUrl {
         downloadUrl = result["downloadUrl"];
       }
     }
-    // } catch (e) {
-    //   throw ('Error getting url');
-    // }
   }
 }

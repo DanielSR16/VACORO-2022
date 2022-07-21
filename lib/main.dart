@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
 import 'package:vacoro_proyect/src/pages/anadir_medicamento_animal.dart';
+import 'package:vacoro_proyect/src/pages/editarPerfilContrasena.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_becerro.dart';
 import 'package:vacoro_proyect/src/pages/editar_perfil.dart';
@@ -35,9 +36,10 @@ import 'package:vacoro_proyect/src/pages/registro_user2.dart';
 
 import 'package:vacoro_proyect/src/pages/splash.dart';
 import 'package:vacoro_proyect/src/pages/splash_canva.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_add_medication.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_bull_details.dart';
-import 'package:vacoro_proyect/src/widgets/window_modal/modal_calf_details.dart';
-import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_detail.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_category_details.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_calf_details.dart';
 // import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 import 'firebase_options.dart';
 import 'src/pages/homepage.dart';
@@ -89,12 +91,16 @@ class MyApp extends StatelessWidget {
               AnadirMedicamentoAnimal(),
           'EditarMedicamentoAnimal': (BuildContext context) =>
               EditarMedicamentoAnimal(),
-          'ContainerDialogModalBullDetail': (BuildContext context) =>
-              ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
-          'ContainerDialogModalCowDetail': (BuildContext context) =>
-              ContainerDialogModalCowDetail(tipoAnimal: "Vaca", id: 2),
-          'ContainerDialogModalCalfDetail': (BuildContext context) =>
-              ContainerDialogModalCalfDetail(id: 1),
+          'EditarPerfil': (BuildContext context) => EditarPerfil(),
+          'ContainerdDialogCowCalfDetails': (BuildContext context) =>
+              ContainerdDialogCowCalfDetails(),
+          'EditarContrasena': (BuildContext context) => EditarContrasena(),
+          // 'ContainerDialogModalBullDetail': (BuildContext context) =>
+          //     ContainerDialogModalBullDetail(tipoAnimal: "Toro", id: 2),
+          // 'ContainerDialogModalCowDetail': (BuildContext context) =>
+          //     ContainerDialogModalCowDetail(tipoAnimal: "Vaca", id: 2),
+          // 'ContainerDialogModalCalfDetail': (BuildContext context) =>
+          //     ContainerDialogModalCalfDetail(id: 1),
           // 'EditarAnimal': (BuildContext context) => EditarAnimal(
           //       tipoAnimal: "Vaca",
           //       id: 2,
