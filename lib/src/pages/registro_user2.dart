@@ -189,7 +189,7 @@ class _registroUser2State extends State<registroUser2> {
                       estado, ciudad, edad_int, nombreRancho, url_img)
                   .then((value) {});
 
-              Navigator.pushNamed(
+              Navigator.popAndPushNamed(
                 context,
                 'login',
               );

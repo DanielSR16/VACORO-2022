@@ -48,14 +48,17 @@ class _EditarBecerroState extends State<EditarBecerro> {
   late int id_usuario = 0;
   late var imageAnimal =
       'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
-
+  late var token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      setState(() {
-        int id_cast = int.parse(value!);
-        id_usuario = id_cast;
+      UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
+          id_usuario = id_cast;
+          token = token_!;
+        });
       });
 
       getVacasbyIdUser(id_usuario, widget.token).then((value) {
@@ -81,7 +84,6 @@ class _EditarBecerroState extends State<EditarBecerro> {
         imageAnimal = value.url_img.toString();
         if (value.estado == 1) {
           isSwitched = true;
-
         }
 
         if (value.id_vaca != -1) {
@@ -151,7 +153,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                   inputs("Número de arete", "Ingrese el número de arete", size,
                       numeroAreteBecerroEditar, _validateNumeroArete),
                   fecha(context, 'Fecha de llegada', dateinput, _validateDate),
-                  selectMadre("Seleccionar vaca madre", size),
+                  //selectMadre("Seleccionar vaca madre", size),
                   edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
                       "Buen estado", size, edadBecerro, _validateEdad),
                   selectImage(),
@@ -212,6 +214,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                               late bool res = valid();
                               if (res == true) {
                                 serviceeditarbecerro(
+                                        token,
                                         id_usuario,
                                         id,
                                         nombreBecerroEditar.text,

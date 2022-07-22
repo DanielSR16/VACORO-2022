@@ -223,7 +223,6 @@ class _LoginState extends State<Login> {
                                   await UserSecureStorage.setToken(
                                       value['token'].toString());
 
-                                      
                                   await UserSecureStorage.setName(
                                       value['nombre'].toString());
 
