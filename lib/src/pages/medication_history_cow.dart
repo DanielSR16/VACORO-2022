@@ -85,7 +85,7 @@ class _MedicationHistoryCowState extends State<MedicationHistoryCow> {
             return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                return FadeIn(
+                return FadeInLeft(
                   duration: Duration(milliseconds: 100 * index),
                   child: _createdCardCowMedicalHistory(size, snapshot, index),
                 );

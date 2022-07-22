@@ -1,29 +1,30 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:vacoro_proyect/src/services/service_medication_history.dart';
+import 'package:vacoro_proyect/src/services/service_medication_history_bull.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 
-class MedicationHistory extends StatefulWidget {
-  int id_animal;
+class MedicationHistoryBull extends StatefulWidget {
+  int idAnimal;
   String nombre;
-  MedicationHistory({Key? key, required this.id_animal, required this.nombre})
+  MedicationHistoryBull(
+      {Key? key, required this.idAnimal, required this.nombre})
       : super(key: key);
 
   @override
-  State<MedicationHistory> createState() => _MedicationHistoryState();
+  State<MedicationHistoryBull> createState() => _MedicationHistoryBullState();
 }
 
-class _MedicationHistoryState extends State<MedicationHistory> {
+class _MedicationHistoryBullState extends State<MedicationHistoryBull> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
+              print("Regresar");
               Navigator.pop(context);
             }),
         title: const Text("HISTORIAL DE MEDICAMENTOS"),
@@ -38,14 +39,38 @@ class _MedicationHistoryState extends State<MedicationHistory> {
         backgroundColor: ColorSelect.color5,
       ),
       body: SafeArea(
-        child: _futureBuildCowHistory(size),
+        child: _futureBuilderMedicationBull(size),
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: ColorSelect.color5,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 1,
+        elevation: 2.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 0),
+              height: 50,
+              width: size.width,
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("AGREGAR MEDICAMENTOS AL TORO");
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: ColorSelect.color5,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  FutureBuilder<dynamic> _futureBuildCowHistory(Size size) {
+  FutureBuilder<dynamic> _futureBuilderMedicationBull(Size size) {
     return FutureBuilder(
-      future: getMedicationHistoryByIdCow(widget.id_animal),
+      future: getMedicationHistoryByIdCowBull(widget.idAnimal),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -61,14 +86,15 @@ class _MedicationHistoryState extends State<MedicationHistory> {
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
                 return FadeInLeft(
+                  duration: Duration(milliseconds: 100 * index),
                   child:
-                      _createdCardMedicationHistoryCow(size, snapshot, index),
+                      _createdCardBullHistoryMedication(size, snapshot, index),
                 );
               },
             );
           } else {
             return Center(
-              child: _alertDialogCow(context),
+              child: _alertDialogHistorialMedicamentoToro(context),
             );
           }
         }
@@ -76,8 +102,9 @@ class _MedicationHistoryState extends State<MedicationHistory> {
     );
   }
 
-  AlertDialog _alertDialogCow(BuildContext context) {
+  AlertDialog _alertDialogHistorialMedicamentoToro(BuildContext context) {
     return AlertDialog(
+      elevation: 20,
       title: Chip(
         backgroundColor: ColorSelect.color2,
         avatar: CircleAvatar(
@@ -114,27 +141,45 @@ class _MedicationHistoryState extends State<MedicationHistory> {
         ),
       ),
       actions: [
-        TextButton(
-          child: const Text(
-            "Ok",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: ColorSelect.color5,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              child: const Text(
+                "Registrar",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorSelect.color5,
+                ),
+              ),
+              onPressed: () {
+                print("Registrar historial");
+              },
             ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        )
+            TextButton(
+              child: const Text(
+                "Ok",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorSelect.color5,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
       ],
     );
   }
 
-  Card _createdCardMedicationHistoryCow(
+  Card _createdCardBullHistoryMedication(
       Size size, AsyncSnapshot<dynamic> snapshot, int index) {
     return Card(
-      shadowColor: Colors.grey,
+      shadowColor: ColorSelect.color5,
       shape: RoundedRectangleBorder(
         side: const BorderSide(
           color: ColorSelect.color5,
@@ -178,7 +223,7 @@ class _MedicationHistoryState extends State<MedicationHistory> {
                           margin: const EdgeInsets.only(right: 10),
                           child: GestureDetector(
                             onTap: () {
-                              print("Edit historial");
+                              print("Edit historial Vacas");
                             },
                             child: Image.asset(
                               'assets/images/edit_logo.png',

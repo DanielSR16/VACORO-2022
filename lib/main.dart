@@ -15,8 +15,6 @@ import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/pages/registro_user2.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';
 
-import 'package:vacoro_proyect/src/pages/medication_history.dart';
-
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/pages/registro_user2.dart';
 import 'package:vacoro_proyect/src/pages/vista_principal.dart';

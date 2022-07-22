@@ -124,78 +124,8 @@ class _DashBoardCowState extends State<DashBoardCow> {
                       );
                     });
               } else {
-                return AlertDialog(
-                  elevation: 20,
-                  title: Chip(
-                    backgroundColor: ColorSelect.color2,
-                    avatar: CircleAvatar(
-                      backgroundColor: ColorSelect.color5,
-                      foregroundColor: Colors.white,
-                      child: Text(
-                        "${name[0].toUpperCase()}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    label: Text("${name.toUpperCase()}."),
-                  ),
-                  content: RichText(
-                    textAlign: TextAlign.justify,
-                    text: TextSpan(
-                      text: '',
-                      style: DefaultTextStyle.of(context).style,
-                      children: <TextSpan>[
-                        const TextSpan(
-                          text: 'No hay Vacas registradas ',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${name}, ',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        const TextSpan(
-                          text:
-                              'debe registrar alguna vaca, para que se vea aquí.',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          child: const Text(
-                            "Registrar",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: ColorSelect.color5,
-                            ),
-                          ),
-                          onPressed: () {
-                            print("Registrar historial");
-                          },
-                        ),
-                        TextButton(
-                          child: const Text(
-                            "Ok",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: ColorSelect.color5,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                return Center(
+                  child: _alertDialogCow(context),
                 );
               }
             }
@@ -233,6 +163,80 @@ class _DashBoardCowState extends State<DashBoardCow> {
         backgroundColor: const Color(0xff68C34E),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  AlertDialog _alertDialogCow(BuildContext context) {
+    return AlertDialog(
+      elevation: 20,
+      title: Chip(
+        backgroundColor: ColorSelect.color2,
+        avatar: CircleAvatar(
+          backgroundColor: ColorSelect.color5,
+          foregroundColor: Colors.white,
+          child: Text(
+            "${name[0].toUpperCase()}",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        label: Text("${name.toUpperCase()}."),
+      ),
+      content: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: '',
+          style: DefaultTextStyle.of(context).style,
+          children: <TextSpan>[
+            const TextSpan(
+              text: 'No hay Vacas registradas ',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            TextSpan(
+              text: '${name}, ',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const TextSpan(
+              text: 'debe registrar alguna vaca, para que se vea aquí.',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              child: const Text(
+                "Registrar",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorSelect.color5,
+                ),
+              ),
+              onPressed: () {
+                print("Registrar historial");
+              },
+            ),
+            TextButton(
+              child: const Text(
+                "Ok",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorSelect.color5,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 
