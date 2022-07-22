@@ -8,7 +8,7 @@ class GenerateImageUrl {
   late bool isGenerated;
   late String uploadUrl;
   late String downloadUrl;
-  String ip = '192.168.0.31';
+  String ip = '192.168.89.48';
   Future<void> call(String fileType) async {
     // try {
     Map body = {"fileType": fileType};

@@ -4,11 +4,11 @@ import 'package:http/http.dart' as http;
 
 String ip = "192.168.89.48";
 
-Future getMedicationHistoryByIdCowBull(int id_animal) async {
+Future getMedicationHistoryByCalf(int id_animal) async {
   try {
     final response = await http.post(
         Uri.http(
-            ip + ":3004", "/medicamentos_historial_toro/getAnimalHistorialBull"),
+            ip + ":3004", "/medicamentos_historial_becerro/getAnimalHistorial"),
         headers: {"Content-Type": "application/json; charset=UTF-8"},
         body: json.encode({"id_animal": id_animal}));
 
