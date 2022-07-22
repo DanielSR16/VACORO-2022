@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-String host = '192.168.0.10:3000';
+// String host = '192.168.89.67:3000';
+String host = 'user-vacoro-1804981318.us-east-1.elb.amazonaws.com';
 
 Future<Map<String, dynamic>> serviceusuario(int id_usuario) async {
   Map<String, String> headers = {'Content-Type': 'application/json'};

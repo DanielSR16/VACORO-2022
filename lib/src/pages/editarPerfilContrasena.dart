@@ -12,9 +12,11 @@ import 'package:vacoro_proyect/src/services/generate_image_url.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
 
 import '../services/usuario.dart';
+import 'homepage.dart';
 
 class EditarContrasena extends StatefulWidget {
-  const EditarContrasena({Key? key}) : super(key: key);
+  int id_usuario;
+  EditarContrasena({Key? key, required this.id_usuario}) : super(key: key);
 
   @override
   State<EditarContrasena> createState() => _EditarContrasenaState();
@@ -33,8 +35,6 @@ class _EditarContrasenaState extends State<EditarContrasena> {
   late bool _passwordVisibleActual = false;
   late bool _passwordVisibleNueva = false;
   late bool _passwordVisibleNuevaRepetir = false;
-
-  int id_usuario = 11;
 
   var size, height_media, width_media;
   late double bordes = 30;
@@ -103,7 +103,7 @@ class _EditarContrasenaState extends State<EditarContrasena> {
             ),
             Container(
               padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 450, bottom: 20),
+                  left: 20, right: 20, top: 390, bottom: 20),
               child: SizedBox(
                 width: size.width - 50,
                 height: 50,
@@ -120,10 +120,12 @@ class _EditarContrasenaState extends State<EditarContrasena> {
                         late bool res = valid();
                         if (res == true) {
                           serviceUserPassword(
-                                  id_usuario, contraseniaVieja_.text)
+                                  widget.id_usuario, contraseniaVieja_.text)
                               .then((value) {
                             if (value['status'] == 'ok') {
-                              serviceusuario(id_usuario).then((value) {
+                              serviceusuario(widget.id_usuario).then((value) {
+                                var nombre = value['nombre'];
+                                var correo = value['correo_electronico'];
                                 serviceeditarPassword(value, contrasenia_.text)
                                     .then((value) {
                                   if (value['status'] == 'ok') {
@@ -134,6 +136,23 @@ class _EditarContrasenaState extends State<EditarContrasena> {
                                             Text('Se actualizo la contraseña'),
                                       ),
                                     );
+                                    Future.delayed(
+                                        const Duration(milliseconds: 100), () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (BuildContext context) =>
+                                              homePage(
+                                            correo: nombre,
+                                            nombre: correo,
+                                          ),
+                                        ),
+                                      );
+
+                                      setState(() {
+                                        // Here you can write your code for open new view
+                                      });
+                                    });
                                   }
                                 });
                               });

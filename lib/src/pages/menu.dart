@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-Drawer drawer(nombre, correo) {
+import 'editarPerfilContrasena.dart';
+import 'editar_perfil.dart';
+
+Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
@@ -43,7 +46,7 @@ Drawer drawer(nombre, correo) {
             ),
           ),
           currentAccountPicture: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/image.png'),
+            backgroundImage: NetworkImage(imageUsuario),
           ),
         ),
         ListTile(
@@ -101,9 +104,35 @@ Drawer drawer(nombre, correo) {
         ),
         ListTile(
           title: const Text('Editar perfil'),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => EditarPerfil(
+                  id_usuario: id_usuario,
+                ),
+              ),
+            );
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_settings.png'),
+            width: 35,
+          ),
+        ),
+        ListTile(
+          title: const Text('Cambiar contraseña'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => EditarContrasena(
+                  id_usuario: id_usuario,
+                ),
+              ),
+            );
+          },
+          leading: const Image(
+            image: AssetImage('assets/images/icon_password.png'),
             width: 35,
           ),
         ),

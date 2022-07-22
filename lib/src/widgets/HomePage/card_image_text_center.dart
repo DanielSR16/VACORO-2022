@@ -28,11 +28,11 @@ GestureDetector createCard(context, imagen, texto, id) {
     },
     child: Container(
       margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-      width: MediaQuery.of(context).size.width * 0.45,
+      width: MediaQuery.of(context).size.width * 0.40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(color: Colors.green, spreadRadius: 3),
         ],
       ),
