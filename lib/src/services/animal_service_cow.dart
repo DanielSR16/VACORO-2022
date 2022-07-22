@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
-String ip = "192.168.56.1";
+String ip = "192.168.0.31";
 // String ip = '10.0.2.2';
 
 Future<List<Map<String, dynamic>>> getAllCow(int id_usuario, token) async {
