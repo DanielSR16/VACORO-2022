@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'splash',
+        initialRoute: 'login',
         routes: {
           'splash': (BuildContext context) => Splash(),
           'splash_canva': (BuildContext context) => SplashCanva(),

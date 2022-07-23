@@ -17,7 +17,7 @@ Future<Map<String, dynamic>> serviceeditarvacatoro(
 ) async {
  
   Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token',};
-  String host = '192.168.100.15:3001';
+  String host = '192.168.0.31:3001';
   String loginAPI;
   if (tipoAnimal == "Vaca") {
     loginAPI = '/vaca/update/';
