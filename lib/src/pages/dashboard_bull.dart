@@ -115,6 +115,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return FadeInLeft(
+                      delay: Duration(milliseconds: 100),
                       duration: Duration(milliseconds: 100 * index),
                       child: _createdCardBull(size, snapshot, index),
                     );

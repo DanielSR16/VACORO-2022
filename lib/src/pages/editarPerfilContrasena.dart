@@ -143,8 +143,8 @@ class _EditarContrasenaState extends State<EditarContrasena> {
                                         MaterialPageRoute<void>(
                                           builder: (BuildContext context) =>
                                               homePage(
-                                            correo: nombre,
-                                            nombre: correo,
+                                            correo: correo,
+                                            nombre: nombre,
                                           ),
                                         ),
                                       );

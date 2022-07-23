@@ -16,8 +16,6 @@ class DashBoardCalf extends StatefulWidget {
   State<DashBoardCalf> createState() => _DashBoardCalfState();
 }
 
-
-
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
   var id_usuario = 10;
@@ -35,7 +33,6 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
         });
       });
     });
-
 
     // TODO: implement initState
 
@@ -94,6 +91,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return FadeInLeft(
+                    delay: Duration(milliseconds: 100),
                     duration: Duration(milliseconds: 100 * index),
                     child: _createdCardCalf(size, snapshot, index),
                   );
@@ -121,7 +119,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, 'Editar_becerro');
+          Navigator.pushReplacementNamed(context, 'AnadirBecerro');
         },
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
