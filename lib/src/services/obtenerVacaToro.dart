@@ -28,7 +28,6 @@ Future vacatoro_id(int id, String tipoAnimal, token) async {
 
       return generalNames[0];
     } else {
-      
       return 'No se ha podido conectar al servidor';
     }
   } catch (e) {

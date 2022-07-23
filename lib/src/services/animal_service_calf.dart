@@ -12,8 +12,7 @@ Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
       Uri.http(ip + ":3001", "/becerro/getBecerrosUsuario"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjU4MzU5NDI5LCJleHAiOjE2NTg5NjQyMjl9.D1NSRUngvqDvKLWi3dg2bifT3hK4nNQ37sXg9dBDVC8',
+        'Authorization':'Bearer $token',
       },
       body: json.encode({
         "id_usuario": id_usuario,
