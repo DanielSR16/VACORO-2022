@@ -34,6 +34,7 @@ dependencies:
   image_picker: ^0.8.5+3
   #store image
   path_provider: ^2.0.11
+  image_cropper: ^2.0.3
 
   # store & load data securely
   flutter_secure_storage: ^5.0.2

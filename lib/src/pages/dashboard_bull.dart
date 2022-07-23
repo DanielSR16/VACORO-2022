@@ -262,6 +262,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
                     tipoAnimal: "Toro",
                     id: snapshot.data[index]['id'],
                     token: token,
+                    
                   ));
         },
         child: Column(
