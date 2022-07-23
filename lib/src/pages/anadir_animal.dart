@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
@@ -617,16 +618,41 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
 
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 500,
+        maxWidth: 500,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen ',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: true),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+        ],
+      );
 
-      String fileExtension = path.extension(image.path);
-      print(imageTemporary);
-      print(fileExtension);
+      final imageTemporary = File(croppedFile!.path);
+
+      String fileExtension = path.extension(croppedFile.path);
+
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
-      print(generateImageUrl);
       await generateImageUrl.call(fileExtension);
 
       url_img = generateImageUrl.downloadUrl;
+
       var uploadUrl;
       if (generateImageUrl.isGenerated != null &&
           generateImageUrl.isGenerated) {
@@ -684,7 +710,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
     }
   }
 
-  Future<bool> uploadFile(context, String url, File image) async {
+  Future<bool> uploadFile(context, String url, image) async {
     try {
       UploadFile uploadFile = UploadFile();
       await uploadFile.call(url, image);
