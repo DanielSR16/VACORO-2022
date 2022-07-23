@@ -8,6 +8,15 @@ import 'package:vacoro_proyect/src/pages/dashboard_category.dart';
 import 'package:vacoro_proyect/src/pages/pre_login.dart';
 import 'package:vacoro_proyect/src/pages/registro_user.dart';
 import 'package:vacoro_proyect/src/pages/registro_user2.dart';
+
+import 'package:vacoro_proyect/src/pages/vista_principal.dart';
+
+import 'package:vacoro_proyect/src/pages/registro_user.dart';
+import 'package:vacoro_proyect/src/pages/registro_user2.dart';
+import 'package:vacoro_proyect/src/pages/vista_principal.dart';
+
+import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
+
 import 'package:vacoro_proyect/src/pages/dashboard_bull.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_calf.dart';
 import 'package:vacoro_proyect/src/pages/dashboard_cow.dart';
