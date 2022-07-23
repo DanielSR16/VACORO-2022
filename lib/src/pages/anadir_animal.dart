@@ -628,19 +628,16 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
           CropAspectRatioPreset.ratio16x9
         ],
         compressQuality: 100,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: 200,
+        maxWidth: 200,
         compressFormat: ImageCompressFormat.jpg,
         uiSettings: [
           AndroidUiSettings(
-              toolbarTitle: 'Edicion de imagen ',
+              toolbarTitle: 'Edicion de imagen',
               toolbarColor: Colors.green,
               toolbarWidgetColor: Colors.white,
               initAspectRatio: CropAspectRatioPreset.original,
-              lockAspectRatio: true),
-          IOSUiSettings(
-            title: 'Cropper',
-          ),
+              lockAspectRatio: false),
         ],
       );
 
@@ -685,11 +682,32 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
 
-      //final imageTemporary = File(image.path);
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      String fileExtension = path.extension(image.path);
+      final imageTemporary = File(croppedFile!.path);
+      setState(() => this.image = imageTemporary);
+      String fileExtension = path.extension(croppedFile.path);
 
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
       await generateImageUrl.call(fileExtension);

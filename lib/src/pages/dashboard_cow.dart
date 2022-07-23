@@ -345,7 +345,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
                         child: GestureDetector(
                             onTap: () {
                               print("Vacunas");
-                              
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute<void>(
