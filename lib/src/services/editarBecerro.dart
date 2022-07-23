@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String host = '192.168.100.15:3001';
+String host = '192.168.0.10:3001';
 
 Future<Map<String, dynamic>> serviceeditarbecerro(
   String token,
