@@ -355,6 +355,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
                                           idAnimal: snapshot.data[index]['id'],
                                           nombre: snapshot.data[index]
                                               ['nombre'],
+                                          idUsuario: id_usuario,
                                         )));
                           },
                           child: Image.asset(
