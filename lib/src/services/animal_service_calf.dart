@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.10";
+String ip = "192.168.100.15";
 // String ip = "10.0.2.2";
 
 Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
@@ -12,8 +12,6 @@ Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
-        // 'Authorization':
-        //     'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjU4MzU5NDI5LCJleHAiOjE2NTg5NjQyMjl9.D1NSRUngvqDvKLWi3dg2bifT3hK4nNQ37sXg9dBDVC8',
       },
       body: json.encode({
         "id_usuario": id_usuario,

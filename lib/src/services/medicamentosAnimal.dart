@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String ip = '192.168.56.1';
+String ip = '192.168.100.15';
 
-Future medicamentos_all() async {
+Future medicamentos_all(token, idUsuario) async {
   try {
-    final response = await http.get(
-      Uri.http(ip + ':3004', '/medicamento/allMedicamentos'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-    );
+    final response = await http.post(
+        Uri.http(ip + ':3004', '/medicamento/allMedicamentosbyUser'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          "authorization": 'Bearer $token'
+        },
+        body: json.encode({"id_usuario": idUsuario}));
 
     if (response.statusCode == 200) {
       var data = response.body;
@@ -23,12 +26,19 @@ Future medicamentos_all() async {
   }
 }
 
-Future medicamentos_name_byName(String name) async {
+Future medicamentos_name_byName(
+  String name,
+  int id_usuario,
+  token,
+) async {
   try {
-    final response = await http.post(
-        Uri.http(ip + ':3004', '/medicamento/idNameMedicina'),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: json.encode({"nombre": name}));
+    final response =
+        await http.post(Uri.http(ip + ':3004', '/medicamento/idNameMedicina'),
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8',
+              "authorization": 'Bearer $token'
+            },
+            body: json.encode({"nombre": name, "id_usuario": id_usuario}));
 
     if (response.statusCode == 200) {
       var data_aux = response.body;
@@ -45,12 +55,15 @@ Future medicamentos_name_byName(String name) async {
   }
 }
 
-Future medicamentos_name_byID(int id, int id_usuario) async {
+Future medicamentos_name_byID(int id, int id_usuario, token) async {
   try {
-    final response = await http.post(
-        Uri.http(ip + ':3004', '/medicamento/NameMedicina'),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: json.encode({"id": id, "id_usuario": id_usuario}));
+    final response =
+        await http.post(Uri.http(ip + ':3004', '/medicamento/NameMedicina'),
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8',
+              "authorization": 'Bearer $token'
+            },
+            body: json.encode({"id": id, "id_usuario": id_usuario}));
 
     if (response.statusCode == 200) {
       var data_aux = response.body;
@@ -68,13 +81,15 @@ Future medicamentos_name_byID(int id, int id_usuario) async {
 }
 
 Future<String> register_historia_animal(
-    int tipoAnimal,
-    int id_usuario,
-    int id_medicamento,
-    int dosis,
-    String descripcion,
-    String fecha_aplicacion,
-    int id_animal) async {
+  String token,
+  int tipoAnimal,
+  int id_usuario,
+  int id_medicamento,
+  int dosis,
+  String descripcion,
+  String fecha_aplicacion,
+  int id_animal,
+) async {
   try {
     late String ruta = '';
     if (tipoAnimal == 1) {
@@ -86,7 +101,10 @@ Future<String> register_historia_animal(
     }
     final response = await http.post(
       Uri.http(ip + ':3004', ruta),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        "authorization": 'Bearer $token'
+      },
       body: json.encode(
         {
           "id_usuario": id_usuario,
@@ -116,19 +134,22 @@ Future<String> register_historia_animal(
   }
 }
 
-Future<String> historial_animal_edit(int id, int tipoAnimal) async {
+Future<String> historial_animal_edit(int id, int tipoAnimal, token) async {
   try {
     late String ruta = '';
     if (tipoAnimal == 1) {
-      ruta = '/medicamentos_historial_vaca/getAnimalHistorial';
+      ruta = '/medicamentos_historial_vaca/getAnimalHistorialOne';
     } else if (tipoAnimal == 2) {
-      ruta = '/medicamentos_historial_toro/getAnimalHistorial';
+      ruta = '/medicamentos_historial_toro/getAnimalHistorialOne';
     } else if (tipoAnimal == 3) {
-      ruta = '/medicamentos_historial_becerro/getAnimalHistorial';
+      ruta = '/medicamentos_historial_becerro/getAnimalHistorialOne';
     }
     final response = await http.post(
       Uri.http(ip + ':3004', ruta),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        "authorization": 'Bearer $token'
+      },
       body: json.encode(
         {
           "id": id,
@@ -154,6 +175,7 @@ Future<String> historial_animal_edit(int id, int tipoAnimal) async {
 }
 
 Future<String> register_historia_animal_editar(
+    String token,
     int id,
     int tipoAnimal,
     int id_usuario,
@@ -173,7 +195,10 @@ Future<String> register_historia_animal_editar(
     }
     final response = await http.post(
       Uri.http(ip + ':3004', ruta),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        "authorization": 'Bearer $token'
+      },
       body: json.encode(
         {
           "id": id,

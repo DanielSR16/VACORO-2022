@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCardsCalf.dart';
 import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
 import 'package:vacoro_proyect/src/pages/editar_becerro.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_calf.dart';
 import 'package:vacoro_proyect/src/services/animal_service_calf.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -18,18 +19,22 @@ class DashBoardCalf extends StatefulWidget {
 
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
-  var id_usuario = 10;
+  var id_usuario = 0;
   var token = '';
+  var name = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
       UserSecureStorage.getToken().then((token_) {
-        setState(() {
-          int id_cast = int.parse(value!);
+        UserSecureStorage.getName().then((name_) {
+          setState(() {
+            int id_cast = int.parse(value!);
 
-          id_usuario = id_cast;
-          token = token_!;
+            id_usuario = id_cast;
+            token = token_!;
+            name = name_!;
+          });
         });
       });
     });
@@ -87,16 +92,90 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                 ),
               );
             } else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return FadeInLeft(
-                    delay: Duration(milliseconds: 100),
-                    duration: Duration(milliseconds: 100 * index),
-                    child: _createdCardCalf(size, snapshot, index),
-                  );
-                },
-              );
+              if (snapshot.data.length > 0) {
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return FadeInLeft(
+                      duration: Duration(milliseconds: 100 * index),
+                      child: _createdCardCalf(size, snapshot, index),
+                    );
+                  },
+                );
+              } else {
+                return AlertDialog(
+                  elevation: 20,
+                  title: Chip(
+                    backgroundColor: ColorSelect.color2,
+                    avatar: CircleAvatar(
+                      backgroundColor: ColorSelect.color5,
+                      foregroundColor: Colors.white,
+                      child: Text(
+                        "${name[0].toUpperCase()}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    label: Text("${name.toUpperCase()}."),
+                  ),
+                  content: RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                      text: '',
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        const TextSpan(
+                          text: 'No hay historial medico de la vaca ',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${name} ',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                        const TextSpan(
+                          text: 'debe registrar medicamentos a esta vaca.',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          child: const Text(
+                            "Registrar",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: ColorSelect.color5,
+                            ),
+                          ),
+                          onPressed: () {
+                            print("Registrar historial");
+                          },
+                        ),
+                        TextButton(
+                          child: const Text(
+                            "Ok",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: ColorSelect.color5,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }
             }
           },
         ),
@@ -232,6 +311,16 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                         child: GestureDetector(
                           onTap: () {
                             print("VACUNAS");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    MedicationHitoryCalf(
+                                        idAnimal: snapshot.data[index]['id'],
+                                        nombre: snapshot.data[index]['nombre'],
+                                        idUsuario: id_usuario),
+                              ),
+                            );
                           },
                           child: Image.asset(
                             'assets/images/vaccine.png',

@@ -52,12 +52,20 @@ class _EditarBecerroState extends State<EditarBecerro> {
   late String token = '';
   late var imageAnimal =
       'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
-
+  late var token = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
       UserSecureStorage.getToken().then((token_) {
+        setState(() {
+          int id_cast = int.parse(value!);
+          id_usuario = id_cast;
+          token = token_!;
+        });
+      });
+
+      getVacasbyIdUser(id_usuario, widget.token).then((value) {
         setState(() {
           token = token_!;
           int id_cast = int.parse(value!);

@@ -9,9 +9,7 @@ import 'package:vacoro_proyect/src/model/animals.dart';
 import 'package:vacoro_proyect/src/widgets/HomePage/buttonSave.dart';
 import 'package:vacoro_proyect/src/widgets/HomePage/deleteCategorias.dart';
 import 'package:vacoro_proyect/src/widgets/HomePage/textfield.dart';
-
 import '../widgets/HomePage/appBar.dart';
-
 
 class addCategories extends StatefulWidget {
   addCategories({Key? key}) : super(key: key);
