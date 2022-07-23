@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/pre_login.dart';
+import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
 class SplashCanva extends StatefulWidget {
   SplashCanva({Key? key}) : super(key: key);
@@ -22,65 +23,44 @@ class _SplashCanvaState extends State<SplashCanva> {
 
     return Scaffold(
       body: SafeArea(
-        child: SizedBox(
-          width: size.width,
-          height: size.height,
-          child: Stack(
-            alignment: AlignmentDirectional.topStart,
-            children: [
-              Container(
-                height: 200,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/logoVacoro.png'),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: double.infinity,
-                width: double.infinity,
-                child: Container(
-                  width: size.width,
-                  margin: const EdgeInsets.all(0),
-                  padding: const EdgeInsets.all(0),
-                  decoration: const BoxDecoration(
-                    color: Color(0xff8E5935),
-                    image: DecorationImage(
-                      scale: 0.000001,
-                      image: AssetImage('assets/images/image.png'),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 0),
-                height: 700,
-                width: size.width,
-                child: CustomPaint(
-                  painter: _SplashCanvasTop(),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 0, top: 590),
-                width: size.width,
-                height: size.height,
-                child: CustomPaint(
-                  painter: _SplashCanvasBottom(),
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: _stackSplash(size),
       ),
     );
   }
 
+  Stack _stackSplash(Size size) {
+    return Stack(
+        alignment: AlignmentDirectional.topStart,
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/image.png',
+            repeat: ImageRepeat.repeatX,
+            fit: BoxFit.contain,
+          ),
+          Container(
+            padding: EdgeInsets.only(bottom: size.height * 0.0001),
+            child: CustomPaint(
+              painter: _SplashCanvasTop(),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: size.height * 0.77),
+            // height: size.height * 0.2,
+            child: CustomPaint(
+              painter: _SplashCanvasBottom(),
+            ),
+          )
+        ]);
+  }
+
   _SplashChange() async {
-        await Future.delayed(const Duration(milliseconds: 3000), () {});
-        Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => preLogin())); //Aqui agregan la vista de login
-   }
+    await Future.delayed(const Duration(milliseconds: 3000), () {});
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => preLogin())); //Aqui agregan la vista de login
+  }
 }
 
 class _SplashCanvasTop extends CustomPainter {
@@ -124,13 +104,15 @@ class _SplashCanvasBottom extends CustomPainter {
       fontWeight: FontWeight.bold,
     );
     const textSpan =
-        TextSpan(text: "BIENVENID@ A SU APLICACIÓN VACORO.", style: textStyle);
+        TextSpan(text: "BIENVENIDOS A SU APLICACIÓN VACORO.", style: textStyle);
 
-    final textPainter =
-        TextPainter(text: textSpan, textDirection: TextDirection.ltr);
+    final textPainter = TextPainter(
+        text: textSpan,
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.start);
     textPainter.layout(minWidth: 0, maxWidth: size.width);
 
-    final x = (size.width) * 0.15;
+    final x = (size.width) * 0.1;
     final y = (size.height - textPainter.height) * 0.8;
 
     final offset = Offset(x, y);
@@ -142,16 +124,6 @@ class _SplashCanvasBottom extends CustomPainter {
     paint2.strokeWidth = 5;
 
     final path2 = Path();
-    // path2.lineTo(0, size.height * 0.98);
-    // path2.quadraticBezierTo(size.width * 0.001, size.height * 0.7,
-    //     size.width * 0, size.height * 0.89);
-    // path2.quadraticBezierTo(size.width * 0.40, size.height * 0.7,
-    //     size.width * 0.99, size.height * 0.95);
-    // path2.lineTo(size.width, size.height);
-    // path2.lineTo(0, size.height);
-
-    // canvas.drawPath(path2, paint2);
-    // textPainter.paint(canvas, offset);
 
     paint2.color = const Color(0xff68C34E);
     paint2.style = PaintingStyle.fill;
