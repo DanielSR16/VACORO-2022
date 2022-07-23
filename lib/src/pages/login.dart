@@ -28,8 +28,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    email.text = 'dulce@gmail.com';
-    password.text = 'Dulce123%';
+    email.text = 'd@gmail.com';
+    password.text = 'Dulce1234%';
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -207,7 +207,9 @@ class _LoginState extends State<Login> {
                             late bool res = valid();
                             if (res == true) {
                               servicelogin(email, password).then((value) async {
-                                if (value['id'] == 'errorEmailPassword') {
+                                if (value['id'] == 'errorEmailPassword' ||
+                                    value['status'] ==
+                                        'Error al conectarse con el servidor') {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       duration: Duration(milliseconds: 1000),
@@ -220,6 +222,13 @@ class _LoginState extends State<Login> {
                                       .toString()); //Se guarda el id en el local storage
                                   await UserSecureStorage.setToken(
                                       value['token'].toString());
+
+                                  await UserSecureStorage.setName(
+                                      value['nombre'].toString());
+
+                                  await UserSecureStorage.setCorreo(
+                                      value['correo_electronico'].toString());
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       duration: Duration(milliseconds: 1000),
@@ -227,7 +236,7 @@ class _LoginState extends State<Login> {
                                           Text('Inicio de sesión correcto'),
                                     ),
                                   );
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => homePage(

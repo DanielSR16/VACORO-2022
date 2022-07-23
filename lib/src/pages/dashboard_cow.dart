@@ -2,6 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_cow.dart';
 import 'package:vacoro_proyect/src/services/animal_service_cow.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -18,15 +20,26 @@ class DashBoardCow extends StatefulWidget {
 class _DashBoardCowState extends State<DashBoardCow> {
   bool? value1;
   var id_usuario = 0;
-
+  var token = '';
+  var name = '';
+  var correo = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
-      setState(() {
-        int id_cast = int.parse(value!);
+      UserSecureStorage.getToken().then((token_) {
+        UserSecureStorage.getName().then((name_) {
+          UserSecureStorage.getCorreo().then((correo_) {
+            setState(() {
+              int id_cast = int.parse(value!);
 
-        id_usuario = id_cast;
+              id_usuario = id_cast;
+              token = token_!;
+              name = name_!;
+              correo = correo_!;
+            });
+          });
+        });
       });
     });
 
@@ -35,15 +48,32 @@ class _DashBoardCowState extends State<DashBoardCow> {
     value1 = false;
   }
 
+  List data_ = [];
   @override
   Widget build(BuildContext context) {
+    // final Object? data = ModalRoute.of(context)!.settings.arguments;
+    // if (data != null) {
+    //   setState(() {
+    //     data_ = data as List;
+    //   });
+    // }
+
+    print(name);
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           padding: const EdgeInsets.only(right: 0),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => homePage(
+                        nombre: name,
+                        correo: correo,
+                      )),
+            );
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -72,7 +102,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: getAllCow(id_usuario),
+          future: getAllCow(id_usuario, token),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -84,14 +114,20 @@ class _DashBoardCowState extends State<DashBoardCow> {
               );
               // return Container();
             } else {
-              return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return FadeInLeft(
-                      duration: Duration(milliseconds: 100 * index),
-                      child: _createdCardCow(size, snapshot, index),
-                    );
-                  });
+              if (snapshot.data.length > 0) {
+                return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return FadeInLeft(
+                        duration: Duration(milliseconds: 100 * index),
+                        child: _createdCardCow(size, snapshot, index),
+                      );
+                    });
+              } else {
+                return Center(
+                  child: _alertDialogCow(context),
+                );
+              }
             }
           },
         ),
@@ -130,6 +166,80 @@ class _DashBoardCowState extends State<DashBoardCow> {
     );
   }
 
+  AlertDialog _alertDialogCow(BuildContext context) {
+    return AlertDialog(
+      elevation: 20,
+      title: Chip(
+        backgroundColor: ColorSelect.color2,
+        avatar: CircleAvatar(
+          backgroundColor: ColorSelect.color5,
+          foregroundColor: Colors.white,
+          child: Text(
+            "${name[0].toUpperCase()}",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        label: Text("${name.toUpperCase()}."),
+      ),
+      content: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: '',
+          style: DefaultTextStyle.of(context).style,
+          children: <TextSpan>[
+            const TextSpan(
+              text: 'No hay Vacas registradas ',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            TextSpan(
+              text: '${name}, ',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const TextSpan(
+              text: 'debe registrar alguna vaca, para que se vea aquí.',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              child: const Text(
+                "Registrar",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorSelect.color5,
+                ),
+              ),
+              onPressed: () {
+                print("Registrar historial");
+              },
+            ),
+            TextButton(
+              child: const Text(
+                "Ok",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorSelect.color5,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Card _createdCardCow(Size size, AsyncSnapshot snapshot, int index) {
     return Card(
       shadowColor: Colors.grey,
@@ -149,6 +259,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
               builder: (_) => ContainerDialogModalCowDetail(
                     tipoAnimal: "Vaca",
                     id: snapshot.data[index]["id"],
+                    token: token,
                   ));
         },
         child: Column(
@@ -190,13 +301,13 @@ class _DashBoardCowState extends State<DashBoardCow> {
                         margin: const EdgeInsets.only(right: 10),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) => EditarAnimal(
                                   tipoAnimal: "Vaca",
                                   id: snapshot.data[index]["id"],
-                               
+                                  token: token,
                                 ),
                               ),
                             );
@@ -234,6 +345,16 @@ class _DashBoardCowState extends State<DashBoardCow> {
                         child: GestureDetector(
                             onTap: () {
                               print("Vacunas");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      MedicationHistoryCow(
+                                    idAnimal: snapshot.data[index]['id'],
+                                    nombre: snapshot.data[index]['nombre'],
+                                  ),
+                                ),
+                              );
                             },
                             child: Image.asset(
                               'assets/images/vaccine.png',

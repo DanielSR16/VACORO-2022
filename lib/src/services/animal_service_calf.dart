@@ -2,16 +2,22 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.56.1";
+String ip = "192.168.100.15";
 // String ip = "10.0.2.2";
 
-Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario) async {
-  print(id_usuario);
+Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
+  print(token);
   try {
     final response = await http.post(
-        Uri.http(ip + ":3001", "/becerro/getBecerrosUsuario"),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: json.encode({"id_usuario": id_usuario}));
+      Uri.http(ip + ":3001", "/becerro/getBecerrosUsuario"),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization':'Bearer $token',
+      },
+      body: json.encode({
+        "id_usuario": id_usuario,
+      }),
+    );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -39,7 +45,7 @@ Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario) async {
           // }
         }
       }
-      // print(listCalf);
+      print(listCalf);
       return listCalf;
     } else {
       print('a');
@@ -52,6 +58,7 @@ Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario) async {
   } catch (e) {
     print('b');
     print(e);
+    print('aa');
     return [
       {"error": "Error: $e"}
     ];

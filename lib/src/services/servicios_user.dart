@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String ip = '192.168.0.5';
+String ip = '192.168.100.15';
 Future<String> register_user(
     String name,
     String apellidos,
@@ -13,8 +13,6 @@ Future<String> register_user(
     String nombreRancho,
     String urlImage) async {
   try {
-
-
     final response = await http.post(
       Uri.http(ip + ':3000', '/usuario/usuarioNuevo'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},

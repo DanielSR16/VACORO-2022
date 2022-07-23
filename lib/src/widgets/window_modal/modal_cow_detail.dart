@@ -7,8 +7,9 @@ import '../../services/obtenerVacaToro.dart';
 class ContainerDialogModalCowDetail extends StatefulWidget {
   String tipoAnimal;
   int id;
+  String token;
   ContainerDialogModalCowDetail(
-      {Key? key, required this.tipoAnimal, required this.id})
+      {Key? key, required this.tipoAnimal, required this.id, required this.token})
       : super(key: key);
 
   @override
@@ -27,14 +28,13 @@ class _ContainerDialogModalCowDetailState
       'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
   late String fecha_llegada = '';
   late String estado = '';
-
+  var token = '';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    vacatoro_id(widget.id, widget.tipoAnimal).then((value) {
-      
+    vacatoro_id(widget.id, widget.tipoAnimal,widget.token).then((value) {
       setState(() {
         nombre = value.nombre;
         descripcion = value.descripcion;

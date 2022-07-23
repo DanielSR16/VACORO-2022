@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String host = '192.168.56.1:3001';
+String host = '192.168.100.15:3001';
 
 Future<Map<String, dynamic>> serviceeditarbecerro(
+  token,
   int id_usuario,
   int id,
   String nombre,
@@ -16,7 +17,10 @@ Future<Map<String, dynamic>> serviceeditarbecerro(
   int id_vaca,
   String fecha_llegada,
 ) async {
-  Map<String, String> headers = {'Content-Type': 'application/json'};
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    "authorization": 'Bearer $token'
+  };
   String animalAPI = '/becerro/update/';
 
   try {
@@ -90,12 +94,15 @@ Future<Map<String, dynamic>> servicedeletebecerro(
   }
 }
 
-Future becerro_id(int id) async {
+Future becerro_id(int id, token) async {
   try {
-    String api = '/becerro/getBecerrobyId/';
+    String api = '/becerro/getBecerrobyId';
 
     final response = await http.post(Uri.http(host, api),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
         body: json.encode({"id": id}));
 
     if (response.statusCode == 200) {
