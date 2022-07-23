@@ -1,16 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet.dart';
-import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet_field.dart';
-import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
-import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
-import 'package:multi_select_flutter/util/multi_select_list_type.dart';
-import 'package:vacoro_proyect/src/model/animals.dart';
-import 'package:vacoro_proyect/src/widgets/HomePage/buttonSave.dart';
-import 'package:vacoro_proyect/src/widgets/HomePage/deleteCategorias.dart';
-import 'package:vacoro_proyect/src/widgets/HomePage/textfield.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/model/categorias.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:vacoro_proyect/src/pages/edit_categories_complete.dart';
+import 'package:vacoro_proyect/src/services/DAO/categoryBecerroDao.dart';
+import '../services/DAO/categorias.dart';
 import '../widgets/HomePage/appBar.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:fancy_containers/fancy_containers.dart';
 
 
 class editCategories extends StatefulWidget {
@@ -21,12 +19,20 @@ class editCategories extends StatefulWidget {
 }
 
 class _editCategories extends State<editCategories> {
+  final controladorNombre = TextEditingController();
+  final controladorDescripcion = TextEditingController();
+  late Future<List<Categoria>> listaCat;
+
+  @override
+  void initState() {
+    listaCat = listaCategorias("http://192.168.100.11:3006/categoria/allCategorias");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: appbarCat("Editar Categoria", 'assets/images/logo_blanco.png'),
+      appBar: appbarCat("Editar Categoria", 'assets/images/logo_blanco.png', context, "anadir_categoria"),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -34,14 +40,13 @@ class _editCategories extends State<editCategories> {
         child: SingleChildScrollView(
           child: Column(
           children: [
-            textfieldCategoria("Nombre de la categorias","Ingrese el nombre de la categoria",10.0,context),
-            textfieldCategoria("Descripción de la categoria","Ingrese la descripción de la categoria",30.0,context),
-            seleccionLabel("Selecciona los animales de esa categoria",30.0),
-            menuDropDown("Vaca", "", 20.0,"Seleccione Vacas a agregar"),
-            menuDropDown("Toro", "", 20.0,"Seleccione Toros a agregar"),
-            menuDropDown("Becerro", "", 20.0,"Seleccione Becerros a agregar"),
-            deleteCat("Borrar Categoria",50.0),
-            botonGuardar("Guardar", 20.0)
+            ElevatedButton(onPressed: (){Navigator.pushNamed(context, "anadir_categoria");}, child: Text("add")), //Uso de mientras
+            selectionCategory(listaCat),
+            Container(margin: EdgeInsets.only(top: 25)),
+            insertarImagen('assets/images/categorias.png'),
+            eleccionCategorias("Paso 1","Escoja La Categoria A Administrar"),
+            eleccionCategorias("Paso 2","Administre A Los Diferentes Tipos De Ganado"),
+            eleccionCategorias("Paso 3","Guarda La Informacion"),
           ],
         ),
         )
@@ -49,69 +54,64 @@ class _editCategories extends State<editCategories> {
     );
   }
 
-  Container menuDropDown(textoLabel,lista,altura,textoMostrar) {
-    final _multiSelectKey = GlobalKey<FormFieldState>();
-    final _items = animales.map((animal) => MultiSelectItem<Animal>(animal, animal.name)).toList();
-    List<Animal> _selectedItems2 = [];
-    List<Animal> _selectedItems3 = [];
+  ClipRRect insertarImagen(imagen) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20), // Image border
+      child: SizedBox.fromSize(
+          size: Size.fromRadius(48), // Image radius
+          child: Image.asset(imagen)),
+    );
+  }
 
+  Container eleccionCategorias(tituloMostrar,Descripcion) {
     return Container(
-        margin: EdgeInsets.only(left: 15, right: 15, top: altura),
-        child: Column(
-          children: <Widget>[
-            MultiSelectBottomSheetField<Animal>(
-              initialChildSize: 0.7,
-              maxChildSize: 0.95,
-              listType: MultiSelectListType.CHIP,
-              checkColor: Colors.red,
-              selectedItemsTextStyle: const TextStyle(fontSize: 25,color: Colors.white),
-              unselectedColor: Colors.greenAccent[200],
-              buttonIcon: const Icon(Icons.arrow_downward,color: Colors.white),
-              searchable: true,
-              buttonText: Text(
-                textoLabel,
-                style: const TextStyle(fontSize: 18,color: Colors.white),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 5,
-              ),
-              title: Text(textoMostrar),
-              selectedColor: Colors.green,
-              decoration: const BoxDecoration(color: Colors.green),
-              items: _items,
-              onConfirm: (values) {
-                setState(() {
-                  _selectedItems2 = values;
-                });
-                print('selected : ${_selectedItems2}');
+      margin: EdgeInsets.only(top: 10),
+      child: FancyContainer(
+        onTap: (){
+          print("Hello World");
+        },
+        color1: Colors.green,
+        color2: Colors.green,
+        title: tituloMostrar,
+        textcolor: Colors.white,
+        subtitle: Descripcion,
+        subtitlecolor: Colors.white,
+      ),
+    );
+  }
 
-                _selectedItems2.forEach((item) => print("${item.id} ${item.name}"));
-                /*senduserdata(
-                    'partnerreligion', '${_selectedItems2.toString()}');*/
-              },
-              chipDisplay: MultiSelectChipDisplay(
-                textStyle: const TextStyle(fontSize: 18,color: Colors.black,),
-                onTap: (value) {
-                  setState(() {
-                    _selectedItems2.remove(value);
-                  });
-                  print('removed: ${_selectedItems2.toString()}');
-                },
-              ),
-            ),
-            _selectedItems2 == null || _selectedItems2.isEmpty
-                ? MultiSelectChipDisplay(
-                    onTap: (item) {
-                      setState(() {
-                        _selectedItems3.remove(item);
-                        print('removed below: ${_selectedItems3.toString()}');
-                      });
-                      _multiSelectKey.currentState!.validate();
-                    },
-                  )
-                : MultiSelectChipDisplay(),
-          ],
-        ),
-      );
-  } 
-
+  Container selectionCategory(listaCategorias){
+    var descripcion; var cuerpo; var listaBecerrosCat = [];
+    List<String> dropdownCategoriaNombre = [];
+    return Container(
+      margin: EdgeInsets.only(top: 25),
+      child: FutureBuilder(
+        future: listaCategorias,
+        builder: (context, AsyncSnapshot<List<Categoria>> snapshot) {
+          if (snapshot.data != null){
+            for (int i=0; i<snapshot.data!.length; i++){
+              dropdownCategoriaNombre.add(snapshot.data![i].nombreCategoria);
+            }
+            return DropdownSearch<String>(
+              mode: Mode.DIALOG,
+              showSearchBox: true,
+              showSelectedItem: true,
+              hint: "Seleccione una categoria",
+              items: dropdownCategoriaNombre,
+              label: "Categoria",
+              onChanged: ((value) => {
+                for (int i=0; i<snapshot.data!.length; i++){
+                  if (value!.compareTo(snapshot.data![i].nombreCategoria) == 0){
+                    descripcion = snapshot.data![i].descripcionCategoria,
+                    Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: editCategoriesComplete(categoriaSeleccionada: snapshot.data![i]))),
+                  },
+                },    
+              }),
+            );
+          }
+          return Container();
+        }
+      ),
+    );
+  }
 }

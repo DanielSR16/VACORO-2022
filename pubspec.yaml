@@ -54,6 +54,12 @@ dependencies:
   dropdown_button2: ^1.6.3
   multi_select_flutter: ^4.1.2
   syncfusion_flutter_pdf: ^20.2.38
+  dropdown_search: ^0.6.3
+  page_transition: ^2.0.9
+  multiple_search_selection: ^2.0.1
+  searchable_listview: ^1.7.2
+  ndialog: ^4.1.1+1
+  fancy_containers: ^0.0.4
 
   animate_do:
 

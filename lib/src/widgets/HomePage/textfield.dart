@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-Container textfieldCategoria(label,textfield,altura,context){
+Container textfieldCategoria(label,textfield,altura,controlador,context,textoMostrar){
   return Container(
     height: MediaQuery.of(context).size.height * 0.18,
     margin: EdgeInsets.only(left: 15, right: 15, top: altura),
@@ -21,9 +21,11 @@ Container textfieldCategoria(label,textfield,altura,context){
           width: MediaQuery.of(context).size.width,
           margin: EdgeInsets.only(top: 15),
           child: TextField(
+            controller: controlador,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: textfield,
+              helperText: textoMostrar
             ),
           ),
           )
