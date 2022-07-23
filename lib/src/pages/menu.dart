@@ -4,7 +4,10 @@ import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'editarPerfilContrasena.dart';
 import 'editar_perfil.dart';
 
+List data = [];
 Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
+  data.add(nombre);
+  data.add(correo);
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
@@ -51,7 +54,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Ver vacas'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "dash_cow", arguments: data);
+          },
           leading: const Image(
             image: AssetImage('assets/images/vaca.png'),
             width: 30,
@@ -59,7 +64,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Ver toros'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "dash_bull", arguments: data);
+          },
           leading: const Image(
             image: AssetImage('assets/images/toro.png'),
             width: 30,
@@ -67,7 +74,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Ver becerros'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "dash_calf", arguments: data);
+          },
           leading: const Image(
             image: AssetImage('assets/images/becerro.png'),
             width: 30,

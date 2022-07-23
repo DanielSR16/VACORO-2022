@@ -44,7 +44,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
   // late int id_usuario = 0;
   String? dropdownValue = null;
   late Map<int, String> listaVacas = {0: 'vaca'};
-  late int id_usuario = 1;
+  late int id_usuario = 0;
   String token = '';
   @override
   void initState() {
@@ -61,11 +61,12 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
 
           getVacasbyIdUser(id_usuario, token_).then((value) {
             listaVacas = value[0][0];
-            print(listaVacas);
-            List map = value[1];
 
-            setState(() {
-              dropdownValue = listaVacas[map[0]['id']];
+            List map = value[1];
+            Future.delayed(const Duration(milliseconds: 700), () {
+              setState(() {
+                dropdownValue = listaVacas[map[0]['id']];
+              });
             });
           });
         });
@@ -108,84 +109,83 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
         ],
         backgroundColor: ColorSelect.color5,
       ),
-      body: SizedBox(
-        child: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.only(right: 20, left: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  inputs("Nombre", "Ingrese nombre del becerro", size,
-                      nombreBecerro, _validateNombre),
-                  inputs("Descripción", "Ingrese una descripción del becerro",
-                      size, descripcionBecerro, _validateDescripcion),
-                  inputs("Raza", "Ingrese la raza del animal", size,
-                      razaBecerro, _validateRaza),
-                  inputs("Número de arete", "Ingrese el número de arete", size,
-                      numeroAreteBecerro, _validateNumeroArete),
-                  fecha(context, 'Fecha de llegada', dateinput, _validateDate),
-                  selectMadre("Seleccionar vaca madre", size),
-                  edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
-                      "Buen estado", size, edadBecerro, _validateEdad),
-                  selectImage(),
-                  Container(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 20),
-                    child: SizedBox(
-                      width: size.width - 50,
-                      height: 50,
-                      child: ElevatedButton(
-                          child: const Text(
-                            'Agregar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+      body: SafeArea(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          padding: const EdgeInsets.only(right: 20, left: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                inputs("Nombre", "Ingrese nombre del becerro", size,
+                    nombreBecerro, _validateNombre),
+                inputs("Descripción", "Ingrese una descripción del becerro",
+                    size, descripcionBecerro, _validateDescripcion),
+                inputs("Raza", "Ingrese la raza del animal", size, razaBecerro,
+                    _validateRaza),
+                inputs("Número de arete", "Ingrese el número de arete", size,
+                    numeroAreteBecerro, _validateNumeroArete),
+                fecha(context, 'Fecha de llegada', dateinput, _validateDate),
+                selectMadre("Seleccionar vaca madre", size),
+                edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
+                    "Buen estado", size, edadBecerro, _validateEdad),
+                selectImage(size),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 10, bottom: 20),
+                  child: SizedBox(
+                    width: size.width - 50,
+                    height: 50,
+                    child: ElevatedButton(
+                        child: const Text(
+                          'Agregar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              late bool res = valid();
-                              if (res == true) {
-                                serviceanadirbecerro(
-                                        token,
-                                        id_usuario,
-                                        nombreBecerro.text,
-                                        descripcionBecerro.text,
-                                        razaBecerro.text,
-                                        numeroAreteBecerro.text,
-                                        url_img,
-                                        estado,
-                                        int.parse(edadBecerro.text),
-                                        obtenerIdVacaSelect(),
-                                        dateinput.text)
-                                    .then((value) {
-                                  if (value['status'] == 'success') {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        duration: Duration(milliseconds: 1000),
-                                        content:
-                                            Text('Se agrego correctamente'),
-                                      ),
-                                    );
-                                    Future.delayed(
-                                        const Duration(milliseconds: 100), () {
-                                      Navigator.popAndPushNamed(
-                                          context, 'dash_calf');
-                                    });
-                                  }
-                                });
-                              }
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: ColorSelect.color5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)))),
-                    ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            late bool res = valid();
+                            if (res == true) {
+                              serviceanadirbecerro(
+                                      token,
+                                      id_usuario,
+                                      nombreBecerro.text,
+                                      descripcionBecerro.text,
+                                      razaBecerro.text,
+                                      numeroAreteBecerro.text,
+                                      url_img,
+                                      estado,
+                                      int.parse(edadBecerro.text),
+                                      obtenerIdVacaSelect(),
+                                      dateinput.text)
+                                  .then((value) {
+                                if (value['status'] == 'success') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      duration: Duration(milliseconds: 1000),
+                                      content: Text('Se agrego correctamente'),
+                                    ),
+                                  );
+                                  Future.delayed(
+                                      const Duration(milliseconds: 100), () {
+                                    Navigator.popAndPushNamed(
+                                        context, 'dash_calf');
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)))),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -276,7 +276,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
         onPressed: onClicked,
       );
 
-  Widget selectImage() {
+  Widget selectImage(Size size) {
     return Row(
       children: <Widget>[
         Column(
@@ -293,6 +293,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
               ),
             ),
             Container(
+              width: MediaQuery.of(context).size.width * 0.40,
               margin: const EdgeInsets.only(left: 16),
               child: image != null
                   ? Image.file(
@@ -310,12 +311,13 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
           ],
         ),
         Container(
+          width: MediaQuery.of(context).size.width * 0.40,
           padding: const EdgeInsets.only(
             //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 155,
+            width: size.width - 255,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
