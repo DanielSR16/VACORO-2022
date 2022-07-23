@@ -25,9 +25,9 @@ class _addCategories extends State<addCategories> {
 
   @override
   void initState() {
-    listaB = listaBecerros("http://192.168.100.6:3006/categoria/allCategorias/allBecerros");
-    listaV = listaVacas("http://192.168.100.6:3006/categoria/allCategorias/allVacas");
-    listaT = listaToros("http://192.168.100.6:3006/categoria/allCategorias/allToros");
+    listaB = listaBecerros("http://192.168.100.11:3006/categoria/allCategorias/allBecerros");
+    listaV = listaVacas("http://192.168.100.11:3006/categoria/allCategorias/allVacas");
+    listaT = listaToros("http://192.168.100.11:3006/categoria/allCategorias/allToros");
     super.initState();
   }
 
@@ -42,7 +42,7 @@ class _addCategories extends State<addCategories> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: appbarCat("Nueva Categoria", 'assets/images/logo_blanco.png'),
+      appBar: appbarCat("Nueva Categoria", 'assets/images/logo_blanco.png', context, "editar_categoria"),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -56,7 +56,7 @@ class _addCategories extends State<addCategories> {
             menuDropDown(listaB, 20.0,"becerros"),
             menuDropDown(listaV, 20.0,"vacas"),
             menuDropDown(listaT, 20.0,"toros"),
-            botonGuardar("Guardar", 100.0,becerroEleccion,vacaEleccion,toroEleccion,controladorNombre,controladorDescripcion)
+            botonGuardar("Guardar", 100.0,becerroEleccion,vacaEleccion,toroEleccion,controladorNombre,controladorDescripcion,context),
           ],
         ),
         )
@@ -84,61 +84,61 @@ class _addCategories extends State<addCategories> {
   }
 
   Future <List<dynamic>> generarListaVaca()async {
-    List<Vacas> listaV = await listaVacas("http://192.168.100.6:3006/categoria/allCategorias/allVacas");
+    List<Vacas> listaVaca = await listaV;
     List<Vacas> vacas = List<Vacas>.generate(
-      listaV.length,
+      listaVaca.length,
       (index) => Vacas(
-        id: listaV[index].id,
-        id_usuario: listaV[index].estado,
-        nombre: listaV[index].nombre,
-        descripcion: listaV[index].descripcion,
-        raza: listaV[index].raza,
-        num_arete: listaV[index].num_arete,
-        url_img: listaV[index].url_img,
-        estado: listaV[index].estado,
-        fecha_llegada: listaV[index].fecha_llegada,
-        edad: listaV[index].edad,
+        id: listaVaca[index].id,
+        id_usuario: listaVaca[index].estado,
+        nombre: listaVaca[index].nombre,
+        descripcion: listaVaca[index].descripcion,
+        raza: listaVaca[index].raza,
+        num_arete: listaVaca[index].num_arete,
+        url_img: listaVaca[index].url_img,
+        estado: listaVaca[index].estado,
+        fecha_llegada: listaVaca[index].fecha_llegada,
+        edad: listaVaca[index].edad,
       ),
     );
   return vacas;
   }
 
   Future <List<dynamic>> generarListaToro()async {
-    List<Toros> listaT = await listaToros("http://192.168.100.6:3006/categoria/allCategorias/allToros");
+    List<Toros> listaToro = await listaT;
     List<Toros> toros = List<Toros>.generate(
-      listaT.length,
+      listaToro.length,
       (index) => Toros(
-        id: listaT[index].id,
-        id_usuario: listaT[index].estado,
-        nombre: listaT[index].nombre,
-        descripcion: listaT[index].descripcion,
-        raza: listaT[index].raza,
-        num_arete: listaT[index].num_arete,
-        url_img: listaT[index].url_img,
-        estado: listaT[index].estado,
-        fecha_llegada: listaT[index].fecha_llegada,
-        edad: listaT[index].edad,
+        id: listaToro[index].id,
+        id_usuario: listaToro[index].estado,
+        nombre: listaToro[index].nombre,
+        descripcion: listaToro[index].descripcion,
+        raza: listaToro[index].raza,
+        num_arete: listaToro[index].num_arete,
+        url_img: listaToro[index].url_img,
+        estado: listaToro[index].estado,
+        fecha_llegada: listaToro[index].fecha_llegada,
+        edad: listaToro[index].edad,
       ),
     );
   return toros;
   }
 
   Future <List<dynamic>> generarListaBecerro() async{
-    List<Becerros> listaB = await listaBecerros("http://192.168.100.6:3006/categoria/allCategorias/allBecerros");
+    List<Becerros> listaBecerro = await listaB;
     List<Becerros> becerros = List<Becerros>.generate(
-      listaB.length,
+      listaBecerro.length,
       (index) => Becerros(
-        id: listaB[index].id,
-        id_usuario: listaB[index].estado,
-        nombre: listaB[index].nombre,
-        descripcion: listaB[index].descripcion,
-        raza: listaB[index].raza,
-        num_arete: listaB[index].num_arete,
-        url_img: listaB[index].url_img,
-        estado: listaB[index].estado,
-        fecha_llegada: listaB[index].fecha_llegada,
-        id_vaca: listaB[index].id_vaca,
-        edad: listaB[index].edad,
+        id: listaBecerro[index].id,
+        id_usuario: listaBecerro[index].estado,
+        nombre: listaBecerro[index].nombre,
+        descripcion: listaBecerro[index].descripcion,
+        raza: listaBecerro[index].raza,
+        num_arete: listaBecerro[index].num_arete,
+        url_img: listaBecerro[index].url_img,
+        estado: listaBecerro[index].estado,
+        fecha_llegada: listaBecerro[index].fecha_llegada,
+        id_vaca: listaBecerro[index].id_vaca,
+        edad: listaBecerro[index].edad,
       ),
     );
   return becerros;
@@ -202,6 +202,7 @@ class _addCategories extends State<addCategories> {
         children: <Widget>[
           MultipleSearchSelection<dynamic>(
             items: items,
+            
             fieldToCheck: (c) {
               return c.nombre;
             },
@@ -246,7 +247,8 @@ class _addCategories extends State<addCategories> {
                   fontWeight: FontWeight.bold,
                   color: Colors.green),
             ),
-            showSelectAllButton: true,
+            showSelectAllButton: false,
+            showClearAllButton: false,
             titlePadding: const EdgeInsets.symmetric(vertical: 10),
             searchItemTextContentPadding:
                 const EdgeInsets.symmetric(horizontal: 10),

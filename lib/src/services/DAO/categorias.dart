@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:vacoro_proyect/src/model/categorias.dart';
+
+import '../../pages/edit_categories_complete.dart';
 
 Future<List<Categoria>> listaCategorias(path) async {
   Map<String, String> headers = {'Content-Type': 'application/json'};
@@ -111,6 +115,53 @@ Future createAnimalCategory(path,listaAnimal) async {
   Response response = await post(Uri.parse(path), headers: headers, body: listaAnimal);
   if (response.statusCode == 200) {
     return response.body;
+  }else{
+    return 'no se creo';
+  }
+}
+
+seleccionCategoria(listaCategorias){
+    var descripcion;
+    List<String> dropdownCategoriaNombre = [];
+    return Container(
+      child: FutureBuilder(
+        future: listaCategorias,
+        builder: (context, AsyncSnapshot<List<Categoria>> snapshot) {
+          if (snapshot.data != null){
+            for (int i=0; i<snapshot.data!.length; i++){
+              dropdownCategoriaNombre.add(snapshot.data![i].nombreCategoria);
+            }
+            return DropdownSearch<String>(
+              mode: Mode.DIALOG,
+              showSearchBox: true,
+              showSelectedItem: true,
+              hint: "Seleccione una categoria",
+              items: dropdownCategoriaNombre,
+              label: "Categoria",
+              onChanged: ((value) => {
+                // for (int i=0; i<snapshot.data!.length; i++){
+                //   if (value!.compareTo(snapshot.data![i].nombreCategoria) == 0){
+                //     descripcion = snapshot.data![i].descripcionCategoria,
+                //     Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: editCategoriesComplete(categoriaSeleccionada: snapshot.data![i]))),
+                //   },
+                // },    
+              }),
+            );
+          }
+          return Container();
+        }
+      ),
+    );
+}
+
+Future AccionarCategoria_edito_elimino(path,listaAnimal) async {
+  Map<String, String> headers = {
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Charset': 'utf-8'
+  };
+  Response response = await post(Uri.parse(path), headers: headers, body: listaAnimal);
+  if (response.statusCode == 200) {
+    return response.statusCode;
   }else{
     return 'no se creo';
   }
