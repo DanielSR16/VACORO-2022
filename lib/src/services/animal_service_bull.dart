@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.56.1";
+String ip = "192.168.100.15";
 // String ip = "10.0.2.2";
 
 Future<List<Map<String, dynamic>>> getAllBull(
@@ -25,7 +25,6 @@ Future<List<Map<String, dynamic>>> getAllBull(
 
       if (data != null) {
         for (Map bull in data) {
-
           if (bull['estado'] == 1) {
             bull['estado'] = true;
           } else {
