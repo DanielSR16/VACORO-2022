@@ -345,6 +345,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
                         child: GestureDetector(
                             onTap: () {
                               print("Vacunas");
+                              
                               Navigator.push(
                                 context,
                                 MaterialPageRoute<void>(
@@ -352,6 +353,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
                                       MedicationHistoryCow(
                                     idAnimal: snapshot.data[index]['id'],
                                     nombre: snapshot.data[index]['nombre'],
+                                    idUsuario: id_usuario,
                                   ),
                                 ),
                               );

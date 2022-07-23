@@ -19,7 +19,7 @@ class DashBoardCalf extends StatefulWidget {
 
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
-  var id_usuario = 10;
+  var id_usuario = 0;
   var token = '';
   var name = '';
   @override
@@ -316,9 +316,9 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     MedicationHitoryCalf(
-                                  idAnimal: snapshot.data[index]['id'],
-                                  nombre: snapshot.data[index]['nombre'],
-                                ),
+                                        idAnimal: snapshot.data[index]['id'],
+                                        nombre: snapshot.data[index]['nombre'],
+                                        idUsuario: id_usuario),
                               ),
                             );
                           },

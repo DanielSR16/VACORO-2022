@@ -59,8 +59,8 @@ class MyApp extends StatelessWidget {
           'dash_medication': (BuildContext context) => Medication(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
               AnadirMedicamentoAnimal(),
-          'EditarMedicamentoAnimal': (BuildContext context) =>
-              EditarMedicamentoAnimal(),
+          // 'EditarMedicamentoAnimal': (BuildContext context) =>
+          //     EditarMedicamentoAnimal(),
           'ContainerdDialogCowCalfDetails': (BuildContext context) =>
               ContainerdDialogCowCalfDetails(),
         });

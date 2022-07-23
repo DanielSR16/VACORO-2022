@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.89.48";
+String ip = "192.168.100.15";
 
 Future getMedicationHistoryByIdCow(int id_animal) async {
   try {
@@ -14,7 +14,7 @@ Future getMedicationHistoryByIdCow(int id_animal) async {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      // print(data);
+      print(data);
       return data;
     } else {
       return "No se pudo conectar al servidor :(\n Codigo de error: ${response.statusCode}";

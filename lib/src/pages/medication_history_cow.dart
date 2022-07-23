@@ -1,13 +1,19 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/editar_medicamento_animal.dart';
 import 'package:vacoro_proyect/src/services/service_medication_history_cow.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 
 class MedicationHistoryCow extends StatefulWidget {
   int idAnimal;
+  int idUsuario;
   String nombre;
-  MedicationHistoryCow({Key? key, required this.idAnimal, required this.nombre})
+  MedicationHistoryCow(
+      {Key? key,
+      required this.idAnimal,
+      required this.nombre,
+      required this.idUsuario})
       : super(key: key);
 
   @override
@@ -59,7 +65,12 @@ class _MedicationHistoryCowState extends State<MedicationHistoryCow> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("AGREGAR MEDICAMENTOS??");
+        
+
+          List data_cow = [1, widget.idUsuario, widget.idAnimal];
+
+          Navigator.popAndPushNamed(context, 'AnadirMedicamentoAnimal',
+              arguments: data_cow);
         },
         child: const Icon(Icons.add),
         backgroundColor: ColorSelect.color5,
@@ -223,6 +234,22 @@ class _MedicationHistoryCowState extends State<MedicationHistoryCow> {
                           child: GestureDetector(
                             onTap: () {
                               print("Edit historial Vacas");
+                              List data_cow = [
+                                1,
+                                widget.idUsuario,
+                                widget.idAnimal,
+                                snapshot.data[index]['id']
+                              ];
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      EditarMedicamentoAnimal(
+                                    data_: data_cow,
+                                  ),
+                                ),
+                              );
                             },
                             child: Image.asset(
                               'assets/images/edit_logo.png',
