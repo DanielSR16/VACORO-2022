@@ -65,8 +65,6 @@ class _MedicationHistoryCowState extends State<MedicationHistoryCow> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-        
-
           List data_cow = [1, widget.idUsuario, widget.idAnimal];
 
           Navigator.popAndPushNamed(context, 'AnadirMedicamentoAnimal',
