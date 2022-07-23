@@ -52,7 +52,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
   late String token = '';
   late var imageAnimal =
       'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
-  late var token = '';
+
   @override
   void initState() {
     super.initState();
@@ -66,36 +66,14 @@ class _EditarBecerroState extends State<EditarBecerro> {
       });
 
       getVacasbyIdUser(id_usuario, widget.token).then((value) {
+        // Future.delayed(const Duration(milliseconds: 200), () {
         setState(() {
-          token = token_!;
-          int id_cast = int.parse(value!);
-
-          id_usuario = id_cast;
-          getVacasbyIdUser(id_usuario, widget.token).then((value) {
-            // Future.delayed(const Duration(milliseconds: 200), () {
-            setState(() {
-              listaVacas = value[0][0];
-              List map = value[1];
-            });
-            // });
-          });
+          listaVacas = value[0][0];
+          List map = value[1];
         });
+        // });
       });
     });
-    // UserSecureStorage.getId().then((value) {
-    //   setState(() {
-    //     int id_cast = int.parse(value!);
-    //     id_usuario = id_cast;
-    //   });
-
-    //   getVacasbyIdUser(id_usuario, widget.token).then((value) {
-    //     setState(() {
-    //       listaVacas = value[0][0];
-    //       List map = value[1];
-    //     });
-    //   });
-    // });
-    // TODO: implement initState
 
     becerro_id(widget.id, widget.token).then((value) {
       nombreBecerroEditar.text = value.nombre;
