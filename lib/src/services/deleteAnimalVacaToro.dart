@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> servicedeletevacatoro(
+  String token,
   String tipoAnimal,
   int id,
 ) async {
-  Map<String, String> headers = {'Content-Type': 'application/json'};
-  String host = '192.168.0.31:3001';
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+  };
+  String host = '192.168.100.15:3001';
   String loginAPI;
   if (tipoAnimal == "Vaca") {
     loginAPI = '/vaca/delete/';

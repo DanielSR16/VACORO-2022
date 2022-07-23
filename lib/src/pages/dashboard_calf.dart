@@ -198,7 +198,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, 'Editar_becerro');
+          Navigator.pushReplacementNamed(context, 'AnadirBecerro');
         },
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
