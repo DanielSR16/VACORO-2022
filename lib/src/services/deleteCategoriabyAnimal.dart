@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String host = '192.168.0.10:3006';
+String host = '192.168.100.15:3006';
 
 Future<Map<String, dynamic>> servicedeletecategoriavacatoro(
   String token,
