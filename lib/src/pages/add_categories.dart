@@ -10,7 +10,6 @@ import 'package:multiple_search_selection/multiple_search_selection.dart';
 import '../model/vacasCategorias.dart';
 import '../widgets/HomePage/appBar.dart';
 
-
 class addCategories extends StatefulWidget {
   addCategories({Key? key}) : super(key: key);
 

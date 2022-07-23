@@ -225,7 +225,9 @@ class preLogin extends StatelessWidget {
                                   textAlign: TextAlign.center),
                             ],
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'registroUser');
+                          },
                         ))
                   ]),
             ),

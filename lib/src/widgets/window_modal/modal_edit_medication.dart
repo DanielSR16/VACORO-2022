@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class ContainerDialogEdit extends StatelessWidget {
-  ContainerDialogEdit({Key? key, required this.text}) : super(key: key);
-  String text;
+class ContainerDialogEditMedication extends StatelessWidget {
+  ContainerDialogEditMedication({Key? key}) : super(key: key);
+
+  TextEditingController nombre_medicamento = TextEditingController();
+  TextEditingController descripcion_medicamento = TextEditingController();
+  TextEditingController cantidad_medicamento = TextEditingController();
+  // TextEditingController fecha_medicamento = TextEditingController();
+
+  late bool _validateNombre = false;
+  late bool _validateDescripcion = false;
+  late bool _validateCantidad = false;
+
+  // late bool _validateFecha = false;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +104,9 @@ class ContainerDialogEdit extends StatelessWidget {
                         child: SingleChildScrollView(
                           child: TextField(
                             maxLines: 2,
-                            onChanged: (text) {},
+                            onChanged: (text) {
+                              
+                            },
                             decoration: InputDecoration(
                               hintStyle: const TextStyle(
                                 color: ColorSelect.color5,

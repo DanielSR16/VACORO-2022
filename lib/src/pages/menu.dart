@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-Drawer drawer(nombre, correo) {
+import 'editarPerfilContrasena.dart';
+import 'editar_perfil.dart';
+
+List data = [];
+Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
+  data.add(nombre);
+  data.add(correo);
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
@@ -43,12 +49,14 @@ Drawer drawer(nombre, correo) {
             ),
           ),
           currentAccountPicture: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/image.png'),
+            backgroundImage: NetworkImage(imageUsuario),
           ),
         ),
         ListTile(
           title: const Text('Ver vacas'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "dash_cow", arguments: data);
+          },
           leading: const Image(
             image: AssetImage('assets/images/vaca.png'),
             width: 30,
@@ -56,7 +64,9 @@ Drawer drawer(nombre, correo) {
         ),
         ListTile(
           title: const Text('Ver toros'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "dash_bull", arguments: data);
+          },
           leading: const Image(
             image: AssetImage('assets/images/toro.png'),
             width: 30,
@@ -64,7 +74,9 @@ Drawer drawer(nombre, correo) {
         ),
         ListTile(
           title: const Text('Ver becerros'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "dash_calf", arguments: data);
+          },
           leading: const Image(
             image: AssetImage('assets/images/becerro.png'),
             width: 30,
@@ -101,9 +113,35 @@ Drawer drawer(nombre, correo) {
         ),
         ListTile(
           title: const Text('Editar perfil'),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => EditarPerfil(
+                  id_usuario: id_usuario,
+                ),
+              ),
+            );
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_settings.png'),
+            width: 35,
+          ),
+        ),
+        ListTile(
+          title: const Text('Cambiar contraseña'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => EditarContrasena(
+                  id_usuario: id_usuario,
+                ),
+              ),
+            );
+          },
+          leading: const Image(
+            image: AssetImage('assets/images/icon_password.png'),
             width: 35,
           ),
         ),
