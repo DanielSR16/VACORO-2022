@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
 import 'package:vacoro_proyect/src/pages/homepage.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_bull.dart';
 import 'package:vacoro_proyect/src/services/animal_service_bull.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -99,29 +100,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
         backgroundColor: const Color(0xff68C34E),
       ),
       body: SafeArea(
-        child: FutureBuilder(
-          future: getAllBull(id_usuario, token),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 5,
-                  backgroundColor: ColorSelect.color5,
-                  color: Colors.white,
-                ),
-              );
-            } else {
-              return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return FadeInLeft(
-                      duration: Duration(milliseconds: 100 * index),
-                      child: _createdCardBull(size, snapshot, index),
-                    );
-                  });
-            }
-          },
-        ),
+        child: _futureBuilderBull(size),
       ),
       bottomNavigationBar: BottomAppBar(
         color: ColorSelect.color5,
@@ -156,9 +135,116 @@ class _DashBoardBullState extends State<DashBoardBull> {
     );
   }
 
+  FutureBuilder<List<Map<String, dynamic>>> _futureBuilderBull(Size size) {
+    return FutureBuilder(
+      future: getAllBull(id_usuario, token),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 5,
+              backgroundColor: ColorSelect.color5,
+              color: Colors.white,
+            ),
+          );
+        } else {
+          if (snapshot.data.length > 0) {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return FadeInLeft(
+                    duration: Duration(milliseconds: 100 * index),
+                    child: _createdCardBull(size, snapshot, index),
+                  );
+                });
+          } else {
+            return Center(
+              child: _alertDialogBull(context),
+            );
+            ;
+          }
+        }
+      },
+    );
+  }
+
+  AlertDialog _alertDialogBull(BuildContext context) {
+    return AlertDialog(
+      elevation: 20,
+      title: Chip(
+        backgroundColor: ColorSelect.color2,
+        avatar: CircleAvatar(
+          backgroundColor: ColorSelect.color5,
+          foregroundColor: Colors.white,
+          child: Text(
+            "${name[0].toUpperCase()}",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        label: Text("${name.toUpperCase()}."),
+      ),
+      content: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: '',
+          style: DefaultTextStyle.of(context).style,
+          children: <TextSpan>[
+            const TextSpan(
+              text: 'No hay Toros registrados ',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            TextSpan(
+              text: '${name}, ',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const TextSpan(
+              text: 'debe registrar algún toro, para que se vea aquí.',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              child: const Text(
+                "Registrar",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorSelect.color5,
+                ),
+              ),
+              onPressed: () {
+                print("Registrar historial");
+              },
+            ),
+            TextButton(
+              child: const Text(
+                "Ok",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorSelect.color5,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Card _createdCardBull(Size size, AsyncSnapshot<dynamic> snapshot, int index) {
     return Card(
-      shadowColor: Colors.grey,
+      shadowColor: ColorSelect.color5,
       shape: RoundedRectangleBorder(
         side: const BorderSide(
           color: ColorSelect.color5,
@@ -261,6 +347,15 @@ class _DashBoardBullState extends State<DashBoardBull> {
                         child: GestureDetector(
                           onTap: () {
                             print("VACUNAS");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        MedicationHistoryBull(
+                                          idAnimal: snapshot.data[index]['id'],
+                                          nombre: snapshot.data[index]
+                                              ['nombre'],
+                                        )));
                           },
                           child: Image.asset(
                             'assets/images/vaccine.png',
