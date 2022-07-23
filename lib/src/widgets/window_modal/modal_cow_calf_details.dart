@@ -1,8 +1,43 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class ContainerdDialogCowCalfDetails extends StatelessWidget {
-  const ContainerdDialogCowCalfDetails({Key? key}) : super(key: key);
+import '../../services/obtenerBecerro_Vaca.dart';
+import '../../utils/user_secure_storage.dart';
+
+class ContainerdDialogCowCalfDetails extends StatefulWidget {
+  int id_vaca;
+  String nombreVaca;
+  ContainerdDialogCowCalfDetails(
+      {Key? key, required this.nombreVaca, required this.id_vaca})
+      : super(key: key);
+
+  @override
+  State<ContainerdDialogCowCalfDetails> createState() =>
+      _ContainerdDialogCowCalfDetailsState();
+}
+
+class _ContainerdDialogCowCalfDetailsState
+    extends State<ContainerdDialogCowCalfDetails> {
+  var id_usuario = 11;
+  var token = '';
+  var name = '';
+  @override
+  void initState() {
+    super.initState();
+    UserSecureStorage.getId().then((value) {
+      UserSecureStorage.getToken().then((token_) {
+        UserSecureStorage.getName().then((name_) {
+          setState(() {
+            int id_cast = int.parse(value!);
+            id_usuario = id_cast;
+            token = token_!;
+            name = name_!;
+          });
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +76,15 @@ class ContainerdDialogCowCalfDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(
-                  child: Container(
-                    width: size.width * 0.75,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
+                Container(
+                  margin: const EdgeInsets.only(left: 20, bottom: 10),
+                  child: Text(
+                    widget.nombreVaca,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: ColorSelect.color5,
                     ),
-                    child: _input("Nombre"),
                   ),
                 ),
                 Column(
@@ -72,18 +108,67 @@ class ContainerdDialogCowCalfDetails extends StatelessWidget {
                     ),
                   ],
                 ),
-                Column(children: [
-                  _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                  _createCardsCowsCategoryModal(size, "Otra becerro"),
-                  _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                  _createCardsCowsCategoryModal(size, "Otra becerro"),
-                  _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                  _createCardsCowsCategoryModal(size, "Otra becerro"),
-                  _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                  _createCardsCowsCategoryModal(size, "Otra becerro"),
-                  _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                  _createCardsCowsCategoryModal(size, "Otra becerro"),
-                ]),
+                FutureBuilder(
+                  future: getBecerrobyIdvaca(widget.id_vaca, token),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 5,
+                          backgroundColor: ColorSelect.color5,
+                          color: Colors.white,
+                        ),
+                      );
+                    } else {
+                      if (snapshot.data.length > 0) {
+                        return ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return FadeInLeft(
+                              duration: Duration(milliseconds: 100 * index),
+                              child: _createCardsCowsCategoryModal(
+                                  size, snapshot, index),
+                            );
+                          },
+                        );
+                      } else {
+                        return AlertDialog(
+                          elevation: 20,
+                          title: Chip(
+                            backgroundColor: ColorSelect.color2,
+                            avatar: CircleAvatar(
+                              backgroundColor: ColorSelect.color5,
+                              foregroundColor: Colors.white,
+                              child: Text(
+                                "${name[0].toUpperCase()}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            label: Text("${name.toUpperCase()}."),
+                          ),
+                          content: RichText(
+                            textAlign: TextAlign.justify,
+                            text: TextSpan(
+                              text: '',
+                              style: DefaultTextStyle.of(context).style,
+                              children: const <TextSpan>[
+                                TextSpan(
+                                  text: 'La vaca no tiene becerros ',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -92,7 +177,8 @@ class ContainerdDialogCowCalfDetails extends StatelessWidget {
     );
   }
 
-  Card _createCardsCowsCategoryModal(Size size, String nameCalf) {
+  Card _createCardsCowsCategoryModal(
+      Size size, AsyncSnapshot<dynamic> snapshot, int index) {
     return Card(
       shadowColor: Colors.grey,
       shape: RoundedRectangleBorder(
@@ -114,7 +200,7 @@ class ContainerdDialogCowCalfDetails extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.only(left: 20),
                       child: Text(
-                        "$nameCalf",
+                        snapshot.data[index]['nombre'],
                         style: const TextStyle(
                           color: Color(0xff3E762F),
                           fontWeight: FontWeight.bold,
@@ -128,14 +214,13 @@ class ContainerdDialogCowCalfDetails extends StatelessWidget {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(right: 20),
-                      child: GestureDetector(
-                        onTap: (() => {
-                              print("Eliminar Becerro"),
-                            }),
-                        child: const Icon(
+                      child: IconButton(
+                        splashRadius: 25,
+                        icon: const Icon(
                           Icons.delete_outline_outlined,
-                          color: Color(0xff000000),
+                          color: ColorSelect.color5,
                         ),
+                        onPressed: () {},
                       ),
                     ),
                   ],

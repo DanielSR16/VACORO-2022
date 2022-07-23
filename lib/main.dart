@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'splash',
+        initialRoute: 'ContainerdDialogCowCalfDetails',
         routes: {
           'splash': (BuildContext context) => Splash(),
           'splash_canva': (BuildContext context) => SplashCanva(),
@@ -62,7 +62,10 @@ class MyApp extends StatelessWidget {
           'EditarMedicamentoAnimal': (BuildContext context) =>
               EditarMedicamentoAnimal(),
           'ContainerdDialogCowCalfDetails': (BuildContext context) =>
-              ContainerdDialogCowCalfDetails(),
+              ContainerdDialogCowCalfDetails(
+                nombreVaca: "lola",
+                id_vaca: 2,
+              ),
         });
   }
 }
