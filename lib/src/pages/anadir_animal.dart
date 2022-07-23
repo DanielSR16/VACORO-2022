@@ -95,97 +95,96 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
         ],
         backgroundColor: ColorSelect.color5,
       ),
-      body: SizedBox(
-        child: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.only(right: 20, left: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  inputs("Nombre", "Ingrese nombre del animal", size,
-                      nombreToroVaca, _validateNombre),
-                  inputs("Descripción", "Ingrese una descripción del animal",
-                      size, descripcionToroVaca, _validateDescripcion),
-                  inputs("Raza", "Ingrese la raza del animal", size,
-                      razaToroVaca, _validateRaza),
-                  inputs("Número de arete", "Ingrese el número de arete", size,
-                      numeroAreteToroVaca, _validateNumeroArete),
-                  //date(),
-                  fecha(context, "Fecha de llegada", dateinput, _validateDate),
-                  edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
-                      "Buen estado", size, edadToroVaca, _validateEdad),
-                  selectImage(),
-                  Container(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 20),
-                    child: SizedBox(
-                      width: size.width - 50,
-                      height: 50,
-                      child: ElevatedButton(
-                          child: const Text(
-                            'Agregar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+      body: SafeArea(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          padding: const EdgeInsets.only(right: 20, left: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                inputs("Nombre", "Ingrese nombre del animal", size,
+                    nombreToroVaca, _validateNombre),
+                inputs("Descripción", "Ingrese una descripción del animal",
+                    size, descripcionToroVaca, _validateDescripcion),
+                inputs("Raza", "Ingrese la raza del animal", size, razaToroVaca,
+                    _validateRaza),
+                inputs("Número de arete", "Ingrese el número de arete", size,
+                    numeroAreteToroVaca, _validateNumeroArete),
+                //date(),
+                fecha(context, "Fecha de llegada", dateinput, _validateDate),
+                edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
+                    "Buen estado", size, edadToroVaca, _validateEdad),
+                selectImage(size),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 30, bottom: 20),
+                  child: SizedBox(
+                    width: size.width - 50,
+                    height: 50,
+                    child: ElevatedButton(
+                        child: const Text(
+                          'Agregar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              late bool res = valid();
-                              if (res == true) {
-                                serviceanadirvacatoro(
-                                        token,
-                                        id_usuario,
-                                        widget.tipoAnimal,
-                                        nombreToroVaca.text,
-                                        descripcionToroVaca.text,
-                                        razaToroVaca.text,
-                                        numeroAreteToroVaca.text,
-                                        url_img,
-                                        estado,
-                                        int.parse(edadToroVaca.text),
-                                        dateinput.text)
-                                    .then((value) {
-                                  if (value['status'] == 'success') {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        duration: Duration(milliseconds: 1000),
-                                        content:
-                                            Text('Se agrego correctamente'),
-                                      ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            late bool res = valid();
+                            if (res == true) {
+                              serviceanadirvacatoro(
+                                      token,
+                                      id_usuario,
+                                      widget.tipoAnimal,
+                                      nombreToroVaca.text,
+                                      descripcionToroVaca.text,
+                                      razaToroVaca.text,
+                                      numeroAreteToroVaca.text,
+                                      url_img,
+                                      estado,
+                                      int.parse(edadToroVaca.text),
+                                      dateinput.text)
+                                  .then((value) {
+                                if (value['status'] == 'success') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      duration: Duration(milliseconds: 1000),
+                                      content: Text('Se agrego correctamente'),
+                                    ),
+                                  );
+
+                                  Future.delayed(
+                                      const Duration(milliseconds: 200), () {
+                                    String ruta = '';
+                                    if (widget.tipoAnimal == 'Vaca') {
+                                      ruta = 'dash_cow';
+                                    } else {
+                                      ruta = 'dash_bull';
+                                    }
+                                    Navigator.popAndPushNamed(
+                                      context,
+                                      ruta,
                                     );
 
-                                    Future.delayed(
-                                        const Duration(milliseconds: 200), () {
-                                      String ruta = '';
-                                      if (widget.tipoAnimal == 'Vaca') {
-                                        ruta = 'dash_cow';
-                                      } else {
-                                        ruta = 'dash_bull';
-                                      }
-                                      Navigator.popAndPushNamed(
-                                        context,
-                                        ruta,
-                                      );
-
-                                      setState(() {
-                                        // Here you can write your code for open new view
-                                      });
+                                    setState(() {
+                                      // Here you can write your code for open new view
                                     });
-                                  }
-                                });
-                              }
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: ColorSelect.color5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)))),
-                    ),
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)))),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -276,7 +275,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
         onPressed: onClicked,
       );
 
-  Widget selectImage() {
+  Widget selectImage(Size size) {
     return Row(
       children: <Widget>[
         Column(
@@ -293,6 +292,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
               ),
             ),
             Container(
+              width: MediaQuery.of(context).size.width * 0.40,
               margin: const EdgeInsets.only(left: 16),
               child: image != null
                   ? Image.file(
@@ -310,12 +310,13 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
           ],
         ),
         Container(
+          width: MediaQuery.of(context).size.width * 0.40,
           padding: const EdgeInsets.only(
             //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 160,
+            width: size.width - 255,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

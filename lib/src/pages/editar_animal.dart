@@ -15,6 +15,9 @@ import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
+import '../services/deleteCategoriabyAnimal.dart';
+import '../services/deleteHistorialAnimal.dart';
+
 class EditarAnimal extends StatefulWidget {
   String tipoAnimal;
   int id;
@@ -132,107 +135,56 @@ class _EditarAnimalState extends State<EditarAnimal> {
         ],
         backgroundColor: ColorSelect.color5,
       ),
-      body: SizedBox(
-        child: SafeArea(
-          child: Container(
-            padding: EdgeInsets.only(right: bordes, left: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  inputs("Nombre", "Ingrese el nombre", size,
-                      nombreVacaToroEditar, _validateNombre),
-                  inputs("Descripción", "Ingrese una descripción", size,
-                      descripcionVacaToroEditar, _validateDescripcion),
-                  inputs("Raza", "Ingrese la raza", size, razaVacaToroEditar,
-                      _validateRaza),
-                  inputs("Número de arete", "Ingrese el número de arete", size,
-                      numeroAreteVacaToroEditar, _validateNumeroArete),
-                  fecha(context, "Fecha de llegada", dateinputEditar,
-                      _validateDate),
-                  edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
-                      "Buen estado", size, edadToroVacaEditar, _validateEdad),
-                  selectImage(),
-                  Container(
-                    width: 220,
-                    margin: const EdgeInsets.only(left: 88),
-                    padding:
-                        const EdgeInsets.only(left: 20, bottom: 20, top: 25),
-                    child: Material(
-                      color: Colors.transparent, // button color
-                      child: InkWell(
-                        splashColor: Colors.green, // splash color
-                        onTap: () {
-                          servicedeletevacatoro(widget.tipoAnimal, widget.id)
-                              .then((value) {
-                            if (value['status'] == 'ok') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(milliseconds: 1000),
-                                  content:
-                                      Text('Animal eliminado correctamente'),
-                                ),
-                              );
-                            }
-                          });
-                        }, // button pressed
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Text("Borrar animal de mi lista",
-                                style: TextStyle(
-                                    fontSize: 16, color: ColorSelect.color5)),
-                            Icon(
-                              Icons.delete,
-                              color: ColorSelect.color1,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 20),
-                    child: SizedBox(
-                      width: size.width - 50,
-                      height: 50,
-                      child: ElevatedButton(
-                          child: const Text(
-                            'Editar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              late bool res = valid();
-                              print(res);
-                              if (res == true) {
-                                serviceeditarvacatoro(
-                                        id_usuario,
-                                        widget.tipoAnimal,
-                                        widget.id,
-                                        nombreVacaToroEditar.text,
-                                        descripcionVacaToroEditar.text,
-                                        razaVacaToroEditar.text,
-                                        numeroAreteVacaToroEditar.text,
-                                        url_img,
-                                        estado,
-                                        int.parse(edadToroVacaEditar.text),
-                                        dateinputEditar.text,
-                                        token)
+      body: SafeArea(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          padding: EdgeInsets.only(right: bordes, left: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                inputs("Nombre", "Ingrese el nombre", size,
+                    nombreVacaToroEditar, _validateNombre),
+                inputs("Descripción", "Ingrese una descripción", size,
+                    descripcionVacaToroEditar, _validateDescripcion),
+                inputs("Raza", "Ingrese la raza", size, razaVacaToroEditar,
+                    _validateRaza),
+                inputs("Número de arete", "Ingrese el número de arete", size,
+                    numeroAreteVacaToroEditar, _validateNumeroArete),
+                fecha(context, "Fecha de llegada", dateinputEditar,
+                    _validateDate),
+                edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
+                    "Buen estado", size, edadToroVacaEditar, _validateEdad),
+                selectImage(size),
+                Container(
+                  width: 220,
+                  margin: const EdgeInsets.only(left: 88),
+                  padding: const EdgeInsets.only(left: 20, bottom: 20, top: 25),
+                  child: Material(
+                    color: Colors.transparent, // button color
+                    child: InkWell(
+                      splashColor: Colors.green, // splash color
+                      onTap: () {
+                        servicedeletecategoriavacatoro(
+                                token, widget.tipoAnimal, widget.id)
+                            .then((categoria) {
+                          if (categoria['status'] == 'ok') {
+                            servicedeletehistorialvacatoro(
+                                    token, widget.tipoAnimal, widget.id)
+                                .then((historial) {
+                              if (historial['status'] == 'ok') {
+                                servicedeletevacatoro(
+                                        token, widget.tipoAnimal, widget.id)
                                     .then((value) {
                                   if (value['status'] == 'ok') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         duration: Duration(milliseconds: 1000),
-                                        content:
-                                            Text('Actualizado correctamente'),
+                                        content: Text(
+                                            'Animal eliminado correctamente'),
                                       ),
                                     );
-
                                     Future.delayed(
                                         const Duration(milliseconds: 200), () {
                                       String ruta = '';
@@ -251,19 +203,99 @@ class _EditarAnimalState extends State<EditarAnimal> {
                                       });
                                     });
                                   }
-                                  print(value);
                                 });
                               }
                             });
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: ColorSelect.color5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)))),
+                          }
+                        });
+                      }, // button pressed
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const <Widget>[
+                          Text("Borrar animal de mi lista",
+                              style: TextStyle(
+                                  fontSize: 16, color: ColorSelect.color5)),
+                          Icon(
+                            Icons.delete,
+                            color: ColorSelect.color1,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 10, bottom: 20),
+                  child: SizedBox(
+                    width: size.width - 50,
+                    height: 50,
+                    child: ElevatedButton(
+                        child: const Text(
+                          'Editar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            late bool res = valid();
+                            print(res);
+                            if (res == true) {
+                              serviceeditarvacatoro(
+                                      id_usuario,
+                                      widget.tipoAnimal,
+                                      widget.id,
+                                      nombreVacaToroEditar.text,
+                                      descripcionVacaToroEditar.text,
+                                      razaVacaToroEditar.text,
+                                      numeroAreteVacaToroEditar.text,
+                                      url_img,
+                                      estado,
+                                      int.parse(edadToroVacaEditar.text),
+                                      dateinputEditar.text,
+                                      token)
+                                  .then((value) {
+                                if (value['status'] == 'ok') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      duration: Duration(milliseconds: 1000),
+                                      content:
+                                          Text('Actualizado correctamente'),
+                                    ),
+                                  );
+
+                                  Future.delayed(
+                                      const Duration(milliseconds: 200), () {
+                                    String ruta = '';
+                                    if (widget.tipoAnimal == 'Vaca') {
+                                      ruta = 'dash_cow';
+                                    } else {
+                                      ruta = 'dash_bull';
+                                    }
+                                    Navigator.popAndPushNamed(
+                                      context,
+                                      ruta,
+                                    );
+
+                                    setState(() {
+                                      // Here you can write your code for open new view
+                                    });
+                                  });
+                                }
+                                print(value);
+                              });
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)))),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -354,7 +386,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
         onPressed: onClicked,
       );
 
-  Widget selectImage() {
+  Widget selectImage(Size size) {
     return Row(
       children: <Widget>[
         Column(
@@ -371,6 +403,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
               ),
             ),
             Container(
+              width: MediaQuery.of(context).size.width * 0.40,
               margin: const EdgeInsets.only(left: 16),
               child: image != null
                   ? Image.file(
@@ -388,12 +421,13 @@ class _EditarAnimalState extends State<EditarAnimal> {
           ],
         ),
         Container(
+          width: MediaQuery.of(context).size.width * 0.40,
           padding: const EdgeInsets.only(
             //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 160,
+            width: size.width - 255,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
