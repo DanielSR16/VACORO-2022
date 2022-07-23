@@ -36,7 +36,6 @@ class _ContainerdDialogCowCalfDetailsState
             id_usuario = id_cast;
             token = token_!;
             name = name_!;
-            print(token);
           });
         });
       });
@@ -80,14 +79,15 @@ class _ContainerdDialogCowCalfDetailsState
                     ),
                   ),
                 ),
-                Center(
-                  child: Container(
-                    width: size.width * 0.75,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
+                Container(
+                  margin: const EdgeInsets.only(left: 20, bottom: 10),
+                  child: Text(
+                    widget.nombreVaca,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: ColorSelect.color5,
                     ),
-                    child: _input("Nombre"),
                   ),
                 ),
                 Column(

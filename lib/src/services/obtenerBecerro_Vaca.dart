@@ -30,7 +30,6 @@ Future<List<Map<String, dynamic>>> getBecerrobyIdvaca(
           listBecerros.add(mapListCalf);
         }
       }
-
       return listBecerros;
     } else {
       print(response.statusCode);
