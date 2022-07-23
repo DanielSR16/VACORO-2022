@@ -3,21 +3,19 @@ import 'package:http/http.dart' as http;
 
 String host = '192.168.0.10:3006';
 
-Future<Map<String, dynamic>> servicedeletecategoriavacatoro(
-  String token,
+Future<Map<String, dynamic>> servicedeletevacatoro_categoria(
   String tipoAnimal,
   int id,
 ) async {
   Map<String, String> headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer $token',
   };
 
   String loginAPI;
   if (tipoAnimal == "Vaca") {
-    loginAPI = '/categoria/deleteVacaByCategory/';
+    loginAPI = '/categoria/deleteVacaByIdVaca/';
   } else {
-    loginAPI = '/categoria/deleteToroByCategory/';
+    loginAPI = '/categoria/deleteToroByIdToro/';
   }
 
   try {
@@ -44,16 +42,14 @@ Future<Map<String, dynamic>> servicedeletecategoriavacatoro(
   }
 }
 
-Future<Map<String, dynamic>> servicedeletecategoriabecerro(
+Future<Map<String, dynamic>> servicedeletebecerro_categoria(
   int id,
-  String token,
 ) async {
   Map<String, String> headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer $token',
   };
 
-  String loginAPI = '/categoria/deleteBecerroByCategory/';
+  String loginAPI = '/categoria/deleteBecerroByIdBecerro/';
 
   try {
     final response = await http.post(

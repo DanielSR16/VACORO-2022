@@ -111,18 +111,6 @@ class _ContainerdDialogCowCalfDetailsState
                     ),
                   ],
                 ),
-                // Column(children: [
-                //   _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                //   _createCardsCowsCategoryModal(size, "Otra becerro"),
-                //   _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                //   _createCardsCowsCategoryModal(size, "Otra becerro"),
-                //   _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                //   _createCardsCowsCategoryModal(size, "Otra becerro"),
-                //   _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                //   _createCardsCowsCategoryModal(size, "Otra becerro"),
-                //   _createCardsCowsCategoryModal(size, "Nombre del becerro"),
-                //   _createCardsCowsCategoryModal(size, "Otra becerro"),
-                // ]),
                 FutureBuilder(
                   future: getBecerrobyIdvaca(widget.id_vaca, token),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -235,11 +223,11 @@ class _ContainerdDialogCowCalfDetailsState
                           color: ColorSelect.color5,
                         ),
                         onPressed: () {
-                          servicedeletecategoriabecerro(
-                                  snapshot.data[index]['id'], token)
+                          servicedeletebecerro_categoria(
+                                  snapshot.data[index]['id'])
                               .then((categoria) {
                             if (categoria['status'] == 'ok') {
-                              servicedeletehistorialbecerro(
+                              servicedeletebecerro_historial(
                                       snapshot.data[index]['id'], token)
                                   .then((historial) {
                                 if (historial['status'] == 'ok') {

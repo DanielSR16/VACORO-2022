@@ -3,10 +3,10 @@ import 'package:http/http.dart' as http;
 
 String host = '192.168.0.10:3004';
 
-Future<Map<String, dynamic>> servicedeletehistorialvacatoro(
-  String token,
+Future<Map<String, dynamic>> servicedeletevacatoro_historial(
   String tipoAnimal,
   int id,
+  String token,
 ) async {
   Map<String, String> headers = {
     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ Future<Map<String, dynamic>> servicedeletehistorialvacatoro(
   }
 }
 
-Future<Map<String, dynamic>> servicedeletehistorialbecerro(
+Future<Map<String, dynamic>> servicedeletebecerro_historial(
   int id,
   String token,
 ) async {
