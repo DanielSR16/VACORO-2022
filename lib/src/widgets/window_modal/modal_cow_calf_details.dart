@@ -155,6 +155,7 @@ class _ContainerdDialogCowCalfDetailsState
                           content: RichText(
                             textAlign: TextAlign.justify,
                             text: TextSpan(
+                              text: '',
                               style: DefaultTextStyle.of(context).style,
                               children: const <TextSpan>[
                                 TextSpan(

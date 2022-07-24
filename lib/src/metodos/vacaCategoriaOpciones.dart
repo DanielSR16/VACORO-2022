@@ -13,6 +13,7 @@ import 'package:vacoro_proyect/src/services/DAO/categoryBecerroDao.dart';
 import 'package:vacoro_proyect/src/services/DAO/categoryToroDao.dart';
 import 'package:vacoro_proyect/src/services/DAO/toros.dart';
 import 'package:vacoro_proyect/src/services/DAO/vacas.dart';
+import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import '../model/becerrosCategorias.dart';
 import '../model/categorias.dart';
 import '../model/torosCategorias.dart';
@@ -63,13 +64,21 @@ class _vacaEditar extends State<vacaEditar> {
                     onItemSelected: (Vacas item) async {
                       // set up the buttons
                       Widget cancelButton = ElevatedButton(
-                        child: Text("Cancelar"),
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5),
+                        child: const Text(
+                          "Cancelar",
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop(true);
                         },
                       );
                       Widget continueButton = ElevatedButton(
-                        child: Text("Eliminar"),
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5),
+                        child: const Text("Eliminar",
+                            style: TextStyle(color: Colors.white)),
                         onPressed: () async {
                           var eliminarAnimal = jsonEncode({
                             "id_vaca": item.id,
@@ -101,11 +110,14 @@ class _vacaEditar extends State<vacaEditar> {
                       );
                       // set up the AlertDialog
                       AlertDialog alert = AlertDialog(
-                        title: Text("Eliminar Vaca"),
-                        content: Text("Te gustaria Eliminar La Vaca " +
-                            item.nombre +
-                            " Con Numero De Arete " +
-                            item.num_arete),
+                        title: const Text("Eliminar vaca",
+                            style: TextStyle(color: ColorSelect.color5)),
+                        content: Text(
+                            "Te gustaria eliminar la vaca " +
+                                item.nombre +
+                                " Con numero de arete " +
+                                item.num_arete,
+                            style: TextStyle(color: ColorSelect.color1)),
                         actions: [
                           cancelButton,
                           continueButton,
@@ -121,11 +133,11 @@ class _vacaEditar extends State<vacaEditar> {
                       );
                     },
                     inputDecoration: InputDecoration(
-                      labelText: "Buscar Vaca",
+                      labelText: "Buscar vaca",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                            color: Colors.blue,
+                            color: ColorSelect.color5,
                             width: 2.0,
                           ),
                           borderRadius: BorderRadius.circular(5.0)),
@@ -164,11 +176,11 @@ class _vacaEditar extends State<vacaEditar> {
     print(listaids);
     for (int i = 0; i < vacasTotales.length; i++) {
       if (!listaids.contains(vacasTotales[i].id)) {
-        animalesFaltantes.add("Id De La Vaca: " +
+        animalesFaltantes.add("Id de la vaca: " +
             vacasTotales[i].id.toString() +
-            "\nNumero De Arete: " +
+            "\nnumero de arete: " +
             vacasTotales[i].num_arete +
-            "\nNombre De La Vaca: " +
+            "\nnombre de la vaca: " +
             vacasTotales[i].nombre);
       }
     }
@@ -181,11 +193,15 @@ class _vacaEditar extends State<vacaEditar> {
     print(animalesFaltantes);
     await DialogBackground(
       dialog: AlertDialog(
-        title: Text("Confirmacion"),
-        content: Text("Seleccione el animal a agregar"),
+        title: const Text(
+          "Confirmación",
+          style: TextStyle(color: ColorSelect.color5),
+        ),
+        content: const Text("Seleccione el animal a agregar",
+            style: TextStyle(color: ColorSelect.color1)),
         actions: <Widget>[
           SeleccionAnimalesFaltantes(animalesFaltantes),
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           FloatingActionButton(
@@ -230,7 +246,7 @@ class _vacaEditar extends State<vacaEditar> {
               }
             },
             backgroundColor: Colors.green,
-            child: const Icon(Icons.pets_outlined),
+            child: const Icon(Icons.check),
           )
         ],
       ),
@@ -281,9 +297,9 @@ class VacaItem extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Icon(
-              Icons.pets,
-              color: Colors.yellow[700],
+            const Image(
+              image: AssetImage('assets/images/vaca.png'),
+              width: 25,
             ),
             const SizedBox(
               width: 10,
@@ -293,16 +309,16 @@ class VacaItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Id: ${vaca.id}',
+                  'Núm. de arete: ${vaca.num_arete}',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: ColorSelect.color1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   'Nombre: ${vaca.nombre}',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: ColorSelect.color1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -324,11 +340,11 @@ class EmptyView extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
+        const Icon(
           Icons.error,
           color: Colors.red,
         ),
-        Text('No se encontro ninguna Vaca agregada a la categoria ' +
+        Text('No se encontro ninguna vaca agregada a la categoria ' +
             categoriaSeleccionada.nombreCategoria),
       ],
     );

@@ -8,6 +8,7 @@ Future<Map<String, dynamic>> servicedeletevacatoro(
 ) async {
   Map<String, String> headers = {
     'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
   };
   String host = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
   String loginAPI;

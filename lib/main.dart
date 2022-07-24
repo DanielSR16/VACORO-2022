@@ -43,8 +43,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var correo;
-    var nombre;
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',

@@ -185,11 +185,18 @@ class _MedicationState extends State<Medication> {
                       margin: const EdgeInsets.only(left: 40, right: 0),
                       child: GestureDetector(
                         onTap: () async {
-                          // print("Edit Medicina");
-
                           await showDialog(
                             context: context,
-                            builder: (_) => ContainerDialogEditMedication(),
+                            builder: (_) => ContainerDialogEditMedication(
+                                id: snapshot.data[index]['id'],
+                                nombre: snapshot.data[index]['nombre'],
+                                descripcion: snapshot.data[index]
+                                    ['descripcion'],
+                                cantidad: snapshot.data[index]['cantidad'],
+                                fecha_caducidad: snapshot.data[index]
+                                    ['fecha_caducidad'],
+                                id_usuario: snapshot.data[index]['id_usuario'],
+                                token: token),
                           );
                         },
                         child: Image.asset(

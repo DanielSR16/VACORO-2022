@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:vacoro_proyect/src/pages/menu.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
-String ip = "192.168.100.15";
+String ip = "192.168.0.2";
 // String ip = '10.0.2.2';
 
 Future<List<Map<String, dynamic>>> getAllCow(int id_usuario, token) async {
