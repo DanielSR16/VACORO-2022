@@ -10,7 +10,6 @@ import '../widgets/HomePage/appBar.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:fancy_containers/fancy_containers.dart';
 
-
 class editCategories extends StatefulWidget {
   editCategories({Key? key}) : super(key: key);
 
@@ -25,33 +24,35 @@ class _editCategories extends State<editCategories> {
 
   @override
   void initState() {
-    listaCat = listaCategorias("http://192.168.100.11:3006/categoria/allCategorias");
+    listaCat =
+        listaCategorias("http://192.168.100.15:3006/categoria/allCategorias");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbarCat("Editar Categoria", 'assets/images/logo_blanco.png', context, "anadir_categoria"),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        margin: EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-          children: [
-            ElevatedButton(onPressed: (){Navigator.pushNamed(context, "anadir_categoria");}, child: Text("add")), //Uso de mientras
-            selectionCategory(listaCat),
-            Container(margin: EdgeInsets.only(top: 25)),
-            insertarImagen('assets/images/categorias.png'),
-            eleccionCategorias("Paso 1","Escoja La Categoria A Administrar"),
-            eleccionCategorias("Paso 2","Administre A Los Diferentes Tipos De Ganado"),
-            eleccionCategorias("Paso 3","Guarda La Informacion"),
-          ],
-        ),
-        )
-      )
-    );
+        appBar: appbarCat("Seleccion de categoria",
+            'assets/images/logo_blanco.png', context, "this"),
+        body: Container(
+            height: double.infinity,
+            width: double.infinity,
+            margin: EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  //Uso de mientras
+                  selectionCategory(listaCat),
+                  Container(margin: EdgeInsets.only(top: 25)),
+                  insertarImagen('assets/images/categorias.png'),
+                  eleccionCategorias(
+                      "Paso 1", "Escoja La Categoria A Administrar"),
+                  eleccionCategorias(
+                      "Paso 2", "Administre A Los Diferentes Tipos De Ganado"),
+                  eleccionCategorias("Paso 3", "Guarda La Informacion"),
+                ],
+              ),
+            )));
   }
 
   ClipRRect insertarImagen(imagen) {
@@ -63,11 +64,11 @@ class _editCategories extends State<editCategories> {
     );
   }
 
-  Container eleccionCategorias(tituloMostrar,Descripcion) {
+  Container eleccionCategorias(tituloMostrar, Descripcion) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: FancyContainer(
-        onTap: (){
+        onTap: () {
           print("Hello World");
         },
         color1: Colors.green,
@@ -80,38 +81,50 @@ class _editCategories extends State<editCategories> {
     );
   }
 
-  Container selectionCategory(listaCategorias){
-    var descripcion; var cuerpo; var listaBecerrosCat = [];
+  Container selectionCategory(listaCategorias) {
+    var descripcion;
+    var cuerpo;
+    var listaBecerrosCat = [];
     List<String> dropdownCategoriaNombre = [];
     return Container(
       margin: EdgeInsets.only(top: 25),
       child: FutureBuilder(
-        future: listaCategorias,
-        builder: (context, AsyncSnapshot<List<Categoria>> snapshot) {
-          if (snapshot.data != null){
-            for (int i=0; i<snapshot.data!.length; i++){
-              dropdownCategoriaNombre.add(snapshot.data![i].nombreCategoria);
+          future: listaCategorias,
+          builder: (context, AsyncSnapshot<List<Categoria>> snapshot) {
+            if (snapshot.data != null) {
+              for (int i = 0; i < snapshot.data!.length; i++) {
+                dropdownCategoriaNombre.add(snapshot.data![i].nombreCategoria);
+              }
+              return DropdownSearch<String>(
+                mode: Mode.DIALOG,
+                showSearchBox: true,
+                showSelectedItem: true,
+                hint: "Seleccione una categoria",
+                items: dropdownCategoriaNombre,
+                label: "Categoria",
+                onChanged: ((value) => {
+                      for (int i = 0; i < snapshot.data!.length; i++)
+                        {
+                          if (value!.compareTo(
+                                  snapshot.data![i].nombreCategoria) ==
+                              0)
+                            {
+                              descripcion =
+                                  snapshot.data![i].descripcionCategoria,
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.fade,
+                                      child: editCategoriesComplete(
+                                          categoriaSeleccionada:
+                                              snapshot.data![i]))),
+                            },
+                        },
+                    }),
+              );
             }
-            return DropdownSearch<String>(
-              mode: Mode.DIALOG,
-              showSearchBox: true,
-              showSelectedItem: true,
-              hint: "Seleccione una categoria",
-              items: dropdownCategoriaNombre,
-              label: "Categoria",
-              onChanged: ((value) => {
-                for (int i=0; i<snapshot.data!.length; i++){
-                  if (value!.compareTo(snapshot.data![i].nombreCategoria) == 0){
-                    descripcion = snapshot.data![i].descripcionCategoria,
-                    Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: editCategoriesComplete(categoriaSeleccionada: snapshot.data![i]))),
-                  },
-                },    
-              }),
-            );
-          }
-          return Container();
-        }
-      ),
+            return Container();
+          }),
     );
   }
 }

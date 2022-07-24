@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.31";
+String ip = "192.168.100.15";
 
 Future getCategoryAll() async {
+  print('hola estoy obteniendo categorias xd');
   try {
     final response = await http.get(
       Uri.http(ip + ":3006", "/categoria/allCategorias"),

@@ -13,7 +13,7 @@ Future<List<Becerros>> listaBecerros(path) async {
     List<Becerros> listProducts = [];
     for (Map items in map){
       Becerros becerro = Becerros(id: items['id'], id_usuario: items['id_usuario'], nombre: items['nombre'], 
-      descripcion: items['descripcion'], raza: items['raza'], num_arete: items['num_arete'], url_img: items['url_img'], 
+      descripcion: items['descripcion'], raza: items['raza'], num_arete: items['num_arete'], 
       estado: items['estado'], fecha_llegada: items['fecha_llegada'], id_vaca: items['id_vaca'], edad: items['edad']);
       listProducts.add(becerro);
     }

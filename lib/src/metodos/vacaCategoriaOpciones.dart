@@ -173,7 +173,7 @@ class _vacaEditar extends State<vacaEditar> {
                 print(infoAnimal);
                 Vacas addvaca = Vacas(id: infoAnimal['id'], id_usuario: infoAnimal['id_usuario'], nombre: infoAnimal['nombre'], 
                 descripcion: infoAnimal['descripcion'], raza: infoAnimal['raza'], num_arete: infoAnimal['num_arete'], 
-                url_img: infoAnimal['url_img'], estado: infoAnimal['estado'], fecha_llegada:infoAnimal['fecha_llegada'], 
+                 estado: infoAnimal['estado'], fecha_llegada:infoAnimal['fecha_llegada'], 
                 edad: infoAnimal['edad']);
                 Navigator.of(context).pop(true);
                 widget.lista_de_vacas.add(addvaca);

@@ -20,7 +20,7 @@ class _DashboardCategoryState extends State<DashboardCategory> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            // print("Regresar...");
+            print("Regresar...");
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back),
@@ -57,7 +57,9 @@ class _DashboardCategoryState extends State<DashboardCategory> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("Añadir Categoria");
+          print(
+              "Añadir Categoria /////////////////////////////////////////////////");
+          Navigator.popAndPushNamed(context, 'anadir_categoria');
         },
         child: const Icon(Icons.add),
         backgroundColor: ColorSelect.color5,
@@ -143,7 +145,9 @@ class _DashboardCategoryState extends State<DashboardCategory> {
                         Container(
                           margin: const EdgeInsets.only(right: 10),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(context, 'editar_categoria');
+                            },
                             child: Image.asset(
                               'assets/images/edit_logo.png',
                               height: 30,

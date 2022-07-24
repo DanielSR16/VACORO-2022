@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String ip = '192.168.0.31';
+String ip = '192.168.100.15';
 Future<String> register_user(
     String name,
     String apellidos,
