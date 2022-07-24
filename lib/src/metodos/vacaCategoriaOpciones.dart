@@ -113,7 +113,7 @@ class _vacaEditar extends State<vacaEditar> {
                   margin: EdgeInsets.only(bottom: 15, right: 15),
                   child: FloatingActionButton(
                     onPressed: () async {
-                    vacasTotales = await listaVacas("http://192.168.100.6:3006/categoria/allCategorias/allVacas",2);
+                    vacasTotales = await listaVacasTotal("http://192.168.100.6:3006/categoria/allCategorias/allVacas",2);
                     var animalesFaltantes = buscarAnimalesFaltantes(widget.lista_de_vacas, vacasTotales);
                     dialogAgregar(animalesFaltantes);
                     },

@@ -13,6 +13,7 @@ Future<List<Becerros>> listaBecerros(path,iduser) async {
   if (response.statusCode == 200) {
     final map = json.decode(response.body);
     List<Becerros> addBecerros = [];
+    print(map);
     for (var item in map){
       var cuerpo = jsonEncode({"id_becerro":item['id_becerro']});
       print(cuerpo);
@@ -21,6 +22,25 @@ Future<List<Becerros>> listaBecerros(path,iduser) async {
       descripcion: becerroObtenido['descripcion'], raza: becerroObtenido['raza'], num_arete: becerroObtenido['num_arete'], 
       url_img: becerroObtenido['url_img'], estado: becerroObtenido['estado'], fecha_llegada: becerroObtenido['fecha_llegada'], 
       id_vaca: becerroObtenido['id_vaca'], edad: becerroObtenido['edad']);
+      addBecerros.add(becerro);
+    }
+    return addBecerros;
+  }
+  return [];
+}
+
+Future<List<Becerros>> listaBecerrosTotal(path,iduser) async {
+  Map<String, String> headers = {'Content-Type': 'application/json'};
+  var id = jsonEncode({"id_usuario":iduser});
+  Response response = await post(Uri.parse(path), headers: headers, body:id);
+  if (response.statusCode == 200) {
+    final map = json.decode(response.body);
+    List<Becerros> addBecerros = [];
+    for (var item in map){
+      Becerros becerro = Becerros(id: item['id'], id_usuario: item['id_usuario'], nombre: item['nombre'], 
+      descripcion: item['descripcion'], raza: item['raza'], num_arete: item['num_arete'], 
+      url_img: item['url_img'], estado: item['estado'], fecha_llegada: item['fecha_llegada'], 
+      id_vaca: item['id_vaca'], edad: item['edad']);
       addBecerros.add(becerro);
     }
     return addBecerros;

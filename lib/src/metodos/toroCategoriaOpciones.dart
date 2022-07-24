@@ -112,7 +112,7 @@ class _toroEditar extends State<toroEditar> {
                   margin: EdgeInsets.only(bottom: 15, right: 15),
                   child: FloatingActionButton(
                     onPressed: () async {
-                    torosTotales = await listaToros("http://192.168.100.6:3006/categoria/allCategorias/allToros",2);
+                    torosTotales = await listaTorosTotal("http://192.168.100.6:3006/categoria/allCategorias/allToros",2);
                     var animalesFaltantes = buscarAnimalesFaltantes(widget.lista_de_toros, torosTotales);
                     dialogAgregar(animalesFaltantes);
                     },

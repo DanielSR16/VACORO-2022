@@ -27,9 +27,9 @@ class _addCategories extends State<addCategories> {
 
   @override
   void initState() {
-    listaB = listaBecerros("http://192.168.100.6:3006/categoria/allCategorias/allBecerros",2);
-    listaV = listaVacas("http://192.168.100.6:3006/categoria/allCategorias/allVacas",2);
-    listaT = listaToros("http://192.168.100.6:3006/categoria/allCategorias/allToros",2);
+    listaB = listaBecerrosTotal("http://192.168.100.6:3006/categoria/allCategorias/allBecerros",2);
+    listaV = listaVacasTotal("http://192.168.100.6:3006/categoria/allCategorias/allVacas",2);
+    listaT = listaTorosTotal("http://192.168.100.6:3006/categoria/allCategorias/allToros",2);
     super.initState();
   }
 

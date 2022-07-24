@@ -55,9 +55,9 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
   @override
   void initState() {
     Cat = listaCategorias("http://192.168.100.6:3006/categoria/allCategorias",2);
-    listaB = listaBecerros("http://192.168.100.6:3006/categoria/allCategorias/allBecerros",2);
-    listaV = listaVacas("http://192.168.100.6:3006/categoria/allCategorias/allVacas",2);
-    listaT = listaToros("http://192.168.100.6:3006/categoria/allCategorias/allToros",2);
+    listaB = listaBecerrosTotal("http://192.168.100.6:3006/categoria/allCategorias/allBecerros",2);
+    listaV = listaVacasTotal("http://192.168.100.6:3006/categoria/allCategorias/allVacas",2);
+    listaT = listaTorosTotal("http://192.168.100.6:3006/categoria/allCategorias/allToros",2);
     super.initState();
   }
 

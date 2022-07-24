@@ -24,6 +24,7 @@ creacionCategoria(nombreCategoria,descripcionCategoria,vacas,toros,becerros,cont
       BecerrosAgregar.add(cuerpo);
     }
     print(BecerrosAgregar.toString());
+    print(BecerrosAgregar);
     await createAnimalCategory("http://192.168.100.6:3006/categoria/createCategoryBecerro", BecerrosAgregar.toString());
   }
   if (toros.length > 0){

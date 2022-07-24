@@ -108,7 +108,7 @@ class _becerroEditar extends State<becerroEditar> {
                   margin: EdgeInsets.only(bottom: 15, right: 15),
                   child: FloatingActionButton(
                     onPressed: () async {
-                    BecerrosTotales = await listaBecerros("http://192.168.100.6:3006/categoria/allCategorias/allBecerros",2);
+                    BecerrosTotales = await listaBecerrosTotal("http://192.168.100.6:3006/categoria/allCategorias/allBecerros",2);
                     print("aca me dio "+BecerrosTotales.toString());
                     var animalesFaltantes = buscarAnimalesFaltantes(widget.lista_de_becerros, BecerrosTotales);
                     dialogAgregar(animalesFaltantes);
