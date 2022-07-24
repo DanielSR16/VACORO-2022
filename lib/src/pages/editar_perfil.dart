@@ -38,7 +38,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
   File? image;
   late String url_img = imageUsuario;
   late var imageUsuario =
-      'https://image-vacoro.s3.amazonaws.com/e6f3f44a-d935-45c4-819f-76b070c012cf.jpg';
+      'https://image-vacoro.s3.amazonaws.com/1afc4017-6cf2-4365-b406-26660c7b61e8.jpg';
   @override
   late bool _validateNombre = false;
   late bool _validateApellido = false;
@@ -732,7 +732,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                     setState(() {
                       image = null;
                       imageUsuario =
-                          'https://image-vacoro.s3.amazonaws.com/e6f3f44a-d935-45c4-819f-76b070c012cf.jpg';
+                          'https://image-vacoro.s3.amazonaws.com/1afc4017-6cf2-4365-b406-26660c7b61e8.jpg';
                       url_img = imageUsuario;
                     });
                   },

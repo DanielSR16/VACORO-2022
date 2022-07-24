@@ -52,7 +52,8 @@ Future<String> register_user(
 Future estados_all() async {
   try {
     final response = await http.get(
-      Uri.http(ip + ':3002', '/estado/all'),
+      Uri.http('lugares-vacoro-618504807.us-east-1.elb.amazonaws.com',
+          '/estado/all'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
     );
 
@@ -74,7 +75,8 @@ Future estados_all() async {
 Future municipios_id(int id) async {
   try {
     final response = await http.post(
-        Uri.http(ip + ':3002', '/municipio/municipioEstado'),
+        Uri.http('lugares-vacoro-618504807.us-east-1.elb.amazonaws.com',
+            '/municipio/municipioEstado'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: json.encode({"id": id}));
     print(response.statusCode);
