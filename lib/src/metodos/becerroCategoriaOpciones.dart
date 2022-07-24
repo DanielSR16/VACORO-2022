@@ -18,23 +18,25 @@ import '../pages/edit_categories_complete.dart';
 class becerroEditar extends StatefulWidget {
   List<Becerros> lista_de_becerros;
   Categoria categoriaSeleccionada;
-  becerroEditar({Key? key,required this.lista_de_becerros,required this.categoriaSeleccionada}): super(key: key);
+  becerroEditar(
+      {Key? key,
+      required this.lista_de_becerros,
+      required this.categoriaSeleccionada})
+      : super(key: key);
   @override
   State<becerroEditar> createState() => _becerroEditar();
-  
 }
 
 class _becerroEditar extends State<becerroEditar> {
-
   List<Becerros> BecerrosMostrar = [];
   List<Becerros> BecerrosTotales = [];
   String aceptacion = "";
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        appBar: appbarCat("Becerros", 'assets/images/becerro.png', context, "this"),
+        appBar:
+            appbarCat("Becerros", 'assets/images/becerro.png', context, "this"),
         body: Container(
           width: double.infinity,
           child: Column(
@@ -49,33 +51,57 @@ class _becerroEditar extends State<becerroEditar> {
                       });
                     },
                     initialList: widget.lista_de_becerros,
-                    builder: (Becerros becerros) => BecerroItem(becerro: becerros),
+                    builder: (Becerros becerros) =>
+                        BecerroItem(becerro: becerros),
                     filter: _filterBecerroList,
-                    emptyWidget: EmptyView(categoriaSeleccionada: widget.categoriaSeleccionada),
+                    emptyWidget: EmptyView(
+                        categoriaSeleccionada: widget.categoriaSeleccionada),
                     onItemSelected: (Becerros item) async {
                       // set up the buttons
                       Widget cancelButton = ElevatedButton(
                         child: Text("Cancelar"),
-                        onPressed:  () {Navigator.of(context).pop(true);},
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
                       );
                       Widget continueButton = ElevatedButton(
                         child: Text("Eliminar"),
-                        onPressed:  () async {
-                          var eliminarAnimal = jsonEncode({"id_becerro":item.id, "id_categoria":widget.categoriaSeleccionada.idCategoria}); //update con todo y categoria
-                          var buscarAnimal = await updateBecerroByCategory("http://192.168.100.11:3006/categoria/findCategoryBecerroByIdBecerro", eliminarAnimal);
-                          var cuerpoEliminar = jsonEncode({"id":buscarAnimal['id']});
-                          var x = await deleteAnimalCategoryById("http://192.168.100.11:3006/categoria/deleteBecerroByCategory", cuerpoEliminar);
+                        onPressed: () async {
+                          var eliminarAnimal = jsonEncode({
+                            "id_becerro": item.id,
+                            "id_categoria":
+                                widget.categoriaSeleccionada.idCategoria
+                          }); //update con todo y categoria
+                          var buscarAnimal = await updateBecerroByCategory(
+                              "http://192.168.0.2:3006/categoria/findCategoryBecerroByIdBecerro",
+                              eliminarAnimal);
+                          var cuerpoEliminar =
+                              jsonEncode({"id": buscarAnimal['id']});
+                          var x = await deleteAnimalCategoryById(
+                              "http://192.168.0.2:3006/categoria/deleteBecerroByCategory",
+                              cuerpoEliminar);
                           Navigator.of(context).pop(true);
                           widget.lista_de_becerros.remove(item);
                           setState(() {
-                            Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => becerroEditar(lista_de_becerros: widget.lista_de_becerros, categoriaSeleccionada: widget.categoriaSeleccionada)));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        becerroEditar(
+                                            lista_de_becerros:
+                                                widget.lista_de_becerros,
+                                            categoriaSeleccionada:
+                                                widget.categoriaSeleccionada)));
                           });
                         },
                       );
                       // set up the AlertDialog
                       AlertDialog alert = AlertDialog(
                         title: Text("Eliminar Becerro"),
-                        content: Text("Te gustaria Eliminar El Becerro "+item.nombre+" Con Numero De Arete "+item.num_arete),
+                        content: Text("Te gustaria Eliminar El Becerro " +
+                            item.nombre +
+                            " Con Numero De Arete " +
+                            item.num_arete),
                         actions: [
                           cancelButton,
                           continueButton,
@@ -89,14 +115,16 @@ class _becerroEditar extends State<becerroEditar> {
                           return alert;
                         },
                       );
-
                     },
                     inputDecoration: InputDecoration(
                       labelText: "Buscar Becerro",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.blue, width: 2.0,),
-                      borderRadius: BorderRadius.circular(5.0)),
+                          borderSide: const BorderSide(
+                            color: Colors.blue,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0)),
                     ),
                   ),
                 ),
@@ -107,9 +135,11 @@ class _becerroEditar extends State<becerroEditar> {
                   margin: EdgeInsets.only(bottom: 15, right: 15),
                   child: FloatingActionButton(
                     onPressed: () async {
-                    BecerrosTotales = await listaBecerros("http://192.168.100.11:3006/categoria/allCategorias/allBecerros");
-                    var animalesFaltantes = buscarAnimalesFaltantes(widget.lista_de_becerros, BecerrosTotales);
-                    dialogAgregar(animalesFaltantes);
+                      BecerrosTotales = await listaBecerros(
+                          "http://192.168.0.2:3006/categoria/allCategorias/allBecerros");
+                      var animalesFaltantes = buscarAnimalesFaltantes(
+                          widget.lista_de_becerros, BecerrosTotales);
+                      dialogAgregar(animalesFaltantes);
                     },
                     backgroundColor: Colors.green,
                     child: const Icon(Icons.add),
@@ -121,7 +151,7 @@ class _becerroEditar extends State<becerroEditar> {
         ));
   }
 
-  buscarAnimalesFaltantes(listaBecerros,BecerrosTotales) {
+  buscarAnimalesFaltantes(listaBecerros, BecerrosTotales) {
     List<int> listaids = [];
     List<String> animalesFaltantes = [];
 
@@ -144,34 +174,54 @@ class _becerroEditar extends State<becerroEditar> {
     return animalesFaltantes;
   }
 
-  dialogAgregar(List<String>animalesFaltantes) async {
+  dialogAgregar(List<String> animalesFaltantes) async {
     await DialogBackground(
       dialog: AlertDialog(
         title: Text("Confirmacion"),
         content: Text("Seleccione el animal a agregar"),
         actions: <Widget>[
           SeleccionAnimalesFaltantes(animalesFaltantes),
-          SizedBox(height: 50,),
+          SizedBox(
+            height: 50,
+          ),
           FloatingActionButton(
             onPressed: () async {
               if (aceptacion.length > 0) {
                 List<String> result = aceptacion.split('\n');
-                int idOpcion = int.parse(result[0].replaceAll(new RegExp(r'[^0-9]'), ''));
+                int idOpcion =
+                    int.parse(result[0].replaceAll(new RegExp(r'[^0-9]'), ''));
                 var cuerpoAgregar = jsonEncode({
                   "id_becerro": idOpcion,
                   "id_categoria": widget.categoriaSeleccionada.idCategoria
                 });
-                var agrego = await updateBecerroByCategory("http://192.168.100.11:3006/categoria/updateBecerroByCategory",cuerpoAgregar);
-                var id = jsonEncode({"id_becerro":idOpcion});
-                var infoAnimal = await infoAnimalById("http://192.168.100.11:3006/categoria/findByIdBecerro", id);
-                Becerros addbecerro = Becerros(id: infoAnimal['id'], id_usuario: infoAnimal['id_usuario'], nombre: infoAnimal['nombre'], 
-                descripcion: infoAnimal['descripcion'], raza: infoAnimal['raza'], num_arete: infoAnimal['num_arete'], 
-                url_img: infoAnimal['url_img'], estado: infoAnimal['estado'], fecha_llegada:infoAnimal['fecha_llegada'], 
-                id_vaca: infoAnimal['id_vaca'], edad: infoAnimal['edad']);
+                var agrego = await updateBecerroByCategory(
+                    "http://192.168.0.2:3006/categoria/updateBecerroByCategory",
+                    cuerpoAgregar);
+                var id = jsonEncode({"id_becerro": idOpcion});
+                var infoAnimal = await infoAnimalById(
+                    "http://192.168.0.2:3006/categoria/findByIdBecerro", id);
+                Becerros addbecerro = Becerros(
+                    id: infoAnimal['id'],
+                    id_usuario: infoAnimal['id_usuario'],
+                    nombre: infoAnimal['nombre'],
+                    descripcion: infoAnimal['descripcion'],
+                    raza: infoAnimal['raza'],
+                    num_arete: infoAnimal['num_arete'],
+                    // url_img: infoAnimal['url_img'],
+                    estado: infoAnimal['estado'],
+                    fecha_llegada: infoAnimal['fecha_llegada'],
+                    id_vaca: infoAnimal['id_vaca'],
+                    edad: infoAnimal['edad']);
                 Navigator.of(context).pop(true);
                 widget.lista_de_becerros.add(addbecerro);
                 setState(() {
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => becerroEditar(lista_de_becerros: widget.lista_de_becerros, categoriaSeleccionada: widget.categoriaSeleccionada)));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => becerroEditar(
+                              lista_de_becerros: widget.lista_de_becerros,
+                              categoriaSeleccionada:
+                                  widget.categoriaSeleccionada)));
                 });
               }
             },

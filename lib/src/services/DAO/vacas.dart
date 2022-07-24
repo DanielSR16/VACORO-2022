@@ -12,7 +12,7 @@ Future<List<Vacas>> listaVacas(path) async {
     List<Vacas> listProducts = [];
     for (Map items in map){
       Vacas vacas = Vacas(id: items['id'], id_usuario: items['id_usuario'], nombre: items['nombre'], 
-      descripcion: items['descripcion'], raza: items['raza'], num_arete: items['num_arete'], url_img: items['url_img'], 
+      descripcion: items['descripcion'], raza: items['raza'], num_arete: items['num_arete'],
       estado: items['estado'], fecha_llegada: items['fecha_llegada'], edad: items['edad']);
       listProducts.add(vacas);
     }

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.10";
+String ip = "192.168.0.2";
 //poner otken
 Future<List<Map<String, dynamic>>> getBecerrobyIdvaca(
     int id_vaca, String token) async {

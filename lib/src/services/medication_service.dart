@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.31";
+String ip = "192.168.0.2";
 
 Future getMedicationAll(id_usuario, token) async {
   print(id_usuario);

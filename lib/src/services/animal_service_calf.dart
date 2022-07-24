@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.10";
+String ip = "192.168.0.2";
 // String ip = "10.0.2.2";
 
 Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {

@@ -18,16 +18,18 @@ class addCategories extends StatefulWidget {
 }
 
 class _addCategories extends State<addCategories> {
-
   late Future<List<Becerros>> listaB;
   late Future<List<Vacas>> listaV;
   late Future<List<Toros>> listaT;
 
   @override
   void initState() {
-    listaB = listaBecerros("http://192.168.100.11:3006/categoria/allCategorias/allBecerros");
-    listaV = listaVacas("http://192.168.100.11:3006/categoria/allCategorias/allVacas");
-    listaT = listaToros("http://192.168.100.11:3006/categoria/allCategorias/allToros");
+    listaB = listaBecerros(
+        "http://192.168.0.2:3006/categoria/allCategorias/allBecerros");
+    listaV =
+        listaVacas("http://192.168.0.2:3006/categoria/allCategorias/allVacas");
+    listaT =
+        listaToros("http://192.168.0.2:3006/categoria/allCategorias/allToros");
     super.initState();
   }
 
@@ -40,28 +42,47 @@ class _addCategories extends State<addCategories> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: appbarCat("Nueva Categoria", 'assets/images/logo_blanco.png', context, "editar_categoria"),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        margin: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-          children: [
-            textfieldCategoria("Nombre de la categorias","Ingrese el nombre de la categoria",10.0,controladorNombre,context,""),
-            textfieldCategoria("Descripción de la categoria","Ingrese la descripción de la categoria",30.0,controladorDescripcion,context,""),
-            seleccionLabel("Selecciona los animales de esa categoria",15.0),
-            menuDropDown(listaB, 20.0,"becerros"),
-            menuDropDown(listaV, 20.0,"vacas"),
-            menuDropDown(listaT, 20.0,"toros"),
-            botonGuardar("Guardar", 100.0,becerroEleccion,vacaEleccion,toroEleccion,controladorNombre,controladorDescripcion,context),
-          ],
-        ),
-        )
-      )
-    );
+        appBar: appbarCat("Nueva Categoria", 'assets/images/logo_blanco.png',
+            context, "this"),
+        body: Container(
+            height: double.infinity,
+            width: double.infinity,
+            margin: const EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  textfieldCategoria(
+                      "Nombre de la categorias",
+                      "Ingrese el nombre de la categoria",
+                      10.0,
+                      controladorNombre,
+                      context,
+                      ""),
+                  textfieldCategoria(
+                      "Descripción de la categoria",
+                      "Ingrese la descripción de la categoria",
+                      30.0,
+                      controladorDescripcion,
+                      context,
+                      ""),
+                  seleccionLabel(
+                      "Selecciona los animales de esa categoria", 15.0),
+                  menuDropDown(listaB, 20.0, "becerros"),
+                  menuDropDown(listaV, 20.0, "vacas"),
+                  menuDropDown(listaT, 20.0, "toros"),
+                  botonGuardar(
+                      "Guardar",
+                      100.0,
+                      becerroEleccion,
+                      vacaEleccion,
+                      toroEleccion,
+                      controladorNombre,
+                      controladorDescripcion,
+                      context),
+                ],
+              ),
+            )));
   }
 
   Container menuDropDown(lista, altura, tipo) {
@@ -70,11 +91,13 @@ class _addCategories extends State<addCategories> {
           future: lista,
           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
             if (snapshot.data != null) {
-              if (tipo == "becerros"){
+              if (tipo == "becerros") {
                 return lista_becerro(altura, tipo);
-              }if (tipo == "vacas"){
+              }
+              if (tipo == "vacas") {
                 return lista_vaca(altura, tipo);
-              }if (tipo == "toros"){
+              }
+              if (tipo == "toros") {
                 return lista_toro(altura, tipo);
               }
             }
@@ -83,7 +106,7 @@ class _addCategories extends State<addCategories> {
     );
   }
 
-  Future <List<dynamic>> generarListaVaca()async {
+  Future<List<dynamic>> generarListaVaca() async {
     List<Vacas> listaVaca = await listaV;
     List<Vacas> vacas = List<Vacas>.generate(
       listaVaca.length,
@@ -94,16 +117,15 @@ class _addCategories extends State<addCategories> {
         descripcion: listaVaca[index].descripcion,
         raza: listaVaca[index].raza,
         num_arete: listaVaca[index].num_arete,
-        url_img: listaVaca[index].url_img,
         estado: listaVaca[index].estado,
         fecha_llegada: listaVaca[index].fecha_llegada,
         edad: listaVaca[index].edad,
       ),
     );
-  return vacas;
+    return vacas;
   }
 
-  Future <List<dynamic>> generarListaToro()async {
+  Future<List<dynamic>> generarListaToro() async {
     List<Toros> listaToro = await listaT;
     List<Toros> toros = List<Toros>.generate(
       listaToro.length,
@@ -114,16 +136,16 @@ class _addCategories extends State<addCategories> {
         descripcion: listaToro[index].descripcion,
         raza: listaToro[index].raza,
         num_arete: listaToro[index].num_arete,
-        url_img: listaToro[index].url_img,
+        // url_img: listaToro[index].url_img,
         estado: listaToro[index].estado,
         fecha_llegada: listaToro[index].fecha_llegada,
         edad: listaToro[index].edad,
       ),
     );
-  return toros;
+    return toros;
   }
 
-  Future <List<dynamic>> generarListaBecerro() async{
+  Future<List<dynamic>> generarListaBecerro() async {
     List<Becerros> listaBecerro = await listaB;
     List<Becerros> becerros = List<Becerros>.generate(
       listaBecerro.length,
@@ -134,14 +156,14 @@ class _addCategories extends State<addCategories> {
         descripcion: listaBecerro[index].descripcion,
         raza: listaBecerro[index].raza,
         num_arete: listaBecerro[index].num_arete,
-        url_img: listaBecerro[index].url_img,
+        // url_img: listaBecerro[index].url_img,
         estado: listaBecerro[index].estado,
         fecha_llegada: listaBecerro[index].fecha_llegada,
         id_vaca: listaBecerro[index].id_vaca,
         edad: listaBecerro[index].edad,
       ),
     );
-  return becerros;
+    return becerros;
   }
 
   Container lista_vaca(altura, tipo) {
@@ -202,7 +224,6 @@ class _addCategories extends State<addCategories> {
         children: <Widget>[
           MultipleSearchSelection<dynamic>(
             items: items,
-            
             fieldToCheck: (c) {
               return c.nombre;
             },
@@ -266,5 +287,4 @@ class _addCategories extends State<addCategories> {
       ),
     );
   }
-
 }
