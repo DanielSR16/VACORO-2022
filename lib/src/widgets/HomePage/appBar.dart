@@ -28,10 +28,12 @@ AppBar appbarCat(nombre, imagen, context, ruta) {
           size: 40,
         ),
         onPressed: () {
-          if (ruta == "this"){
+          if (ruta == "this") {
+            print("enro");
             Navigator.pop(context);
-          }else{
-            Navigator.pushNamed(context, ruta);
+          } else {
+            Navigator.pop(context);
+            //Navigator.pushNamed(context, ruta);
           }
         },
       ),

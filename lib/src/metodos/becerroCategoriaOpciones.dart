@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:vacoro_proyect/src/services/DAO/categoryBecerroDao.dart';
+import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/widgets/HomePage/appBar.dart';
 import '../model/becerrosCategorias.dart';
 import '../model/categorias.dart';
@@ -59,13 +60,19 @@ class _becerroEditar extends State<becerroEditar> {
                     onItemSelected: (Becerros item) async {
                       // set up the buttons
                       Widget cancelButton = ElevatedButton(
-                        child: Text("Cancelar"),
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5),
+                        child: const Text("Cancelar",
+                            style: TextStyle(color: Colors.white)),
                         onPressed: () {
                           Navigator.of(context).pop(true);
                         },
                       );
                       Widget continueButton = ElevatedButton(
-                        child: Text("Eliminar"),
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5),
+                        child: const Text("Eliminar",
+                            style: TextStyle(color: Colors.white)),
                         onPressed: () async {
                           var eliminarAnimal = jsonEncode({
                             "id_becerro": item.id,
@@ -97,11 +104,14 @@ class _becerroEditar extends State<becerroEditar> {
                       );
                       // set up the AlertDialog
                       AlertDialog alert = AlertDialog(
-                        title: Text("Eliminar Becerro"),
-                        content: Text("Te gustaria Eliminar El Becerro " +
-                            item.nombre +
-                            " Con Numero De Arete " +
-                            item.num_arete),
+                        title: const Text("Eliminar becerro",
+                            style: TextStyle(color: ColorSelect.color5)),
+                        content: Text(
+                            "Te gustaria eliminar el becerro " +
+                                item.nombre +
+                                " con numero de arete " +
+                                item.num_arete,
+                            style: const TextStyle(color: ColorSelect.color1)),
                         actions: [
                           cancelButton,
                           continueButton,
@@ -117,11 +127,11 @@ class _becerroEditar extends State<becerroEditar> {
                       );
                     },
                     inputDecoration: InputDecoration(
-                      labelText: "Buscar Becerro",
+                      labelText: "Buscar becerro",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                            color: Colors.blue,
+                            color: ColorSelect.color5,
                             width: 2.0,
                           ),
                           borderRadius: BorderRadius.circular(5.0)),
@@ -161,11 +171,11 @@ class _becerroEditar extends State<becerroEditar> {
     print(listaids);
     for (int i = 0; i < BecerrosTotales.length; i++) {
       if (!listaids.contains(BecerrosTotales[i].id)) {
-        animalesFaltantes.add("Id del Becerro: " +
+        animalesFaltantes.add("Id del becerro: " +
             BecerrosTotales[i].id.toString() +
-            "\nNumero De Arete: " +
+            "\nnumero de arete: " +
             BecerrosTotales[i].num_arete +
-            "\nNombre Del Becerro: " +
+            "\nnombre del becerro: " +
             BecerrosTotales[i].nombre);
       }
     }
@@ -177,11 +187,13 @@ class _becerroEditar extends State<becerroEditar> {
   dialogAgregar(List<String> animalesFaltantes) async {
     await DialogBackground(
       dialog: AlertDialog(
-        title: Text("Confirmacion"),
-        content: Text("Seleccione el animal a agregar"),
+        title: const Text("Confirmación",
+            style: TextStyle(color: ColorSelect.color5)),
+        content: const Text("Seleccione el animal a agregar",
+            style: TextStyle(color: ColorSelect.color1)),
         actions: <Widget>[
           SeleccionAnimalesFaltantes(animalesFaltantes),
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           FloatingActionButton(
@@ -227,7 +239,7 @@ class _becerroEditar extends State<becerroEditar> {
               }
             },
             backgroundColor: Colors.green,
-            child: const Icon(Icons.pets_outlined),
+            child: const Icon(Icons.check),
           )
         ],
       ),
@@ -278,9 +290,9 @@ class BecerroItem extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Icon(
-              Icons.pets,
-              color: Colors.yellow[700],
+            const Image(
+              image: AssetImage('assets/images/becerro.png'),
+              width: 25,
             ),
             const SizedBox(
               width: 10,
@@ -290,16 +302,16 @@ class BecerroItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Id: ${becerro.id}',
+                  'Núm. de arete: ${becerro.num_arete}',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: ColorSelect.color1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   'Nombre: ${becerro.nombre}',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: ColorSelect.color1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

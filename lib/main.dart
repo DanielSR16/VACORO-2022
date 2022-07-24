@@ -43,12 +43,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var correo;
-    var nombre;
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'VACORO',
-        initialRoute: 'ContainerdDialogCowCalfDetails',
+        initialRoute: 'splash',
         routes: {
           // 'autenticacion': (BuildContext context) => const autenticacion(),
           // 'homePage': (BuildContext context) => homePage(),
@@ -71,6 +69,7 @@ class MyApp extends StatelessWidget {
           'dash_medication': (BuildContext context) => Medication(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
               AnadirMedicamentoAnimal(),
+    
         });
   }
 }

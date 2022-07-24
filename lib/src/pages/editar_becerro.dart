@@ -52,7 +52,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
   late int id_usuario;
   late String token = '';
   late var imageAnimal =
-      'https://animapedia.org/wp-content/uploads/2018/07/vaca-perfil.jpg';
+      'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
 
   @override
   void initState() {
@@ -449,7 +449,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                       print(imageAnimal);
                       image = null;
                       imageAnimal =
-                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                          'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
                       print(imageAnimal);
                     });
                   },
@@ -811,29 +811,30 @@ class _EditarBecerroState extends State<EditarBecerro> {
               lockAspectRatio: false),
         ],
       );
+      if (croppedFile != null) {
+        final imageTemporary = File(croppedFile.path);
 
-      final imageTemporary = File(croppedFile!.path);
+        String fileExtension = path.extension(croppedFile.path);
 
-      String fileExtension = path.extension(croppedFile.path);
+        GenerateImageUrl generateImageUrl = GenerateImageUrl();
 
-      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+        await generateImageUrl.call(fileExtension);
 
-      await generateImageUrl.call(fileExtension);
+        url_img = generateImageUrl.downloadUrl;
+        var uploadUrl;
+        if (generateImageUrl.isGenerated != null &&
+            generateImageUrl.isGenerated) {
+          uploadUrl = generateImageUrl.uploadUrl;
+        } else {
+          throw generateImageUrl.message;
+        }
 
-      url_img = generateImageUrl.downloadUrl;
-      var uploadUrl;
-      if (generateImageUrl.isGenerated != null &&
-          generateImageUrl.isGenerated) {
-        uploadUrl = generateImageUrl.uploadUrl;
-      } else {
-        throw generateImageUrl.message;
+        bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+
+        setState(
+          () => this.image = imageTemporary,
+        );
       }
-
-      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
-
-      setState(
-        () => this.image = imageTemporary,
-      );
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -875,24 +876,26 @@ class _EditarBecerroState extends State<EditarBecerro> {
         ],
       );
 
-      final imageTemporary = File(croppedFile!.path);
-      setState(() => this.image = imageTemporary);
-      String fileExtension = path.extension(croppedFile.path);
-      //final imageTemporary = File(image.path);
+      if (croppedFile != null) {
+        final imageTemporary = File(croppedFile.path);
+        setState(() => this.image = imageTemporary);
+        String fileExtension = path.extension(croppedFile.path);
+        //final imageTemporary = File(image.path);
 
-      GenerateImageUrl generateImageUrl = GenerateImageUrl();
-      await generateImageUrl.call(fileExtension);
+        GenerateImageUrl generateImageUrl = GenerateImageUrl();
+        await generateImageUrl.call(fileExtension);
 
-      url_img = generateImageUrl.downloadUrl;
-      var uploadUrl;
-      if (generateImageUrl.isGenerated != null &&
-          generateImageUrl.isGenerated) {
-        uploadUrl = generateImageUrl.uploadUrl;
-      } else {
-        throw generateImageUrl.message;
+        url_img = generateImageUrl.downloadUrl;
+        var uploadUrl;
+        if (generateImageUrl.isGenerated != null &&
+            generateImageUrl.isGenerated) {
+          uploadUrl = generateImageUrl.uploadUrl;
+        } else {
+          throw generateImageUrl.message;
+        }
+
+        bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
       }
-
-      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }

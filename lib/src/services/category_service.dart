@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.100.15";
-
 Future getCategoryAll() async {
   print('hola estoy obteniendo categorias xd');
   try {
@@ -14,7 +12,7 @@ Future getCategoryAll() async {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       print('datasssssssssssssss');

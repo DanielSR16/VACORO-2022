@@ -127,11 +127,12 @@ class _registroUser2State extends State<registroUser2> {
           width: 10,
         ),
         Container(
+          width: MediaQuery.of(context).size.width - 230,
           padding: const EdgeInsets.only(
             right: 1,
           ),
           child: SizedBox(
-            width: 152,
+            width: MediaQuery.of(context).size.width - 230,
             height: 160,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -153,7 +154,7 @@ class _registroUser2State extends State<registroUser2> {
                     setState(() {
                       image = null;
                       url_img =
-                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                          'https://image-vacoro.s3.amazonaws.com/1afc4017-6cf2-4365-b406-26660c7b61e8.jpg';
                     });
                   },
                 ),

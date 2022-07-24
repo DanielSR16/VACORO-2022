@@ -170,7 +170,7 @@ class _DashboardCategoryState extends State<DashboardCategory> {
   AlertDialog _alertDialogCategory(BuildContext context) {
     return AlertDialog(
       elevation: 20,
-      title: const Text("Sin Categorias"),
+      title: const Text("Sin categorias"),
       content: const Text("Para visualizar las categorias, debe de agregarlas"),
       actions: [
         Row(

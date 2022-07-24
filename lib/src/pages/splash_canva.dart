@@ -34,7 +34,7 @@ class _SplashCanvaState extends State<SplashCanva> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/images/image.png',
+            'assets/images/imagenGanadero.png',
             repeat: ImageRepeat.repeatX,
             fit: BoxFit.contain,
           ),
