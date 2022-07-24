@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
@@ -279,14 +280,16 @@ class _DashBoardCowState extends State<DashBoardCow> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: size.width * 0.3,
-                    height: 150,
-                    margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
-                    child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/loading_green.gif',
-                        image: snapshot.data[index]['url_img'] ??
-                            'https://upload.wikimedia.org/wikipedia/commons/0/07/20100516_Vacas_Vilarromar%C3%ADs%2C_Oroso-8-1.jpg'),
-                  ),
+                      width: size.width * 0.3,
+                      height: 150,
+                      margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
+                      child: CachedNetworkImage(
+                        imageUrl: snapshot.data[index]['url_img'],
+                        placeholder: (context, url) =>
+                            Image.asset('assets/images/loading_green.gif'),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )),
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
