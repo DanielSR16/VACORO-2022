@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
@@ -95,97 +96,96 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
         ],
         backgroundColor: ColorSelect.color5,
       ),
-      body: SizedBox(
-        child: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.only(right: 20, left: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  inputs("Nombre", "Ingrese nombre del animal", size,
-                      nombreToroVaca, _validateNombre),
-                  inputs("Descripción", "Ingrese una descripción del animal",
-                      size, descripcionToroVaca, _validateDescripcion),
-                  inputs("Raza", "Ingrese la raza del animal", size,
-                      razaToroVaca, _validateRaza),
-                  inputs("Número de arete", "Ingrese el número de arete", size,
-                      numeroAreteToroVaca, _validateNumeroArete),
-                  //date(),
-                  fecha(context, "Fecha de llegada", dateinput, _validateDate),
-                  edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
-                      "Buen estado", size, edadToroVaca, _validateEdad),
-                  selectImage(),
-                  Container(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 20),
-                    child: SizedBox(
-                      width: size.width - 50,
-                      height: 50,
-                      child: ElevatedButton(
-                          child: const Text(
-                            'Agregar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+      body: SafeArea(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          padding: const EdgeInsets.only(right: 20, left: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                inputs("Nombre", "Ingrese nombre del animal", size,
+                    nombreToroVaca, _validateNombre),
+                inputs("Descripción", "Ingrese una descripción del animal",
+                    size, descripcionToroVaca, _validateDescripcion),
+                inputs("Raza", "Ingrese la raza del animal", size, razaToroVaca,
+                    _validateRaza),
+                inputs("Número de arete", "Ingrese el número de arete", size,
+                    numeroAreteToroVaca, _validateNumeroArete),
+                //date(),
+                fecha(context, "Fecha de llegada", dateinput, _validateDate),
+                edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
+                    "Buen estado", size, edadToroVaca, _validateEdad),
+                selectImage(size),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 30, bottom: 20),
+                  child: SizedBox(
+                    width: size.width - 50,
+                    height: 50,
+                    child: ElevatedButton(
+                        child: const Text(
+                          'Agregar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              late bool res = valid();
-                              if (res == true) {
-                                serviceanadirvacatoro(
-                                        token,
-                                        id_usuario,
-                                        widget.tipoAnimal,
-                                        nombreToroVaca.text,
-                                        descripcionToroVaca.text,
-                                        razaToroVaca.text,
-                                        numeroAreteToroVaca.text,
-                                        url_img,
-                                        estado,
-                                        int.parse(edadToroVaca.text),
-                                        dateinput.text)
-                                    .then((value) {
-                                  if (value['status'] == 'success') {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        duration: Duration(milliseconds: 1000),
-                                        content:
-                                            Text('Se agrego correctamente'),
-                                      ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            late bool res = valid();
+                            if (res == true) {
+                              serviceanadirvacatoro(
+                                      token,
+                                      id_usuario,
+                                      widget.tipoAnimal,
+                                      nombreToroVaca.text,
+                                      descripcionToroVaca.text,
+                                      razaToroVaca.text,
+                                      numeroAreteToroVaca.text,
+                                      url_img,
+                                      estado,
+                                      int.parse(edadToroVaca.text),
+                                      dateinput.text)
+                                  .then((value) {
+                                if (value['status'] == 'success') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      duration: Duration(milliseconds: 1000),
+                                      content: Text('Se agrego correctamente'),
+                                    ),
+                                  );
+
+                                  Future.delayed(
+                                      const Duration(milliseconds: 200), () {
+                                    String ruta = '';
+                                    if (widget.tipoAnimal == 'Vaca') {
+                                      ruta = 'dash_cow';
+                                    } else {
+                                      ruta = 'dash_bull';
+                                    }
+                                    Navigator.popAndPushNamed(
+                                      context,
+                                      ruta,
                                     );
 
-                                    Future.delayed(
-                                        const Duration(milliseconds: 200), () {
-                                      String ruta = '';
-                                      if (widget.tipoAnimal == 'Vaca') {
-                                        ruta = 'dash_cow';
-                                      } else {
-                                        ruta = 'dash_bull';
-                                      }
-                                      Navigator.popAndPushNamed(
-                                        context,
-                                        ruta,
-                                      );
-
-                                      setState(() {
-                                        // Here you can write your code for open new view
-                                      });
+                                    setState(() {
+                                      // Here you can write your code for open new view
                                     });
-                                  }
-                                });
-                              }
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: ColorSelect.color5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)))),
-                    ),
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)))),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -276,7 +276,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
         onPressed: onClicked,
       );
 
-  Widget selectImage() {
+  Widget selectImage(Size size) {
     return Row(
       children: <Widget>[
         Column(
@@ -293,6 +293,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
               ),
             ),
             Container(
+              width: MediaQuery.of(context).size.width * 0.40,
               margin: const EdgeInsets.only(left: 16),
               child: image != null
                   ? Image.file(
@@ -310,12 +311,13 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
           ],
         ),
         Container(
+          width: MediaQuery.of(context).size.width * 0.40,
           padding: const EdgeInsets.only(
             //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 160,
+            width: size.width - 255,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -617,16 +619,38 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
 
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      String fileExtension = path.extension(image.path);
-      print(imageTemporary);
-      print(fileExtension);
+      final imageTemporary = File(croppedFile!.path);
+
+      String fileExtension = path.extension(croppedFile.path);
+
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
-      print(generateImageUrl);
       await generateImageUrl.call(fileExtension);
 
       url_img = generateImageUrl.downloadUrl;
+
       var uploadUrl;
       if (generateImageUrl.isGenerated != null &&
           generateImageUrl.isGenerated) {
@@ -659,11 +683,32 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
 
-      //final imageTemporary = File(image.path);
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      String fileExtension = path.extension(image.path);
+      final imageTemporary = File(croppedFile!.path);
+      setState(() => this.image = imageTemporary);
+      String fileExtension = path.extension(croppedFile.path);
 
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
       await generateImageUrl.call(fileExtension);
@@ -684,7 +729,7 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
     }
   }
 
-  Future<bool> uploadFile(context, String url, File image) async {
+  Future<bool> uploadFile(context, String url, image) async {
     try {
       UploadFile uploadFile = UploadFile();
       await uploadFile.call(url, image);

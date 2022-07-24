@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/editar_medicamento_animal.dart';
 import 'package:vacoro_proyect/src/services/service_medication_history_bull.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
@@ -7,8 +8,12 @@ import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 class MedicationHistoryBull extends StatefulWidget {
   int idAnimal;
   String nombre;
+  int idUsuario;
   MedicationHistoryBull(
-      {Key? key, required this.idAnimal, required this.nombre})
+      {Key? key,
+      required this.idAnimal,
+      required this.nombre,
+      required this.idUsuario})
       : super(key: key);
 
   @override
@@ -25,6 +30,7 @@ class _MedicationHistoryBullState extends State<MedicationHistoryBull> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               print("Regresar");
+
               Navigator.pop(context);
             }),
         title: const Text("HISTORIAL DE MEDICAMENTOS"),
@@ -60,6 +66,10 @@ class _MedicationHistoryBullState extends State<MedicationHistoryBull> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print("AGREGAR MEDICAMENTOS AL TORO");
+          List data = [2, widget.idUsuario, widget.idAnimal];
+
+          Navigator.popAndPushNamed(context, 'AnadirMedicamentoAnimal',
+              arguments: data);
         },
         child: const Icon(Icons.add),
         backgroundColor: ColorSelect.color5,
@@ -111,7 +121,7 @@ class _MedicationHistoryBullState extends State<MedicationHistoryBull> {
           backgroundColor: ColorSelect.color5,
           foregroundColor: Colors.white,
           child: Text(
-            "${widget.nombre[0].toUpperCase()}",
+            "",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -223,7 +233,24 @@ class _MedicationHistoryBullState extends State<MedicationHistoryBull> {
                           margin: const EdgeInsets.only(right: 10),
                           child: GestureDetector(
                             onTap: () {
-                              print("Edit historial Vacas");
+                              print("Edit historial bull");
+
+                              List data_cow = [
+                                2,
+                                widget.idUsuario,
+                                widget.idAnimal,
+                                snapshot.data[index]['id']
+                              ];
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      EditarMedicamentoAnimal(
+                                    data_: data_cow,
+                                  ),
+                                ),
+                              );
                             },
                             child: Image.asset(
                               'assets/images/edit_logo.png',

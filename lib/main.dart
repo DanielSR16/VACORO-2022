@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/add_categories.dart';
+import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
+
 import 'package:vacoro_proyect/src/pages/anadir_medicamento_animal.dart';
+import 'package:vacoro_proyect/src/pages/edit_categories.dart';
 import 'package:vacoro_proyect/src/pages/editar_medicamento_animal.dart';
 import 'package:vacoro_proyect/src/pages/login.dart';
 import 'package:vacoro_proyect/src/pages/medication.dart';
@@ -46,6 +50,12 @@ class MyApp extends StatelessWidget {
         title: 'VACORO',
         initialRoute: 'ContainerdDialogCowCalfDetails',
         routes: {
+          // 'autenticacion': (BuildContext context) => const autenticacion(),
+          // 'homePage': (BuildContext context) => homePage(),
+          // 'vistaPrincipal': (BuildContext context) => const vista_principal(),
+          'anadir_categoria': (BuildContext context) => addCategories(),
+          'editar_categoria': (BuildContext context) => editCategories(),
+          'AnadirBecerro': (BuildContext context) => AnadirBecerro(),
           'splash': (BuildContext context) => Splash(),
           'splash_canva': (BuildContext context) => SplashCanva(),
           'login': (BuildContext context) => const Login(),
@@ -56,16 +66,11 @@ class MyApp extends StatelessWidget {
           'dash_category': (BuildContext context) => DashboardCategory(),
           'registroUser': (BuildContext context) => registroUser(),
           'registroUser2': (BuildContext context) => registroUser2(),
+          'medication': (BuildContext context) => Medication(),
+          // 'medication_history': (BuildContext context) => MedicationHistory(),
           'dash_medication': (BuildContext context) => Medication(),
           'AnadirMedicamentoAnimal': (BuildContext context) =>
               AnadirMedicamentoAnimal(),
-          'EditarMedicamentoAnimal': (BuildContext context) =>
-              EditarMedicamentoAnimal(),
-          'ContainerdDialogCowCalfDetails': (BuildContext context) =>
-              ContainerdDialogCowCalfDetails(
-                nombreVaca: "lola",
-                id_vaca: 2,
-              ),
         });
   }
 }

@@ -2,22 +2,23 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> serviceeditarvacatoro(
-  int id_usuario,
-  String tipoAnimal,
-  int id,
-  String nombre,
-  String descripcion,
-  String raza,
-  String num_arete,
-  String url_img,
-  int estado,
-  int edad,
-  String fecha_llegada,
-  String token
-) async {
- 
-  Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token',};
-  String host = '192.168.100.15:3001';
+    int id_usuario,
+    String tipoAnimal,
+    int id,
+    String nombre,
+    String descripcion,
+    String raza,
+    String num_arete,
+    String url_img,
+    int estado,
+    int edad,
+    String fecha_llegada,
+    String token) async {
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
+  };
+  String host = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
   String loginAPI;
   if (tipoAnimal == "Vaca") {
     loginAPI = '/vaca/update/';

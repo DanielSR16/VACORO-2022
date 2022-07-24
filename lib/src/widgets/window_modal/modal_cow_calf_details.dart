@@ -1,8 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/services/obtenerBecerro_Vaca.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-import '../../services/obtenerBecerro_Vaca.dart';
+import '../../services/deleteCategoriabyAnimal.dart';
+import '../../services/deleteHistorialAnimal.dart';
+import '../../services/editarBecerro.dart';
 import '../../utils/user_secure_storage.dart';
 
 class ContainerdDialogCowCalfDetails extends StatefulWidget {
@@ -19,7 +22,7 @@ class ContainerdDialogCowCalfDetails extends StatefulWidget {
 
 class _ContainerdDialogCowCalfDetailsState
     extends State<ContainerdDialogCowCalfDetails> {
-  var id_usuario = 11;
+  int id_usuario = 0;
   var token = '';
   var name = '';
   @override
@@ -220,7 +223,33 @@ class _ContainerdDialogCowCalfDetailsState
                           Icons.delete_outline_outlined,
                           color: ColorSelect.color5,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          servicedeletebecerro_categoria(
+                                  snapshot.data[index]['id'])
+                              .then((categoria) {
+                            if (categoria['status'] == 'ok') {
+                              servicedeletebecerro_historial(
+                                      snapshot.data[index]['id'], token)
+                                  .then((historial) {
+                                if (historial['status'] == 'ok') {
+                                  servicedeletebecerro(
+                                          token, snapshot.data[index]['id'])
+                                      .then((value) {
+                                    if (value['status'] == 'ok') {
+                                      Future.delayed(
+                                          const Duration(milliseconds: 200),
+                                          () {
+                                        setState(() {
+                                          // Here you can write your code for open new view
+                                        });
+                                      });
+                                    }
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        },
                       ),
                     ),
                   ],

@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCardsCalf.dart';
 import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
@@ -19,7 +20,7 @@ class DashBoardCalf extends StatefulWidget {
 
 class _DashBoardCalfState extends State<DashBoardCalf> {
   bool? value1;
-  var id_usuario = 10;
+  var id_usuario = 0;
   var token = '';
   var name = '';
   @override
@@ -92,7 +93,8 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                 ),
               );
             } else {
-              if (snapshot.data.length > 0) {
+              if (snapshot.data.length > 0 &&
+                  snapshot.data[0]['error'] != 'error') {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -111,7 +113,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                       backgroundColor: ColorSelect.color5,
                       foregroundColor: Colors.white,
                       child: Text(
-                        "${name[0].toUpperCase()}",
+                        "",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -198,7 +200,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, 'Editar_becerro');
+          Navigator.pushReplacementNamed(context, 'AnadirBecerro');
         },
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff68C34E),
@@ -238,14 +240,16 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: size.width * 0.3,
-                    height: 150,
-                    margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/loading_green.gif',
-                      image: snapshot.data[index]['url_img'],
-                    ),
-                  ),
+                      width: size.width * 0.3,
+                      height: 150,
+                      margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
+                      child: CachedNetworkImage(
+                        imageUrl: snapshot.data[index]['url_img'],
+                        placeholder: (context, url) =>
+                            Image.asset('assets/images/loading_green.gif'),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )),
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -316,9 +320,9 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     MedicationHitoryCalf(
-                                  idAnimal: snapshot.data[index]['id'],
-                                  nombre: snapshot.data[index]['nombre'],
-                                ),
+                                        idAnimal: snapshot.data[index]['id'],
+                                        nombre: snapshot.data[index]['nombre'],
+                                        idUsuario: id_usuario),
                               ),
                             );
                           },

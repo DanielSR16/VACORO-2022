@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String ip = '192.168.100.15:3001';
+String ip = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
 
 Future vacatoro_id(int id, String tipoAnimal, token) async {
   try {
@@ -134,14 +134,14 @@ Future<List> getVacasbyIdUser(int id_usuario, token) async {
       {'id_usuario': id_usuario},
     ),
   );
-  print(response.statusCode);
+
   if (response.statusCode == 200) {
     List map = json.decode(response.body);
 
     Map<int, String> listavacas = Map();
 
     for (var i = 0; i < map.length; i++) {
-      listavacas[map[i]['id']] = map[i]['nombre'];
+      listavacas[map[i]['id']] = map[i]['nombre'] + " " + map[i]['num_arete'];
     }
 
     return [

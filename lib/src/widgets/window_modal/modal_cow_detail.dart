@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
@@ -9,7 +10,10 @@ class ContainerDialogModalCowDetail extends StatefulWidget {
   int id;
   String token;
   ContainerDialogModalCowDetail(
-      {Key? key, required this.tipoAnimal, required this.id, required this.token})
+      {Key? key,
+      required this.tipoAnimal,
+      required this.id,
+      required this.token})
       : super(key: key);
 
   @override
@@ -25,7 +29,7 @@ class _ContainerDialogModalCowDetailState
   late int edad = 0;
   late String num_arete = '';
   late String url_img =
-      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+      'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
   late String fecha_llegada = '';
   late String estado = '';
   var token = '';
@@ -34,7 +38,7 @@ class _ContainerDialogModalCowDetailState
     // TODO: implement initState
     super.initState();
 
-    vacatoro_id(widget.id, widget.tipoAnimal,widget.token).then((value) {
+    vacatoro_id(widget.id, widget.tipoAnimal, widget.token).then((value) {
       setState(() {
         nombre = value.nombre;
         descripcion = value.descripcion;
@@ -45,9 +49,9 @@ class _ContainerDialogModalCowDetailState
         fecha_llegada = value.fecha_llegada;
 
         if (value.estado == 1) {
-          estado = 'Enfermo';
+          estado = 'Buen estado';
         } else {
-          estado = 'No esta enfermo';
+          estado = 'Enfermo';
         }
       });
     });
@@ -74,7 +78,9 @@ class _ContainerDialogModalCowDetailState
                       color: const Color(0xff2F6622),
                       onPressed: () {
                         print("Salir");
-                        Navigator.of(context).pop();
+                 
+                          Navigator.of(context).pop();
+                       
                       },
                     ),
                   ],
@@ -278,11 +284,16 @@ class _ContainerDialogModalCowDetailState
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 10, top: 10),
-                      width: size.width * 0.65,
-                      height: 150,
-                      child: Image.network(url_img),
-                    ),
+                        margin: const EdgeInsets.only(bottom: 10, top: 10),
+                        width: size.width * 0.65,
+                        height: 150,
+                        child: CachedNetworkImage(
+                          imageUrl: url_img,
+                          placeholder: (context, url) =>
+                              Image.asset('assets/images/loading_green.gif'),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        )),
                   ],
                 ),
                 Row(

@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
@@ -9,6 +10,8 @@ import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_detail.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
+
+import '../widgets/window_modal/modal_cow_calf_details.dart';
 
 class DashBoardCow extends StatefulWidget {
   DashBoardCow({Key? key}) : super(key: key);
@@ -114,7 +117,12 @@ class _DashBoardCowState extends State<DashBoardCow> {
               );
               // return Container();
             } else {
-              if (snapshot.data.length > 0) {
+              // print(token);
+              // print(
+              //     ' sot el data de la vaca _________________________________________________');
+              // print(snapshot.data);
+              if (snapshot.data.length > 0 &&
+                  snapshot.data[0]['error'] != 'error') {
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -175,7 +183,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
           backgroundColor: ColorSelect.color5,
           foregroundColor: Colors.white,
           child: Text(
-            "${name[0].toUpperCase()}",
+            "daniel",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -272,14 +280,16 @@ class _DashBoardCowState extends State<DashBoardCow> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: size.width * 0.3,
-                    height: 150,
-                    margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/loading_green.gif',
-                      image: snapshot.data[index]['url_img'],
-                    ),
-                  ),
+                      width: size.width * 0.3,
+                      height: 150,
+                      margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
+                      child: CachedNetworkImage(
+                        imageUrl: snapshot.data[index]['url_img'],
+                        placeholder: (context, url) =>
+                            Image.asset('assets/images/loading_green.gif'),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )),
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -345,6 +355,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
                         child: GestureDetector(
                             onTap: () {
                               print("Vacunas");
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute<void>(
@@ -352,6 +363,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
                                       MedicationHistoryCow(
                                     idAnimal: snapshot.data[index]['id'],
                                     nombre: snapshot.data[index]['nombre'],
+                                    idUsuario: id_usuario,
                                   ),
                                 ),
                               );
@@ -364,8 +376,15 @@ class _DashBoardCowState extends State<DashBoardCow> {
                       ),
                       Container(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             print("Becerros");
+                            await showDialog(
+                                context: context,
+                                builder: (_) => ContainerdDialogCowCalfDetails(
+                                      id_vaca: snapshot.data[index]["id"],
+                                      nombreVaca: snapshot.data[index]
+                                          ["nombre"],
+                                    ));
                           },
                           child: Image.asset(
                             'assets/images/logo_calf.png',

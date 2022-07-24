@@ -1,10 +1,12 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/pages/anadir_animal.dart';
 import 'package:vacoro_proyect/src/pages/editar_animal.dart';
 import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/medication_history_bull.dart';
 import 'package:vacoro_proyect/src/services/animal_service_bull.dart';
+import 'package:vacoro_proyect/src/services/imagenes.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
@@ -148,7 +150,8 @@ class _DashBoardBullState extends State<DashBoardBull> {
             ),
           );
         } else {
-          if (snapshot.data.length > 0) {
+          if (snapshot.data.length > 0 &&
+              snapshot.data[0]['error'] != 'error') {
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -177,11 +180,12 @@ class _DashBoardBullState extends State<DashBoardBull> {
           backgroundColor: ColorSelect.color5,
           foregroundColor: Colors.white,
           child: Text(
-            "${name[0].toUpperCase()}",
+            "name",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        label: Text("${name.toUpperCase()}."),
+        //modificar aqui xd
+        label: Text("name"),
       ),
       content: RichText(
         textAlign: TextAlign.justify,
@@ -274,14 +278,16 @@ class _DashBoardBullState extends State<DashBoardBull> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: size.width * 0.3,
-                    height: 150,
-                    margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/loading_green.gif',
-                      image: snapshot.data[index]['url_img'],
-                    ),
-                  ),
+                      width: size.width * 0.3,
+                      height: 150,
+                      margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
+                      child: CachedNetworkImage(
+                        imageUrl: snapshot.data[index]['url_img'],
+                        placeholder: (context, url) =>
+                            Image.asset('assets/images/loading_green.gif'),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )),
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -355,6 +361,7 @@ class _DashBoardBullState extends State<DashBoardBull> {
                                           idAnimal: snapshot.data[index]['id'],
                                           nombre: snapshot.data[index]
                                               ['nombre'],
+                                          idUsuario: id_usuario,
                                         )));
                           },
                           child: Image.asset(

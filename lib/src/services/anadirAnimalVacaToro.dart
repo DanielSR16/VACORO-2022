@@ -25,7 +25,7 @@ Future<Map<String, dynamic>> serviceanadirvacatoro(
     animalAPI = '/toro/new/';
   }
   print(animalAPI);
-  String host = '192.168.100.15:3001';
+  String host = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
 
   try {
     final response = await http.post(

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/services/anadirBecerro.dart';
 import 'package:vacoro_proyect/src/services/servicios_user.dart';
@@ -772,13 +773,34 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      String fileExtension = path.extension(image.path);
-      print(imageTemporary);
-      print(fileExtension);
+      final imageTemporary = File(croppedFile!.path);
+
+      String fileExtension = path.extension(croppedFile.path);
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
-      print(generateImageUrl);
+
       await generateImageUrl.call(fileExtension);
 
       url_img = generateImageUrl.downloadUrl;
@@ -813,12 +835,33 @@ class _EditarPerfilState extends State<EditarPerfil> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      //final imageTemporary = File(image.path);
-      final imageTemporary = await saveImagePermanently(image.path);
+      final imageTemporary = File(croppedFile!.path);
       setState(() => this.image = imageTemporary);
-
-      String fileExtension = path.extension(image.path);
+      String fileExtension = path.extension(croppedFile.path);
+      //final imageTemporary = File(image.path);
 
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
       await generateImageUrl.call(fileExtension);

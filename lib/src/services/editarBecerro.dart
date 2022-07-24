@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String host = '192.168.100.15:3001';
+String host = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
 
 Future<Map<String, dynamic>> serviceeditarbecerro(
-  token,
+  String token,
   int id_usuario,
   int id,
   String nombre,
@@ -19,7 +19,7 @@ Future<Map<String, dynamic>> serviceeditarbecerro(
 ) async {
   Map<String, String> headers = {
     'Content-Type': 'application/json',
-    "authorization": 'Bearer $token'
+    'Authorization': 'Bearer $token',
   };
   String animalAPI = '/becerro/update/';
 
@@ -43,6 +43,7 @@ Future<Map<String, dynamic>> serviceeditarbecerro(
         },
       ),
     );
+    print("error");
     print(response.statusCode);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -63,9 +64,13 @@ Future<Map<String, dynamic>> serviceeditarbecerro(
 }
 
 Future<Map<String, dynamic>> servicedeletebecerro(
+  String token,
   int id,
 ) async {
-  Map<String, String> headers = {'Content-Type': 'application/json'};
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
+  };
   String animalAPI = '/becerro/delete/';
 
   try {

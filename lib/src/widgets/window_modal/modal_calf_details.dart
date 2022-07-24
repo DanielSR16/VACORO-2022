@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/services/editarBecerro.dart';
 import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
@@ -24,7 +25,7 @@ class _ContainerDialogModalCalfDetailState
   late int edad = 0;
   late String num_arete = '';
   late String url_img =
-      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+      'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
   late String fecha_llegada = '';
   late String estado = '';
   late String nombre_madre = '';
@@ -35,7 +36,7 @@ class _ContainerDialogModalCalfDetailState
     // TODO: implement initState
     super.initState();
 
-    becerro_id(widget.id,widget.token).then((value) {
+    becerro_id(widget.id, widget.token).then((value) {
       print(value);
       setState(() {
         nombre = value.nombre;
@@ -43,13 +44,13 @@ class _ContainerDialogModalCalfDetailState
         raza = value.raza;
         edad = value.edad;
         num_arete = value.num_arete;
-        url_img = value.url_img;
+        url_img = value.url_img ?? 'assets/images/logo.png';
         fecha_llegada = value.fecha_llegada;
 
         if (value.estado == 1) {
-          estado = 'Enfermo';
+          estado = 'Buen estado';
         } else {
-          estado = 'No esta enfermo';
+          estado = 'Enfermo';
         }
         if (value.id_vaca != -1) {
           vacatoro_id(value.id_vaca, "Vaca", widget.token).then((value) {
@@ -298,11 +299,16 @@ class _ContainerDialogModalCalfDetailState
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 10, top: 10),
-                      width: size.width * 0.65,
-                      height: 150,
-                      child: Image.network(url_img),
-                    ),
+                        margin: const EdgeInsets.only(bottom: 10, top: 10),
+                        width: size.width * 0.65,
+                        height: 150,
+                        child: CachedNetworkImage(
+                          imageUrl: url_img,
+                          placeholder: (context, url) =>
+                              Image.asset('assets/images/loading_green.gif'),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        )),
                   ],
                 ),
                 Row(

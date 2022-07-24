@@ -2,9 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_bull.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_calf.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_cow.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/services/medicamentosAnimal.dart';
 import 'package:intl/intl.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class AnadirMedicamentoAnimal extends StatefulWidget {
   const AnadirMedicamentoAnimal({Key? key}) : super(key: key);
@@ -31,16 +35,34 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
   late bool _validateDosis = false;
   late bool _validateFecha = false;
 
+  late List data_ = [];
+  late String token_ = "";
+  late int id_usuario_ = 0;
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
-    _getFieldsData();
+    UserSecureStorage.getToken().then((value) {
+      UserSecureStorage.getId().then((id_usuario) {
+        setState(() {
+          var id_usuario_cast = int.parse(id_usuario!);
+          id_usuario_ = id_usuario_cast;
+          token_ = value!;
+          _getFieldsData(id_usuario);
+        });
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)?.settings.arguments;
+    setState(() {
+      data_ = data as List;
+    });
+    print(data_);
+
     Size size = MediaQuery.of(context).size;
     var typeNumber = TextInputType.number;
     var typeNormal = TextInputType.text;
@@ -62,7 +84,11 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
               size: 40,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Future.delayed(const Duration(milliseconds: 500), () {
+// Here you can write your code
+
+                Navigator.pop(context);
+              });
             },
           ),
         ),
@@ -115,17 +141,62 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
                               if (_validateMedicamento == false) {
                                 name_medicamento = _selectedFieldMedicamento;
                               }
-                              medicamentos_name_byName(name_medicamento)
+                              medicamentos_name_byName(
+                                      name_medicamento, id_usuario_, token_)
                                   .then((id_medicamento) {
                                 int dosis_parse = int.parse(dosis.text);
                                 register_historia_animal(
-                                    1,
-                                    1,
+                                    token_,
+                                    data_[0],
+                                    data_[1],
                                     id_medicamento,
                                     dosis_parse,
                                     descripcion.text,
                                     dateinputFechaAplicacion.text,
-                                    1);
+                                    data_[2]);
+                              });
+                              // print('TIpo animal')
+                              print(data_[0]);
+                              Future.delayed(const Duration(milliseconds: 500),
+                                  () {
+                                if (data_[0] == 1) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          MedicationHistoryCow(
+                                        idAnimal: data_[2],
+                                        nombre: '',
+                                        idUsuario: data_[1],
+                                      ),
+                                    ),
+                                  );
+                                } else if (data_[0] == 2) {
+                                  print('a');
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          MedicationHistoryBull(
+                                        idAnimal: data_[2],
+                                        nombre: '',
+                                        idUsuario: data_[1],
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          MedicationHitoryCalf(
+                                        idAnimal: data_[2],
+                                        nombre: '',
+                                        idUsuario: data_[1],
+                                      ),
+                                    ),
+                                  );
+                                }
                               });
                             }
                           });
@@ -368,8 +439,8 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
     );
   }
 
-  void _getFieldsData() {
-    medicamentos_all().then(
+  void _getFieldsData(id_usuario) {
+    medicamentos_all(token_, id_usuario).then(
       (data) {
         final items = jsonDecode(data).cast<Map<String, dynamic>>();
         var fieldListData = items.map<FormField>((json) {

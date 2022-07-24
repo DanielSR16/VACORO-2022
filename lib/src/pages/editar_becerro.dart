@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
@@ -11,6 +12,9 @@ import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
 import 'package:vacoro_proyect/src/services/upload_file.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
+
+import '../services/deleteCategoriabyAnimal.dart';
+import '../services/deleteHistorialAnimal.dart';
 
 class EditarBecerro extends StatefulWidget {
   int id;
@@ -45,30 +49,32 @@ class _EditarBecerroState extends State<EditarBecerro> {
   late Map<int, String> listaVacas = {0: 'vaca'};
 
   late int id;
-  late int id_usuario = 0;
+  late int id_usuario;
+  late String token = '';
   late var imageAnimal =
-      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
-  late var token = '';
+      'https://animapedia.org/wp-content/uploads/2018/07/vaca-perfil.jpg';
+
   @override
   void initState() {
     super.initState();
-    UserSecureStorage.getId().then((value) {
+    UserSecureStorage.getId().then((id_) {
       UserSecureStorage.getToken().then((token_) {
-        setState(() {
-          int id_cast = int.parse(value!);
-          id_usuario = id_cast;
-          token = token_!;
-        });
-      });
+        int id_cast = int.parse(id_!);
+        getVacasbyIdUser(id_cast, widget.token).then((value) {
+          setState(() {
+            id_usuario = id_cast;
+            token = token_!;
 
-      getVacasbyIdUser(id_usuario, widget.token).then((value) {
-        setState(() {
-          listaVacas = value[0][0];
-          List map = value[1];
+            // Future.delayed(const Duration(milliseconds: 200), () {
+
+            listaVacas = value[0][0];
+            List map = value[1];
+
+            // });
+          });
         });
       });
     });
-    // TODO: implement initState
 
     becerro_id(widget.id, widget.token).then((value) {
       nombreBecerroEditar.text = value.nombre;
@@ -89,13 +95,19 @@ class _EditarBecerroState extends State<EditarBecerro> {
         if (value.id_vaca != -1) {
           vacatoro_id(value.id_vaca, "Vaca", widget.token).then((value) {
             setState(() {
-              dropdownValue = value.nombre;
+              print(value);
+              dropdownValue = value.nombre + " " + value.num_arete;
+              print(listaVacas);
             });
           });
         } else {
-          setState(() {
-            dropdownValue = 'Sin madre';
-          });
+          if (value.id_vaca == -1) {
+            Future.delayed(const Duration(milliseconds: 700), () {
+              setState(() {
+                dropdownValue = listaVacas[-1];
+              });
+            });
+          }
         }
       });
     });
@@ -136,54 +148,77 @@ class _EditarBecerroState extends State<EditarBecerro> {
         ],
         backgroundColor: ColorSelect.color5,
       ),
-      body: SizedBox(
-        child: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.only(right: 20, left: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  inputs("Nombre", "Ingrese nombre del becerro", size,
-                      nombreBecerroEditar, _validateNombre),
-                  inputs("Descripción", "Ingrese una descripción del becerro",
-                      size, descripcionBecerroEditar, _validateDescripcion),
-                  inputs("Raza", "Ingrese la raza del animal", size,
-                      razaBecerroEditar, _validateRaza),
-                  inputs("Número de arete", "Ingrese el número de arete", size,
-                      numeroAreteBecerroEditar, _validateNumeroArete),
-                  fecha(context, 'Fecha de llegada', dateinput, _validateDate),
-                  //selectMadre("Seleccionar vaca madre", size),
-                  edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
-                      "Buen estado", size, edadBecerro, _validateEdad),
-                  selectImage(),
-                  Container(
-                    width: 220,
-                    margin: const EdgeInsets.only(left: 88),
-                    padding:
-                        const EdgeInsets.only(left: 20, bottom: 20, top: 25),
-                    child: Material(
-                      color: Colors.transparent, // button color
-                      child: InkWell(
-                        splashColor: Colors.green, // splash color
-                        onTap: () {
-                          servicedeletebecerro(id).then((value) {
-                            if (value['status'] == 'ok') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  duration: Duration(milliseconds: 1000),
-                                  content:
-                                      Text('Animal eliminado correctamente'),
-                                ),
-                              );
-                            }
-                          });
-                          Navigator.pop(context);
-                        }, // button pressed
+      body: SafeArea(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          padding: const EdgeInsets.only(right: 20, left: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                inputs("Nombre", "Ingrese nombre del becerro", size,
+                    nombreBecerroEditar, _validateNombre),
+                inputs("Descripción", "Ingrese una descripción del becerro",
+                    size, descripcionBecerroEditar, _validateDescripcion),
+                inputs("Raza", "Ingrese la raza del animal", size,
+                    razaBecerroEditar, _validateRaza),
+                inputs("Número de arete", "Ingrese el número de arete", size,
+                    numeroAreteBecerroEditar, _validateNumeroArete),
+                fecha(context, 'Fecha de llegada', dateinput, _validateDate),
+                selectMadre("Seleccionar vaca madre", size),
+                edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
+                    "Buen estado", size, edadBecerro, _validateEdad),
+                selectImage(size),
+                Container(
+                  width: 220,
+                  margin: const EdgeInsets.only(left: 88),
+                  padding: const EdgeInsets.only(left: 20, bottom: 20, top: 25),
+                  child: Material(
+                    color: Colors.transparent, // button color
+                    child: InkWell(
+                      splashColor: Colors.green, // splash color
+                      onTap: () {
+                        servicedeletebecerro_categoria(widget.id)
+                            .then((categoria) {
+                          if (categoria['status'] == 'ok') {
+                            servicedeletebecerro_historial(widget.id, token)
+                                .then((historial) {
+                              if (historial['status'] == 'ok') {
+                                servicedeletebecerro(token, id).then((value) {
+                                  if (value['status'] == 'ok') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(milliseconds: 1000),
+                                        content: Text(
+                                            'Animal eliminado correctamente'),
+                                      ),
+                                    );
+                                    Future.delayed(
+                                        const Duration(milliseconds: 200), () {
+                                      Navigator.popAndPushNamed(
+                                        context,
+                                        'dash_calf',
+                                      );
+
+                                      setState(() {
+                                        // Here you can write your code for open new view
+                                      });
+                                    });
+                                  }
+                                });
+                              }
+                            });
+                          }
+                        });
+                      }, // button pressed
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 10, top: 10),
+                        width: size.width,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const <Widget>[
-                            Text("Borrar animal de mi lista",
+                            Text("Eliminar Animal",
                                 style: TextStyle(
                                     fontSize: 16, color: ColorSelect.color5)),
                             Icon(
@@ -195,60 +230,71 @@ class _EditarBecerroState extends State<EditarBecerro> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 20),
-                    child: SizedBox(
-                      width: size.width - 50,
-                      height: 50,
-                      child: ElevatedButton(
-                          child: const Text(
-                            'Editar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 10, bottom: 20),
+                  child: SizedBox(
+                    width: size.width - 50,
+                    height: 50,
+                    child: ElevatedButton(
+                        child: const Text(
+                          'Editar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              late bool res = valid();
-                              if (res == true) {
-                                serviceeditarbecerro(
-                                        token,
-                                        id_usuario,
-                                        id,
-                                        nombreBecerroEditar.text,
-                                        descripcionBecerroEditar.text,
-                                        razaBecerroEditar.text,
-                                        numeroAreteBecerroEditar.text,
-                                        url_img,
-                                        estado,
-                                        int.parse(edadBecerro.text),
-                                        obtenerIdVacaSelect(),
-                                        dateinput.text)
-                                    .then((value) {
-                                  if (value['status'] == 'ok') {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        duration: Duration(milliseconds: 1000),
-                                        content:
-                                            Text('Actualizado correctamente'),
-                                      ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            late bool res = valid();
+                            if (res == true) {
+                              serviceeditarbecerro(
+                                      token,
+                                      id_usuario,
+                                      id,
+                                      nombreBecerroEditar.text,
+                                      descripcionBecerroEditar.text,
+                                      razaBecerroEditar.text,
+                                      numeroAreteBecerroEditar.text,
+                                      url_img,
+                                      estado,
+                                      int.parse(edadBecerro.text),
+                                      obtenerIdVacaSelect(),
+                                      dateinput.text)
+                                  .then((value) {
+                                if (value['status'] == 'ok') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      duration: Duration(milliseconds: 1000),
+                                      content:
+                                          Text('Actualizado correctamente'),
+                                    ),
+                                  );
+                                  Future.delayed(
+                                      const Duration(milliseconds: 200), () {
+                                    Navigator.popAndPushNamed(
+                                      context,
+                                      'dash_calf',
                                     );
-                                    //Navigator.pop(context);
-                                  }
-                                });
-                              }
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: ColorSelect.color5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)))),
-                    ),
+
+                                    setState(() {
+                                      // Here you can write your code for open new view
+                                    });
+                                  });
+                                  //Navigator.pop(context);
+                                }
+                              });
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)))),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -339,7 +385,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
         onPressed: onClicked,
       );
 
-  Widget selectImage() {
+  Widget selectImage(Size size) {
     return Row(
       children: <Widget>[
         Column(
@@ -356,6 +402,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
               ),
             ),
             Container(
+              width: MediaQuery.of(context).size.width * 0.40,
               margin: const EdgeInsets.only(left: 16),
               child: image != null
                   ? Image.file(
@@ -373,12 +420,13 @@ class _EditarBecerroState extends State<EditarBecerro> {
           ],
         ),
         Container(
+          width: MediaQuery.of(context).size.width * 0.40,
           padding: const EdgeInsets.only(
             //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 160,
+            width: size.width - 255,
             height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -741,9 +789,32 @@ class _EditarBecerroState extends State<EditarBecerro> {
 
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      String fileExtension = path.extension(image.path);
+      final imageTemporary = File(croppedFile!.path);
+
+      String fileExtension = path.extension(croppedFile.path);
 
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
 
@@ -781,11 +852,33 @@ class _EditarBecerroState extends State<EditarBecerro> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
 
-      //final imageTemporary = File(image.path);
-      final imageTemporary = await saveImagePermanently(image.path);
-      setState(() => this.image = imageTemporary);
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      String fileExtension = path.extension(image.path);
+      final imageTemporary = File(croppedFile!.path);
+      setState(() => this.image = imageTemporary);
+      String fileExtension = path.extension(croppedFile.path);
+      //final imageTemporary = File(image.path);
 
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
       await generateImageUrl.call(fileExtension);

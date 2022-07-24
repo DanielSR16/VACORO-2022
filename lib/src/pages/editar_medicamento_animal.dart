@@ -1,12 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_bull.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_calf.dart';
+import 'package:vacoro_proyect/src/pages/medication_history_cow.dart';
 import 'package:vacoro_proyect/src/services/medicamentosAnimal.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:intl/intl.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 class EditarMedicamentoAnimal extends StatefulWidget {
-  const EditarMedicamentoAnimal({Key? key}) : super(key: key);
+  List data_ = [];
+  EditarMedicamentoAnimal({Key? key, required this.data_}) : super(key: key);
 
   @override
   State<EditarMedicamentoAnimal> createState() =>
@@ -29,29 +35,48 @@ class _EditarMedicamentoAnimalState extends State<EditarMedicamentoAnimal> {
   late bool _validateDosis = false;
   late bool _validateFecha = false;
 
-  late int id_usuario = 1;
+  late int id_usuario = 0;
   late int id_historial = 16;
   late int id_tipoAnimal = 1;
+
+  late String token_ = "";
+  List data_ = [];
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
-    _getFieldsData();
-    //aqui iria id del historial y numero de valor si es vaca = 1, toro = 2 y becerro = 3
+    print(widget.data_);
+    UserSecureStorage.getToken().then((value) {
+      UserSecureStorage.getId().then((id_usuario_) {
+        setState(() {
+          token_ = value!;
+          _getFieldsData(id_usuario_);
+        });
+      });
+    });
 
-    historial_animal_edit(id_historial, id_usuario).then((value) {
+    //aqui iria id del historial y numero de valor si es vaca = 1, toro = 2 y becerro = 3
+    print('//////////////////////////////////');
+    print(widget.data_);
+    historial_animal_edit(widget.data_[3], widget.data_[0], token_)
+        .then((value) {
       print(value);
 
       var jsonValue = jsonDecode(value);
+      print(jsonValue["descripcion"]);
       setState(() {
-        descripcion.text = jsonValue[0]["descripcion"];
-        dosis.text = jsonValue[0]["dosis"];
-        dateinputFechaAplicacion.text = jsonValue[0]["fecha_aplicacion"];
+        descripcion.text = jsonValue["descripcion"];
 
-        id_medicamento = jsonValue[0]["id_medicamento"];
+        dosis.text = jsonValue["dosis"].toString();
+        dateinputFechaAplicacion.text = jsonValue["fecha_aplicacion"];
+
+        id_medicamento = jsonValue["id_medicamento"];
         // var id_medicamento_parse = int.parse(id_medicamento);
-        medicamentos_name_byID(id_medicamento, 1).then((value) {
+        medicamentos_name_byID(id_medicamento, widget.data_[1], token_)
+            .then((value) {
+          print("object");
+          print(value);
           setState(() {
             _selectedFieldMedicamento = value;
           });
@@ -63,7 +88,11 @@ class _EditarMedicamentoAnimalState extends State<EditarMedicamentoAnimal> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    // final data = ModalRoute.of(context)?.settings.arguments;
+    // setState(() {
+    //   data_ = data as List;
+    // });
+    print(data_);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -109,38 +138,39 @@ class _EditarMedicamentoAnimalState extends State<EditarMedicamentoAnimal> {
                   inputs(
                       "Dosis", "Ingrese la dosis", size, dosis, _validateDosis),
                   date(context, size),
+                  // Container(
+                  //   width: 270,
+                  //   margin: const EdgeInsets.only(left: 40),
+                  //   padding:
+                  //       const EdgeInsets.only(left: 20, bottom: 25, top: 100),
+                  //   child: Material(
+                  //     color: Colors.transparent, // button color
+                  //     child: InkWell(
+                  //       splashColor: Colors.green, // splash color
+                  //       onTap: () {
+                  //         historia_animal_eliminar(id_historial, id_tipoAnimal)
+                  //             .then((value) {
+                  //           Navigator.pop(context, "splash");
+                  //         });
+                  //       }, // button pressed
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: const <Widget>[
+                  //           Text("Borrar medicamento del animal",
+                  //               style: TextStyle(
+                  //                   fontSize: 16, color: ColorSelect.color5)),
+                  //           Icon(
+                  //             Icons.delete,
+                  //             color: ColorSelect.color1,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
-                    width: 270,
-                    margin: const EdgeInsets.only(left: 40),
                     padding:
-                        const EdgeInsets.only(left: 20, bottom: 25, top: 100),
-                    child: Material(
-                      color: Colors.transparent, // button color
-                      child: InkWell(
-                        splashColor: Colors.green, // splash color
-                        onTap: () {
-                          historia_animal_eliminar(id_historial, id_tipoAnimal)
-                              .then((value) {
-                            Navigator.pop(context, "splash");
-                          });
-                        }, // button pressed
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Text("Borrar medicamento del animal",
-                                style: TextStyle(
-                                    fontSize: 16, color: ColorSelect.color5)),
-                            Icon(
-                              Icons.delete,
-                              color: ColorSelect.color1,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                        const EdgeInsets.only(top: 40, left: 20, right: 20),
                     child: SizedBox(
                       width: size.width - 50,
                       height: 50,
@@ -159,19 +189,62 @@ class _EditarMedicamentoAnimalState extends State<EditarMedicamentoAnimal> {
                                 if (_validateMedicamento == false) {
                                   name_medicamento = _selectedFieldMedicamento;
                                 }
-                                medicamentos_name_byName(name_medicamento)
+                                medicamentos_name_byName(name_medicamento,
+                                        widget.data_[1], token_)
                                     .then((id_medicamento) {
                                   int dosis_parse = int.parse(dosis.text);
                                   register_historia_animal_editar(
-                                          id_historial,
-                                          1,
-                                          id_usuario,
+                                          token_,
+                                          widget.data_[3],
+                                          widget.data_[0],
+                                          widget.data_[1],
                                           id_medicamento,
                                           dosis_parse,
                                           descripcion.text,
                                           dateinputFechaAplicacion.text,
-                                          1)
+                                          widget.data_[2])
                                       .then((value) {
+                                    Future.delayed(
+                                        const Duration(milliseconds: 200), () {
+                                      if (widget.data_[0] == 1) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                MedicationHistoryCow(
+                                              idAnimal: widget.data_[2],
+                                              nombre: '',
+                                              idUsuario: widget.data_[1],
+                                            ),
+                                          ),
+                                        );
+                                      } else if (widget.data_[0] == 2) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                MedicationHistoryBull(
+                                              idAnimal: widget.data_[2],
+                                              nombre: '',
+                                              idUsuario: widget.data_[1],
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                MedicationHitoryCalf(
+                                              idAnimal: widget.data_[2],
+                                              nombre: '',
+                                              idUsuario: widget.data_[1],
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    });
+
                                     print(value);
                                   });
                                 });
@@ -407,8 +480,8 @@ class _EditarMedicamentoAnimalState extends State<EditarMedicamentoAnimal> {
     );
   }
 
-  void _getFieldsData() {
-    medicamentos_all().then(
+  void _getFieldsData(id_usuario) {
+    medicamentos_all(token_, id_usuario).then(
       (data) {
         final items = jsonDecode(data).cast<Map<String, dynamic>>();
         var fieldListData = items.map<FormField>((json) {

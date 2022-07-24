@@ -6,13 +6,13 @@ String ip = "192.168.100.15";
 // String ip = "10.0.2.2";
 
 Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
-  print(token);
   try {
     final response = await http.post(
-      Uri.http(ip + ":3001", "/becerro/getBecerrosUsuario"),
+      Uri.http("animales-vacoro-729421269.us-east-1.elb.amazonaws.com",
+          "/becerro/getBecerrosUsuario"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization':'Bearer $token',
+        'Authorization': 'Bearer $token',
       },
       body: json.encode({
         "id_usuario": id_usuario,
@@ -48,7 +48,6 @@ Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
       print(listCalf);
       return listCalf;
     } else {
-      print('a');
       print(response.statusCode);
       return [
         {"status": "${response.statusCode}"},
@@ -56,11 +55,8 @@ Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
       ];
     }
   } catch (e) {
-    print('b');
-    print(e);
-    print('aa');
     return [
-      {"error": "Error: $e"}
+      {"error": "error"}
     ];
   }
 }

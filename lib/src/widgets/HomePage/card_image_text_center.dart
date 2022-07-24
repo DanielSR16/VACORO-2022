@@ -23,7 +23,7 @@ GestureDetector createCard(context, imagen, texto, id) {
       if (id == 0) {
         Navigator.pushNamed(context, 'dash_medication');
       } else if (id == 1) {
-        print("VISTA DE CATEGORIAS");
+        Navigator.pushNamed(context, 'dash_category');
       }
     },
     child: Container(
@@ -55,7 +55,7 @@ GestureDetector createCard(context, imagen, texto, id) {
                     fontWeight: FontWeight.bold),
               ),
             ),
-          )
+          ),
         ],
       ),
     ),
