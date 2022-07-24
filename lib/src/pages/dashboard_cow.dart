@@ -10,6 +10,8 @@ import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_cow_detail.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 
+import '../widgets/window_modal/modal_cow_calf_details.dart';
+
 class DashBoardCow extends StatefulWidget {
   DashBoardCow({Key? key}) : super(key: key);
 
@@ -367,8 +369,15 @@ class _DashBoardCowState extends State<DashBoardCow> {
                       ),
                       Container(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             print("Becerros");
+                            await showDialog(
+                                context: context,
+                                builder: (_) => ContainerdDialogCowCalfDetails(
+                                      id_vaca: snapshot.data[index]["id"],
+                                      nombreVaca: snapshot.data[index]
+                                          ["nombre"],
+                                    ));
                           },
                           child: Image.asset(
                             'assets/images/logo_calf.png',

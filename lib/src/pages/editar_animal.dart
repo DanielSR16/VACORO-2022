@@ -167,12 +167,12 @@ class _EditarAnimalState extends State<EditarAnimal> {
                     child: InkWell(
                       splashColor: Colors.green, // splash color
                       onTap: () {
-                        servicedeletecategoriavacatoro(
-                                token, widget.tipoAnimal, widget.id)
+                        servicedeletevacatoro_categoria(
+                                widget.tipoAnimal, widget.id)
                             .then((categoria) {
                           if (categoria['status'] == 'ok') {
-                            servicedeletehistorialvacatoro(
-                                    token, widget.tipoAnimal, widget.id)
+                            servicedeletevacatoro_historial(
+                                    widget.tipoAnimal, widget.id, token)
                                 .then((historial) {
                               if (historial['status'] == 'ok') {
                                 servicedeletevacatoro(
@@ -210,17 +210,20 @@ class _EditarAnimalState extends State<EditarAnimal> {
                           }
                         });
                       }, // button pressed
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
-                          Text("Borrar animal de mi lista",
-                              style: TextStyle(
-                                  fontSize: 16, color: ColorSelect.color5)),
-                          Icon(
-                            Icons.delete,
-                            color: ColorSelect.color1,
-                          ),
-                        ],
+                      child: Container(
+                        width: size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Text("Borrar animal de mi lista",
+                                style: TextStyle(
+                                    fontSize: 16, color: ColorSelect.color5)),
+                            Icon(
+                              Icons.delete,
+                              color: ColorSelect.color1,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
