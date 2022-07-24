@@ -25,11 +25,11 @@ class _addCategories extends State<addCategories> {
   @override
   void initState() {
     listaB = listaBecerros(
-        "http://192.168.100.15:3006/categoria/allCategorias/allBecerros");
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allBecerros");
     listaV = listaVacas(
-        "http://192.168.100.15:3006/categoria/allCategorias/allVacas");
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allVacas");
     listaT = listaToros(
-        "http://192.168.100.15:3006/categoria/allCategorias/allToros");
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allToros");
     super.initState();
   }
 

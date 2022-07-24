@@ -14,7 +14,7 @@ Future<String> register_user(
     String urlImage) async {
   try {
     final response = await http.post(
-      Uri.http(ip + ':3000', '/usuario/usuarioNuevo'),
+      Uri.http('user-vacoro-1804981318.us-east-1.elb.amazonaws.com', '/usuario/usuarioNuevo'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
       body: json.encode(
         {

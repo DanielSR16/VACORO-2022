@@ -73,12 +73,12 @@ class _becerroEditar extends State<becerroEditar> {
                                 widget.categoriaSeleccionada.idCategoria
                           }); //update con todo y categoria
                           var buscarAnimal = await updateBecerroByCategory(
-                              "http://192.168.100.15:3006/categoria/findCategoryBecerroByIdBecerro",
+                              "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findCategoryBecerroByIdBecerro",
                               eliminarAnimal);
                           var cuerpoEliminar =
                               jsonEncode({"id": buscarAnimal['id']});
                           var x = await deleteAnimalCategoryById(
-                              "http://192.168.100.15:3006/categoria/deleteBecerroByCategory",
+                              "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/deleteBecerroByCategory",
                               cuerpoEliminar);
                           Navigator.of(context).pop(true);
                           widget.lista_de_becerros.remove(item);
@@ -136,7 +136,7 @@ class _becerroEditar extends State<becerroEditar> {
                   child: FloatingActionButton(
                     onPressed: () async {
                       BecerrosTotales = await listaBecerros(
-                          "http://192.168.100.15:3006/categoria/allCategorias/allBecerros");
+                          "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allBecerros");
                       var animalesFaltantes = buscarAnimalesFaltantes(
                           widget.lista_de_becerros, BecerrosTotales);
                       dialogAgregar(animalesFaltantes);
@@ -195,11 +195,12 @@ class _becerroEditar extends State<becerroEditar> {
                   "id_categoria": widget.categoriaSeleccionada.idCategoria
                 });
                 var agrego = await updateBecerroByCategory(
-                    "http://192.168.100.15:3006/categoria/updateBecerroByCategory",
+                    "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/updateBecerroByCategory",
                     cuerpoAgregar);
                 var id = jsonEncode({"id_becerro": idOpcion});
                 var infoAnimal = await infoAnimalById(
-                    "http://192.168.100.15:3006/categoria/findByIdBecerro", id);
+                    "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findByIdBecerro",
+                    id);
                 Becerros addbecerro = Becerros(
                     id: infoAnimal['id'],
                     id_usuario: infoAnimal['id_usuario'],

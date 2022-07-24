@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String host = '192.168.100.15:3006';
+String host = 'categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com';
 
 Future<Map<String, dynamic>> servicedeletevacatoro_categoria(
   String tipoAnimal,

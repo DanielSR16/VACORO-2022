@@ -46,10 +46,13 @@ Future<List<dynamic>> listaAnimalesByIdCategoria(path, id) async {
 
 Future listaPeticiones(cuerpoCategoria, listaAnimales) async {
   var nombre = await addCategoria(
-      'http://192.168.100.15:3000/categoria/createCategoria', cuerpoCategoria);
+      'http://user-vacoro-1804981318.us-east-1.elb.amazonaws.com/categoria/createCategoria',
+      cuerpoCategoria);
   Future.delayed(Duration(milliseconds: 2000), () {
-    findNameCategory("http://192.168.100.15:3000/categoria/findCategoryByName",
-        nombre, listaAnimales);
+    findNameCategory(
+        "http://user-vacoro-1804981318.us-east-1.elb.amazonaws.com/categoria/findCategoryByName",
+        nombre,
+        listaAnimales);
   });
 }
 
@@ -113,19 +116,19 @@ Future findNameCategory(path, nombre, listaAnimales) async {
     if (listaVaca.length > 0) {
       print(listaVaca);
       var x = await createAnimalCategory(
-          "http://192.168.100.15:3000/categoria/createCategoryVaca",
+          "http://user-vacoro-1804981318.us-east-1.elb.amazonaws.com/categoria/createCategoryVaca",
           listaVaca.toString());
     }
     if (listaToro.length > 0) {
       print(listaToro);
       var x = await createAnimalCategory(
-          "http://192.168.100.15:3000/categoria/createCategoryToro",
+          "http://user-vacoro-1804981318.us-east-1.elb.amazonaws.com/categoria/createCategoryToro",
           listaToro.toString());
     }
     if (listaBecerro.length > 0) {
       print(listaBecerro);
       var x = await createAnimalCategory(
-          "http://192.168.100.15:3000/categoria/createCategoryBecerro",
+          "http://user-vacoro-1804981318.us-east-1.elb.amazonaws.com/categoria/createCategoryBecerro",
           listaBecerro.toString());
     }
   } else {

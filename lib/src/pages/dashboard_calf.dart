@@ -113,7 +113,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                       backgroundColor: ColorSelect.color5,
                       foregroundColor: Colors.white,
                       child: Text(
-                        "${name[0].toUpperCase()}",
+                        "",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),

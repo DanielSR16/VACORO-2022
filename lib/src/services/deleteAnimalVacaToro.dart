@@ -9,7 +9,7 @@ Future<Map<String, dynamic>> servicedeletevacatoro(
   Map<String, String> headers = {
     'Content-Type': 'application/json',
   };
-  String host = '192.168.100.15:3001';
+  String host = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
   String loginAPI;
   if (tipoAnimal == "Vaca") {
     loginAPI = '/vaca/delete/';

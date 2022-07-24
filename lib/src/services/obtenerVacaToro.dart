@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String ip = '192.168.100.15:3001';
+String ip = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
 
 Future vacatoro_id(int id, String tipoAnimal, token) async {
   try {

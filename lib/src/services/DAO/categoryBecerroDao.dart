@@ -14,7 +14,8 @@ Future<List<Becerros>> listBecerrosByIdCategoria(path, cuerpo) async {
     for (var item in map) {
       var cuerpo = jsonEncode({"id_becerro": item['id_becerro']});
       var becerroObtenido = await infoAnimalById(
-          "http://192.168.100.15:3006/categoria/findByIdBecerro", cuerpo);
+          "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findByIdBecerro",
+          cuerpo);
       Becerros becerro = Becerros(
           id: becerroObtenido['id'],
           id_usuario: becerroObtenido['id_usuario'],

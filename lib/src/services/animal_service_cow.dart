@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:vacoro_proyect/src/pages/menu.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
@@ -9,16 +10,18 @@ String ip = "192.168.100.15";
 Future<List<Map<String, dynamic>>> getAllCow(int id_usuario, token) async {
   print(id_usuario);
   try {
-    final response =
-        await http.post(Uri.http(ip + ':3001', '/vaca/getVacaUsuario'),
-            headers: {
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'Bearer $token',
-            },
-            body: json.encode({"id_usuario": 1}));
+    final response = await http.post(
+        Uri.http('animales-vacoro-729421269.us-east-1.elb.amazonaws.com',
+            '/vaca/getVacaUsuario'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({"id_usuario": 1}));
     print('boddddddddddddddddddyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
     print(response.body);
     print(response.statusCode);
+
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
 
