@@ -29,7 +29,7 @@ class _ContainerDialogModalCowDetailState
   late int edad = 0;
   late String num_arete = '';
   late String url_img =
-      'https://animapedia.org/wp-content/uploads/2018/07/vaca-perfil.jpg';
+      'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
   late String fecha_llegada = '';
   late String estado = '';
   var token = '';
@@ -49,9 +49,9 @@ class _ContainerDialogModalCowDetailState
         fecha_llegada = value.fecha_llegada;
 
         if (value.estado == 1) {
-          estado = 'Enfermo';
+          estado = 'Buen estado';
         } else {
-          estado = 'No esta enfermo';
+          estado = 'Enfermo';
         }
       });
     });
@@ -78,7 +78,9 @@ class _ContainerDialogModalCowDetailState
                       color: const Color(0xff2F6622),
                       onPressed: () {
                         print("Salir");
-                        Navigator.of(context).pop();
+                 
+                          Navigator.of(context).pop();
+                       
                       },
                     ),
                   ],

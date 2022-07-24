@@ -25,7 +25,7 @@ class _ContainerDialogModalCalfDetailState
   late int edad = 0;
   late String num_arete = '';
   late String url_img =
-      'https://animapedia.org/wp-content/uploads/2018/07/vaca-perfil.jpg';
+      'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
   late String fecha_llegada = '';
   late String estado = '';
   late String nombre_madre = '';
@@ -48,9 +48,9 @@ class _ContainerDialogModalCalfDetailState
         fecha_llegada = value.fecha_llegada;
 
         if (value.estado == 1) {
-          estado = 'Enfermo';
+          estado = 'Buen estado';
         } else {
-          estado = 'No esta enfermo';
+          estado = 'Enfermo';
         }
         if (value.id_vaca != -1) {
           vacatoro_id(value.id_vaca, "Vaca", widget.token).then((value) {

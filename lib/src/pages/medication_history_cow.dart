@@ -31,6 +31,7 @@ class _MedicationHistoryCowState extends State<MedicationHistoryCow> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               print("Regresar");
+              
               Navigator.pop(context);
             }),
         title: const Text("HISTORIAL DE MEDICAMENTOS"),

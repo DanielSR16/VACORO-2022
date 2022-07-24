@@ -28,8 +28,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    email.text = "felipe@gmail.com";
-    password.text = "Felipe123@";
+    // email.text = "felipe@gmail.com";
+    // password.text = "Felipe123@";
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(

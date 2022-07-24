@@ -30,6 +30,7 @@ class _MedicationHistoryBullState extends State<MedicationHistoryBull> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               print("Regresar");
+
               Navigator.pop(context);
             }),
         title: const Text("HISTORIAL DE MEDICAMENTOS"),
@@ -120,7 +121,7 @@ class _MedicationHistoryBullState extends State<MedicationHistoryBull> {
           backgroundColor: ColorSelect.color5,
           foregroundColor: Colors.white,
           child: Text(
-            "${widget.nombre[0].toUpperCase()}",
+            "",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),

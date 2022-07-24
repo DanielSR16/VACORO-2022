@@ -29,7 +29,7 @@ class _ContainerDialogModalBullDetailState
   late int edad = 0;
   late String num_arete = '';
   late String url_img =
-      'https://animapedia.org/wp-content/uploads/2018/07/vaca-perfil.jpg';
+      'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
   late String fecha_llegada = '';
   late String estado = '';
 
@@ -50,9 +50,9 @@ class _ContainerDialogModalBullDetailState
 
         fecha_llegada = value.fecha_llegada;
         if (value.estado == 1) {
-          estado = 'Enfermo';
+          estado = 'Buen estado';
         } else {
-          estado = 'No esta enfermo';
+          estado = 'Enfermo';
         }
       });
     });
@@ -283,17 +283,16 @@ class _ContainerDialogModalBullDetailState
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 10, top: 10),
-                      width: size.width * 0.65,
-                      height: 150,
-                      child:  CachedNetworkImage(
-                        imageUrl: url_img,
-                        placeholder: (context, url) =>
-                            Image.asset('assets/images/loading_green.gif'),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      )
-                    ),
+                        margin: const EdgeInsets.only(bottom: 10, top: 10),
+                        width: size.width * 0.65,
+                        height: 150,
+                        child: CachedNetworkImage(
+                          imageUrl: url_img,
+                          placeholder: (context, url) =>
+                              Image.asset('assets/images/loading_green.gif'),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        )),
                   ],
                 ),
                 Row(

@@ -17,7 +17,7 @@ Future<List<Map<String, dynamic>>> getAllBull(
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
         },
-        body: json.encode({'id_usuario': 1}));
+        body: json.encode({'id_usuario': id_usuario}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
