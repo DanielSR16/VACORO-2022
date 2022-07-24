@@ -179,10 +179,10 @@ class _EditarBecerroState extends State<EditarBecerro> {
                     child: InkWell(
                       splashColor: Colors.green, // splash color
                       onTap: () {
-                        servicedeletecategoriabecerro(widget.id, token)
+                        servicedeletebecerro_categoria(widget.id)
                             .then((categoria) {
                           if (categoria['status'] == 'ok') {
-                            servicedeletehistorialbecerro(widget.id, token)
+                            servicedeletebecerro_historial(widget.id, token)
                                 .then((historial) {
                               if (historial['status'] == 'ok') {
                                 servicedeletebecerro(token, id).then((value) {
@@ -212,17 +212,20 @@ class _EditarBecerroState extends State<EditarBecerro> {
                           }
                         });
                       }, // button pressed
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
-                          Text("Borrar animal de mi lista",
-                              style: TextStyle(
-                                  fontSize: 16, color: ColorSelect.color5)),
-                          Icon(
-                            Icons.delete,
-                            color: ColorSelect.color1,
-                          ),
-                        ],
+                      child: Container(
+                        width: size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Text("Borrar animal de mi lista",
+                                style: TextStyle(
+                                    fontSize: 16, color: ColorSelect.color5)),
+                            Icon(
+                              Icons.delete,
+                              color: ColorSelect.color1,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -811,7 +814,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
       final imageTemporary = File(croppedFile!.path);
 
       String fileExtension = path.extension(croppedFile.path);
-      
+
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
 
       await generateImageUrl.call(fileExtension);
