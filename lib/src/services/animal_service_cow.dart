@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:vacoro_proyect/src/pages/menu.dart';
 import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 
 String ip = "192.168.100.15";
@@ -14,8 +15,10 @@ Future<List<Map<String, dynamic>>> getAllCow(int id_usuario, token) async {
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': 'Bearer $token',
             },
-            body: json.encode({"id_usuario": id_usuario}));
-
+            body: json.encode({"id_usuario": 1}));
+    print('boddddddddddddddddddyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+    print(response.body);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
 
@@ -41,9 +44,12 @@ Future<List<Map<String, dynamic>>> getAllCow(int id_usuario, token) async {
           listCow.add(mapListCow);
         }
       }
-      // print(listCow);
+      print("?'''''''''''''''''''''''''''''''''''''''");
+      print(listCow);
+
       return listCow;
     } else {
+      print("?'''''''''''''''''''''''''''''''''''''''");
       print(response.statusCode);
       return [
         {"status": "${response.statusCode}"},
@@ -51,9 +57,10 @@ Future<List<Map<String, dynamic>>> getAllCow(int id_usuario, token) async {
       ];
     }
   } catch (e) {
+    print("?'''''''''''''''''''''''''''''''''''''''");
     print(e);
     return [
-      {"error": "Error: $e"}
+      {"error": "error"}
     ];
   }
 }

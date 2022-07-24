@@ -119,7 +119,7 @@ class _MedicationHistoryCowState extends State<MedicationHistoryCow> {
           backgroundColor: ColorSelect.color5,
           foregroundColor: Colors.white,
           child: Text(
-            "${widget.nombre[0].toUpperCase()}",
+            "name",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),

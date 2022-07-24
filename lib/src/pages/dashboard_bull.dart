@@ -148,7 +148,8 @@ class _DashBoardBullState extends State<DashBoardBull> {
             ),
           );
         } else {
-          if (snapshot.data.length > 0) {
+          if (snapshot.data.length > 0 &&
+              snapshot.data[0]['error'] != 'error') {
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -177,11 +178,12 @@ class _DashBoardBullState extends State<DashBoardBull> {
           backgroundColor: ColorSelect.color5,
           foregroundColor: Colors.white,
           child: Text(
-            "${name[0].toUpperCase()}",
+            "name",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        label: Text("${name.toUpperCase()}."),
+        //modificar aqui xd
+        label: Text("name"),
       ),
       content: RichText(
         textAlign: TextAlign.justify,
@@ -262,7 +264,6 @@ class _DashBoardBullState extends State<DashBoardBull> {
                     tipoAnimal: "Toro",
                     id: snapshot.data[index]['id'],
                     token: token,
-                    
                   ));
         },
         child: Column(
@@ -279,9 +280,8 @@ class _DashBoardBullState extends State<DashBoardBull> {
                     height: 150,
                     margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
                     child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/loading_green.gif',
-                      image: snapshot.data[index]['url_img'],
-                    ),
+                        placeholder: 'assets/images/loading_green.gif',
+                        image: snapshot.data[index]['url_img']),
                   ),
                   Center(
                     child: Column(

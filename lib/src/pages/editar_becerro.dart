@@ -52,7 +52,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
   late int id_usuario;
   late String token = '';
   late var imageAnimal =
-      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+      'https://animapedia.org/wp-content/uploads/2018/07/vaca-perfil.jpg';
 
   @override
   void initState() {
@@ -213,11 +213,12 @@ class _EditarBecerroState extends State<EditarBecerro> {
                         });
                       }, // button pressed
                       child: Container(
+                        padding: const EdgeInsets.only(bottom: 10, top: 10),
                         width: size.width,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const <Widget>[
-                            Text("Borrar animal de mi lista",
+                            Text("Eliminar Animal",
                                 style: TextStyle(
                                     fontSize: 16, color: ColorSelect.color5)),
                             Icon(

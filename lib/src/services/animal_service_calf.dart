@@ -55,7 +55,7 @@ Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
     }
   } catch (e) {
     return [
-      {"error": "Error: $e"}
+      {"error": "error"}
     ];
   }
 }

@@ -7,6 +7,7 @@ String ip = "192.168.100.15";
 
 Future<List<Map<String, dynamic>>> getAllBull(
     int id_usuario, String token) async {
+
   print(token);
   String tok = 'Bearer ' + token;
   try {
@@ -16,7 +17,7 @@ Future<List<Map<String, dynamic>>> getAllBull(
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': 'Bearer $token',
             },
-            body: json.encode({'id_usuario': id_usuario}));
+            body: json.encode({'id_usuario': 1}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -55,7 +56,7 @@ Future<List<Map<String, dynamic>>> getAllBull(
   } catch (e) {
     // print(e);
     return [
-      {"error": "Error: $e"}
+      {"error": "error"}
     ];
   }
 }
