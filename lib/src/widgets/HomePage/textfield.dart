@@ -6,11 +6,12 @@ import 'package:hexcolor/hexcolor.dart';
 Container textfieldCategoria(label,textfield,altura,controlador,context,textoMostrar){
   return Container(
     height: MediaQuery.of(context).size.height * 0.18,
-    margin: EdgeInsets.only(left: 15, right: 15, top: altura),
+    margin: EdgeInsets.only(top: altura),
+    //margin: EdgeInsets.only(left: 15, right: 15, top: altura),
     child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.04,
+            //height: MediaQuery.of(context).size.height * 0.04,
             child: Align(
             alignment: Alignment.topLeft,
             child: Text(label, style: TextStyle(color: HexColor("#3E762F"), fontWeight: FontWeight.bold),),

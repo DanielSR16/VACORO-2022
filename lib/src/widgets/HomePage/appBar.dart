@@ -15,7 +15,7 @@ AppBar appbargeneral(nombre, imagen) {
   );
 }
 
-AppBar appbarCat(nombre, imagen) {
+AppBar appbarCat(nombre, imagen, context, ruta) {
   return AppBar(
     centerTitle: true,
     title: Text(nombre),
@@ -28,8 +28,11 @@ AppBar appbarCat(nombre, imagen) {
           size: 40,
         ),
         onPressed: () {
-          print("object");
-          //Navigator.pop(context);
+          if (ruta == "this"){
+            Navigator.pop(context);
+          }else{
+            Navigator.pushNamed(context, ruta);
+          }
         },
       ),
     ),
