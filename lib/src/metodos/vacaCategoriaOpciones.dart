@@ -13,32 +13,34 @@ import 'package:vacoro_proyect/src/services/DAO/categoryBecerroDao.dart';
 import 'package:vacoro_proyect/src/services/DAO/categoryToroDao.dart';
 import 'package:vacoro_proyect/src/services/DAO/toros.dart';
 import 'package:vacoro_proyect/src/services/DAO/vacas.dart';
+import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import '../model/becerrosCategorias.dart';
 import '../model/categorias.dart';
 import '../model/torosCategorias.dart';
 import '../model/vacasCategorias.dart';
 import '../pages/edit_categories_complete.dart';
 
-
 import '../widgets/HomePage/appBar.dart';
 
 class vacaEditar extends StatefulWidget {
   List<Vacas> lista_de_vacas;
   Categoria categoriaSeleccionada;
-  vacaEditar({Key? key,required this.lista_de_vacas,required this.categoriaSeleccionada}): super(key: key);
+  vacaEditar(
+      {Key? key,
+      required this.lista_de_vacas,
+      required this.categoriaSeleccionada})
+      : super(key: key);
   @override
   State<vacaEditar> createState() => _vacaEditar();
 }
 
 class _vacaEditar extends State<vacaEditar> {
-
   List<Vacas> vacasMostrar = [];
   List<Vacas> vacasTotales = [];
   String aceptacion = "";
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: appbarCat("Vacas", 'assets/images/vaca.png', context, "this"),
         body: Container(
@@ -57,31 +59,65 @@ class _vacaEditar extends State<vacaEditar> {
                     initialList: widget.lista_de_vacas,
                     builder: (Vacas vacas) => VacaItem(vaca: vacas),
                     filter: _filterVacaList,
-                    emptyWidget: EmptyView(categoriaSeleccionada: widget.categoriaSeleccionada),
+                    emptyWidget: EmptyView(
+                        categoriaSeleccionada: widget.categoriaSeleccionada),
                     onItemSelected: (Vacas item) async {
                       // set up the buttons
                       Widget cancelButton = ElevatedButton(
-                        child: Text("Cancelar"),
-                        onPressed:  () {Navigator.of(context).pop(true);},
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5),
+                        child: const Text(
+                          "Cancelar",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
                       );
                       Widget continueButton = ElevatedButton(
-                        child: Text("Eliminar"),
-                        onPressed:  () async {
-                          var eliminarAnimal = jsonEncode({"id_vaca":item.id, "id_categoria":widget.categoriaSeleccionada.idCategoria}); //update con todo y categoria
-                          var buscarAnimal = await updateBecerroByCategory("http://192.168.100.11:3006/categoria/findCategoryVacaByIdVaca", eliminarAnimal);
-                          var cuerpoEliminar = jsonEncode({"id":buscarAnimal['id']});
-                          var x = await deleteAnimalCategoryById("http://192.168.100.11:3006/categoria/deleteVacaByCategory", cuerpoEliminar);
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5),
+                        child: const Text("Eliminar",
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: () async {
+                          var eliminarAnimal = jsonEncode({
+                            "id_vaca": item.id,
+                            "id_categoria":
+                                widget.categoriaSeleccionada.idCategoria
+                          }); //update con todo y categoria
+                          var buscarAnimal = await updateBecerroByCategory(
+                              "http://192.168.0.2:3006/categoria/findCategoryVacaByIdVaca",
+                              eliminarAnimal);
+                          var cuerpoEliminar =
+                              jsonEncode({"id": buscarAnimal['id']});
+                          var x = await deleteAnimalCategoryById(
+                              "http://192.168.0.2:3006/categoria/deleteVacaByCategory",
+                              cuerpoEliminar);
                           Navigator.of(context).pop(true);
                           widget.lista_de_vacas.remove(item);
                           setState(() {
-                            Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => vacaEditar(lista_de_vacas: widget.lista_de_vacas, categoriaSeleccionada: widget.categoriaSeleccionada)));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        vacaEditar(
+                                            lista_de_vacas:
+                                                widget.lista_de_vacas,
+                                            categoriaSeleccionada:
+                                                widget.categoriaSeleccionada)));
                           });
                         },
                       );
                       // set up the AlertDialog
                       AlertDialog alert = AlertDialog(
-                        title: Text("Eliminar Vaca"),
-                        content: Text("Te gustaria Eliminar La Vaca "+item.nombre+" Con Numero De Arete "+item.num_arete),
+                        title: const Text("Eliminar vaca",
+                            style: TextStyle(color: ColorSelect.color5)),
+                        content: Text(
+                            "Te gustaria eliminar la vaca " +
+                                item.nombre +
+                                " Con numero de arete " +
+                                item.num_arete,
+                            style: TextStyle(color: ColorSelect.color1)),
                         actions: [
                           cancelButton,
                           continueButton,
@@ -95,14 +131,16 @@ class _vacaEditar extends State<vacaEditar> {
                           return alert;
                         },
                       );
-
                     },
                     inputDecoration: InputDecoration(
-                      labelText: "Buscar Vaca",
+                      labelText: "Buscar vaca",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.blue, width: 2.0,),
-                      borderRadius: BorderRadius.circular(5.0)),
+                          borderSide: const BorderSide(
+                            color: ColorSelect.color5,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0)),
                     ),
                   ),
                 ),
@@ -113,9 +151,11 @@ class _vacaEditar extends State<vacaEditar> {
                   margin: EdgeInsets.only(bottom: 15, right: 15),
                   child: FloatingActionButton(
                     onPressed: () async {
-                    vacasTotales = await listaVacas("http://192.168.100.11:3006/categoria/allCategorias/allVacas");
-                    var animalesFaltantes = buscarAnimalesFaltantes(widget.lista_de_vacas, vacasTotales);
-                    dialogAgregar(animalesFaltantes);
+                      vacasTotales = await listaVacas(
+                          "http://192.168.0.2:3006/categoria/allCategorias/allVacas");
+                      var animalesFaltantes = buscarAnimalesFaltantes(
+                          widget.lista_de_vacas, vacasTotales);
+                      dialogAgregar(animalesFaltantes);
                     },
                     backgroundColor: Colors.green,
                     child: const Icon(Icons.add),
@@ -127,7 +167,7 @@ class _vacaEditar extends State<vacaEditar> {
         ));
   }
 
-  buscarAnimalesFaltantes(listaVacas,vacasTotales) {
+  buscarAnimalesFaltantes(listaVacas, vacasTotales) {
     List<int> listaids = [];
     List<String> animalesFaltantes = [];
     for (int i = 0; i < listaVacas.length; i++) {
@@ -136,11 +176,11 @@ class _vacaEditar extends State<vacaEditar> {
     print(listaids);
     for (int i = 0; i < vacasTotales.length; i++) {
       if (!listaids.contains(vacasTotales[i].id)) {
-        animalesFaltantes.add("Id De La Vaca: " +
+        animalesFaltantes.add("Id de la vaca: " +
             vacasTotales[i].id.toString() +
-            "\nNumero De Arete: " +
+            "\nnumero de arete: " +
             vacasTotales[i].num_arete +
-            "\nNombre De La Vaca: " +
+            "\nnombre de la vaca: " +
             vacasTotales[i].nombre);
       }
     }
@@ -149,41 +189,63 @@ class _vacaEditar extends State<vacaEditar> {
     return animalesFaltantes;
   }
 
-  dialogAgregar(List<String>animalesFaltantes) async {
+  dialogAgregar(List<String> animalesFaltantes) async {
     print(animalesFaltantes);
     await DialogBackground(
       dialog: AlertDialog(
-        title: Text("Confirmacion"),
-        content: Text("Seleccione el animal a agregar"),
+        title: const Text(
+          "Confirmación",
+          style: TextStyle(color: ColorSelect.color5),
+        ),
+        content: const Text("Seleccione el animal a agregar",
+            style: TextStyle(color: ColorSelect.color1)),
         actions: <Widget>[
           SeleccionAnimalesFaltantes(animalesFaltantes),
-          SizedBox(height: 50,),
+          const SizedBox(
+            height: 50,
+          ),
           FloatingActionButton(
             onPressed: () async {
               if (aceptacion.length > 0) {
                 List<String> result = aceptacion.split('\n');
-                int idOpcion = int.parse(result[0].replaceAll(new RegExp(r'[^0-9]'), ''));
+                int idOpcion =
+                    int.parse(result[0].replaceAll(new RegExp(r'[^0-9]'), ''));
                 var cuerpoAgregar = jsonEncode({
                   "id_vaca": idOpcion,
                   "id_categoria": widget.categoriaSeleccionada.idCategoria
                 });
-                var agrego = await updateBecerroByCategory("http://192.168.100.11:3006/categoria/updateVacaByCategory",cuerpoAgregar);
-                var id = jsonEncode({"id_vaca":idOpcion});
-                var infoAnimal = await infoAnimalById("http://192.168.100.11:3006/categoria/findByIdVaca", id); //aca
+                var agrego = await updateBecerroByCategory(
+                    "http://192.168.0.2:3006/categoria/updateVacaByCategory",
+                    cuerpoAgregar);
+                var id = jsonEncode({"id_vaca": idOpcion});
+                var infoAnimal = await infoAnimalById(
+                    "http://192.168.0.2:3006/categoria/findByIdVaca", id); //aca
                 print(infoAnimal);
-                Vacas addvaca = Vacas(id: infoAnimal['id'], id_usuario: infoAnimal['id_usuario'], nombre: infoAnimal['nombre'], 
-                descripcion: infoAnimal['descripcion'], raza: infoAnimal['raza'], num_arete: infoAnimal['num_arete'], 
-                 estado: infoAnimal['estado'], fecha_llegada:infoAnimal['fecha_llegada'], 
-                edad: infoAnimal['edad']);
+                Vacas addvaca = Vacas(
+                    id: infoAnimal['id'],
+                    id_usuario: infoAnimal['id_usuario'],
+                    nombre: infoAnimal['nombre'],
+                    descripcion: infoAnimal['descripcion'],
+                    raza: infoAnimal['raza'],
+                    num_arete: infoAnimal['num_arete'],
+                    estado: infoAnimal['estado'],
+                    fecha_llegada: infoAnimal['fecha_llegada'],
+                    edad: infoAnimal['edad']);
                 Navigator.of(context).pop(true);
                 widget.lista_de_vacas.add(addvaca);
                 setState(() {
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => vacaEditar(lista_de_vacas: widget.lista_de_vacas, categoriaSeleccionada: widget.categoriaSeleccionada)));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => vacaEditar(
+                              lista_de_vacas: widget.lista_de_vacas,
+                              categoriaSeleccionada:
+                                  widget.categoriaSeleccionada)));
                 });
               }
             },
             backgroundColor: Colors.green,
-            child: const Icon(Icons.pets_outlined),
+            child: const Icon(Icons.check),
           )
         ],
       ),
@@ -234,9 +296,9 @@ class VacaItem extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Icon(
-              Icons.pets,
-              color: Colors.yellow[700],
+            const Image(
+              image: AssetImage('assets/images/vaca.png'),
+              width: 25,
             ),
             const SizedBox(
               width: 10,
@@ -246,16 +308,16 @@ class VacaItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Id: ${vaca.id}',
+                  'Núm. de arete: ${vaca.num_arete}',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: ColorSelect.color1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   'Nombre: ${vaca.nombre}',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: ColorSelect.color1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -277,11 +339,11 @@ class EmptyView extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
+        const Icon(
           Icons.error,
           color: Colors.red,
         ),
-        Text('No se encontro ninguna Vaca agregada a la categoria ' +
+        Text('No se encontro ninguna vaca agregada a la categoria ' +
             categoriaSeleccionada.nombreCategoria),
       ],
     );

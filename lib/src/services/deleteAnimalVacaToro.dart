@@ -8,6 +8,7 @@ Future<Map<String, dynamic>> servicedeletevacatoro(
 ) async {
   Map<String, String> headers = {
     'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
   };
   String host = '192.168.0.2:3001';
   String loginAPI;

@@ -68,9 +68,9 @@ class _addCategories extends State<addCategories> {
                       ""),
                   seleccionLabel(
                       "Selecciona los animales de esa categoria", 15.0),
-                  menuDropDown(listaB, 20.0, "becerros"),
-                  menuDropDown(listaV, 20.0, "vacas"),
-                  menuDropDown(listaT, 20.0, "toros"),
+                  menuDropDown(listaB, 20.0, "Becerros"),
+                  menuDropDown(listaV, 20.0, "Vacas"),
+                  menuDropDown(listaT, 20.0, "Toros"),
                   botonGuardar(
                       "Guardar",
                       100.0,
@@ -91,13 +91,13 @@ class _addCategories extends State<addCategories> {
           future: lista,
           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
             if (snapshot.data != null) {
-              if (tipo == "becerros") {
+              if (tipo == "Becerros") {
                 return lista_becerro(altura, tipo);
               }
-              if (tipo == "vacas") {
+              if (tipo == "Vacas") {
                 return lista_vaca(altura, tipo);
               }
-              if (tipo == "toros") {
+              if (tipo == "Toros") {
                 return lista_toro(altura, tipo);
               }
             }

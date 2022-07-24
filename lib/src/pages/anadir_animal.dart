@@ -629,8 +629,8 @@ class _AnadirAnimalState extends State<AnadirAnimal> {
           CropAspectRatioPreset.ratio16x9
         ],
         compressQuality: 100,
-        maxHeight: 200,
-        maxWidth: 200,
+        maxHeight: 100,
+        maxWidth: 100,
         compressFormat: ImageCompressFormat.jpg,
         uiSettings: [
           AndroidUiSettings(

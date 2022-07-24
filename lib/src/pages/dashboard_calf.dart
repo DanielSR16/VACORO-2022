@@ -92,7 +92,7 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                 ),
               );
             } else {
-              if (snapshot.data.length > 0) {
+              if (snapshot.data.length > 0  && snapshot.data[0]['error'] != 'error') {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -243,7 +243,8 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
                     margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
                     child: FadeInImage.assetNetwork(
                       placeholder: 'assets/images/loading_green.gif',
-                      image: snapshot.data[index]['url_img'],
+                      image: snapshot.data[index]['url_img'] ??
+                          'assets/images/logo.png',
                     ),
                   ),
                   Center(

@@ -1,19 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/services/medication_service.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class ContainerDialogEditMedication extends StatelessWidget {
-  ContainerDialogEditMedication({Key? key}) : super(key: key);
+class ContainerDialogEditMedication extends StatefulWidget {
+  int id;
+  String nombre;
+  String descripcion;
+  int cantidad;
+  String fecha_caducidad;
+  int id_usuario;
+  String token;
 
+  ContainerDialogEditMedication(
+      {Key? key,
+      required this.id,
+      required this.nombre,
+      required this.descripcion,
+      required this.cantidad,
+      required this.fecha_caducidad,
+      required this.id_usuario,
+      required this.token})
+      : super(key: key);
+
+  @override
+  State<ContainerDialogEditMedication> createState() =>
+      _ContainerDialogEditMedicationState();
+}
+
+class _ContainerDialogEditMedicationState
+    extends State<ContainerDialogEditMedication> {
   TextEditingController nombre_medicamento = TextEditingController();
   TextEditingController descripcion_medicamento = TextEditingController();
   TextEditingController cantidad_medicamento = TextEditingController();
-  // TextEditingController fecha_medicamento = TextEditingController();
 
   late bool _validateNombre = false;
   late bool _validateDescripcion = false;
   late bool _validateCantidad = false;
 
-  // late bool _validateFecha = false;
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      nombre_medicamento.text = widget.nombre;
+      descripcion_medicamento.text = widget.descripcion;
+      cantidad_medicamento.text = widget.cantidad.toString();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +104,8 @@ class ContainerDialogEditMedication extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: _input("Ingrese nombre del medicamento..."),
+                    child: _input("Ingrese nombre del medicamento...",
+                        nombre_medicamento, _validateNombre),
                   ),
                 ),
                 Column(
@@ -103,10 +136,9 @@ class ContainerDialogEditMedication extends StatelessWidget {
                         ),
                         child: SingleChildScrollView(
                           child: TextField(
+                            controller: descripcion_medicamento,
                             maxLines: 2,
-                            onChanged: (text) {
-                              
-                            },
+                            onChanged: (text) {},
                             decoration: InputDecoration(
                               hintStyle: const TextStyle(
                                 color: ColorSelect.color5,
@@ -124,6 +156,9 @@ class ContainerDialogEditMedication extends StatelessWidget {
                               ),
                               hintText:
                                   "Ingrese una descripción del medicamento",
+                              errorText: _validateDescripcion
+                                  ? 'El campo esta vacio'
+                                  : null,
                             ),
                           ),
                         ),
@@ -149,39 +184,9 @@ class ContainerDialogEditMedication extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: _input("Ingrese la cantidad del medicamento"),
+                    child: _inputCantidad("Ingrese la cantidad del medicamento",
+                        cantidad_medicamento, _validateCantidad),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: TextButton(
-                        onPressed: () {
-                          print("Eliminar medicamento");
-                        },
-                        child: const Text(
-                          "Borrar medicamento",
-                          style: TextStyle(
-                            color: ColorSelect.color5,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      height: 50,
-                      width: 50,
-                      child: GestureDetector(
-                        onTap: () {
-                          print("Eliminar datos");
-                        },
-                        child: Image.asset('assets/images/image_delete.png'),
-                      ),
-                    )
-                  ],
                 ),
                 Center(
                   child: Container(
@@ -197,6 +202,22 @@ class ContainerDialogEditMedication extends StatelessWidget {
                       ),
                       onPressed: () {
                         print("AGREGAR MEDICAMENTOS");
+                        setState(() {
+                          late bool res = valid();
+                          if (res == true) {
+                            updateMedication(
+                                    widget.id,
+                                    nombre_medicamento.text,
+                                    descripcion_medicamento.text,
+                                    int.parse(cantidad_medicamento.text),
+                                    widget.fecha_caducidad,
+                                    widget.id_usuario,
+                                    widget.token)
+                                .then((value) {
+                              Navigator.pushNamed(context, 'dash_medication');
+                            });
+                          }
+                        });
                       },
                       child: const Text(
                         "Editar",
@@ -216,8 +237,13 @@ class ContainerDialogEditMedication extends StatelessWidget {
     );
   }
 
-  Widget _input(String hintText) {
+  Widget _input(
+    String hintText,
+    TextEditingController controllerInput,
+    bool validate_,
+  ) {
     return TextField(
+      controller: controllerInput,
       onChanged: (text) {},
       decoration: InputDecoration(
         hintStyle: const TextStyle(
@@ -235,7 +261,60 @@ class ContainerDialogEditMedication extends StatelessWidget {
           ),
         ),
         hintText: hintText,
+        errorText: validate_ ? 'El campo esta vacio' : null,
       ),
     );
+  }
+
+  Widget _inputCantidad(
+      String hintText, TextEditingController controllerInput, bool validate_) {
+    return TextField(
+      keyboardType: TextInputType.number,
+      controller: controllerInput,
+      onChanged: (text) {},
+      decoration: InputDecoration(
+        hintStyle: const TextStyle(
+          color: ColorSelect.color5,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(
+            style: BorderStyle.solid,
+            color: Color(0xff2F6622),
+            width: 3,
+          ),
+        ),
+        hintText: hintText,
+        errorText: validate_ ? 'El campo esta vacio' : null,
+      ),
+    );
+  }
+
+  bool valid() {
+    bool lleno = true;
+    if (nombre_medicamento.text.isEmpty) {
+      _validateNombre = true;
+      lleno = false;
+    } else {
+      _validateNombre = false;
+    }
+
+    if (descripcion_medicamento.text.isEmpty) {
+      _validateDescripcion = true;
+      lleno = false;
+    } else {
+      _validateDescripcion = false;
+    }
+
+    if (cantidad_medicamento.text.isEmpty) {
+      _validateCantidad = true;
+      lleno = false;
+    } else {
+      _validateCantidad = false;
+    }
+    return lleno;
   }
 }

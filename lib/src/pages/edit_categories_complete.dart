@@ -1,5 +1,5 @@
 //var idCategoria = jsonEncode({"id_categoria":widget.categoriaSeleccionada.idCategoria});
-//List<Becerros> categoriasBecerro = await listBecerrosByIdCategoria("http://192.168.100.11:3006/categoria/findListBecerrosByIdCategory", idCategoria);
+//List<Becerros> categoriasBecerro = await listBecerrosByIdCategoria("http://192.168.0.2:3006/categoria/findListBecerrosByIdCategory", idCategoria);
 import 'dart:async';
 import 'dart:convert';
 import 'package:fancy_containers/fancy_containers.dart';
@@ -17,6 +17,7 @@ import 'package:multiple_search_selection/multiple_search_selection.dart';
 import 'package:vacoro_proyect/src/pages/edit_categories.dart';
 import 'package:vacoro_proyect/src/services/DAO/categoryToroDao.dart';
 import 'package:vacoro_proyect/src/services/DAO/categoryVacaDao.dart';
+import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 import 'package:vacoro_proyect/src/widgets/HomePage/dashboard.dart';
 import '../metodos/vacaCategoriaOpciones.dart';
 import '../services/DAO/becerros.dart';
@@ -66,7 +67,7 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appbarCat("Ver y Editar Categoria",
+        appBar: appbarCat("Ver y editar categoria",
             'assets/images/logo_blanco.png', context, "editar_categoria"),
         body: Container(
             height: double.infinity,
@@ -78,26 +79,26 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
                   selectionCategory(
                       Cat, widget.categoriaSeleccionada.nombreCategoria),
                   textfieldCategoria(
-                      "Nombrar Nueva Categoria (Opcional)",
+                      "Nombrar nueva categoria (Opcional)",
                       "Ingrese nombre de la categoria",
                       25.0,
                       controladorNombre,
                       context,
-                      "Nombre Actual: " +
+                      "Nombre actual: " +
                           widget.categoriaSeleccionada.nombreCategoria),
                   textfieldCategoria(
-                      "Descripcion De La Categoria (Opcional)",
+                      "Descripcion de la categoria (Opcional)",
                       "Ingrese nombre de la descripcion",
                       0.0,
                       controladorDescripcion,
                       context,
-                      "Descripcion Actual: " +
+                      "Descripcion actual: " +
                           widget.categoriaSeleccionada.descripcionCategoria),
                   botones(context, "assets/images/vaca.png", "Vacas", "vaca"),
                   botones(context, "assets/images/toro.png", "Toros", "toro"),
                   botones(context, "assets/images/becerro.png", "Becerros",
                       "becerro"),
-                  deleteCat("Eliminar Categoria", 30.0,
+                  deleteCat("Eliminar categoria", 30.0,
                       widget.categoriaSeleccionada.idCategoria),
                   guardarCategoria(
                       20.0,
@@ -244,8 +245,15 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
 
   Container guardarCategoria(altura, id, nombre, descripcion, nombreTexto) {
     return Container(
-      margin: EdgeInsets.only(top: altura),
+      width: MediaQuery.of(context).size.width - 50,
+      height: 50,
+      margin: EdgeInsets.only(top: altura, bottom: 10),
       child: ElevatedButton(
+        // style: ElevatedButton.styleFrom(primary: ColorSelect.color5),
+        style: ElevatedButton.styleFrom(
+            primary: ColorSelect.color5,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30))),
         onPressed: () {
           if (nombre.isEmpty) {
             nombre = widget.categoriaSeleccionada.nombreCategoria;
@@ -254,13 +262,15 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
             descripcion = widget.categoriaSeleccionada.descripcionCategoria;
           }
           Widget cancelButton = ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: ColorSelect.color5),
             child: Text("Cancelar"),
             onPressed: () {
               Navigator.of(context).pop(true);
             },
           );
           Widget continueButton = ElevatedButton(
-            child: Text("Actualizar Categoria"),
+            style: ElevatedButton.styleFrom(primary: ColorSelect.color5),
+            child: Text("Actualizar categoria"),
             onPressed: () async {
               var actualizoCategoria = jsonEncode(
                   {"id": id, "nombre": nombre, "descripcion": descripcion});
@@ -278,8 +288,8 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
           );
           // set up the AlertDialog
           AlertDialog alert = AlertDialog(
-            title: Text("Actualizar Categoria"),
-            content: Text("Te gustaria Actualizar La categoria " +
+            title: Text("Actualizar categoria"),
+            content: Text("Te gustaria actualizar la categoria " +
                 widget.categoriaSeleccionada.nombreCategoria),
             actions: [
               cancelButton,
@@ -294,7 +304,10 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
             },
           );
         },
-        child: Text(nombreTexto),
+        child: Text(
+          nombreTexto,
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
@@ -307,15 +320,20 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
         children: [
           Container(
             child: TextButton(
-              child: Text(texto + "     "),
+              child: Text(
+                texto + "     ",
+                style: TextStyle(color: ColorSelect.color5),
+              ),
               onPressed: () async {
                 Widget cancelButton = ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: ColorSelect.color5),
                   child: Text("Cancelar"),
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
                 );
                 Widget continueButton = ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: ColorSelect.color5),
                   child: Text("Eliminar"),
                   onPressed: () async {
                     var idBorrar = jsonEncode({"id": idCategoria});
@@ -334,9 +352,15 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
                 );
                 // set up the AlertDialog
                 AlertDialog alert = AlertDialog(
-                  title: Text("Eliminar Categoria"),
-                  content: Text("Te gustaria Eliminar La categoria " +
-                      widget.categoriaSeleccionada.nombreCategoria),
+                  title: const Text(
+                    "Eliminar categoria",
+                    style: TextStyle(color: ColorSelect.color5),
+                  ),
+                  content: Text(
+                    "Te gustaria eliminar la categoria " +
+                        widget.categoriaSeleccionada.nombreCategoria,
+                    style: TextStyle(color: ColorSelect.color1),
+                  ),
                   actions: [
                     cancelButton,
                     continueButton,
@@ -353,7 +377,7 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
             ),
           ),
           GestureDetector(
-            child: Icon(Icons.delete, color: Colors.grey),
+            child: Icon(Icons.delete, color: ColorSelect.color5),
           )
         ],
       ),

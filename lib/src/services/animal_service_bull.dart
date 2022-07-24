@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.10";
+String ip = "192.168.0.2";
 // String ip = "10.0.2.2";
 
 Future<List<Map<String, dynamic>>> getAllBull(
@@ -16,7 +16,7 @@ Future<List<Map<String, dynamic>>> getAllBull(
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': 'Bearer $token',
             },
-            body: json.encode({'id_usuario': id_usuario}));
+            body: json.encode({'id_usuario': 1}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -55,7 +55,7 @@ Future<List<Map<String, dynamic>>> getAllBull(
   } catch (e) {
     // print(e);
     return [
-      {"error": "Error: $e"}
+      {"error": "error"}
     ];
   }
 }

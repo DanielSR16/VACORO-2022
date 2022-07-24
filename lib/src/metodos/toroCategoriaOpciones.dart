@@ -17,6 +17,7 @@ import '../model/categorias.dart';
 import '../model/torosCategorias.dart';
 import '../pages/edit_categories_complete.dart';
 
+import '../style/colors/colorview.dart';
 import '../widgets/HomePage/appBar.dart';
 
 class toroEditar extends StatefulWidget {
@@ -61,13 +62,19 @@ class _toroEditar extends State<toroEditar> {
                     onItemSelected: (Toros item) async {
                       // set up the buttons
                       Widget cancelButton = ElevatedButton(
-                        child: Text("Cancelar"),
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5),
+                        child: const Text("Cancelar",
+                            style: TextStyle(color: Colors.white)),
                         onPressed: () {
                           Navigator.of(context).pop(true);
                         },
                       );
                       Widget continueButton = ElevatedButton(
-                        child: Text("Eliminar"),
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorSelect.color5),
+                        child: const Text("Eliminar",
+                            style: TextStyle(color: Colors.white)),
                         onPressed: () async {
                           var eliminarAnimal = jsonEncode({
                             "id_toro": item.id,
@@ -99,11 +106,14 @@ class _toroEditar extends State<toroEditar> {
                       );
                       // set up the AlertDialog
                       AlertDialog alert = AlertDialog(
-                        title: Text("Eliminar Toro"),
-                        content: Text("Te gustaria Eliminar El Toro " +
-                            item.nombre +
-                            " Con Numero De Arete " +
-                            item.num_arete),
+                        title: const Text("Eliminar toro",
+                            style: TextStyle(color: ColorSelect.color5)),
+                        content: Text(
+                            "Te gustaria eliminar el toro " +
+                                item.nombre +
+                                " con numero de arete " +
+                                item.num_arete,
+                            style: const TextStyle(color: ColorSelect.color1)),
                         actions: [
                           cancelButton,
                           continueButton,
@@ -119,11 +129,11 @@ class _toroEditar extends State<toroEditar> {
                       );
                     },
                     inputDecoration: InputDecoration(
-                      labelText: "Buscar Toro",
+                      labelText: "Buscar toro",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                            color: Colors.blue,
+                            color: ColorSelect.color5,
                             width: 2.0,
                           ),
                           borderRadius: BorderRadius.circular(5.0)),
@@ -162,11 +172,11 @@ class _toroEditar extends State<toroEditar> {
     print(listaids);
     for (int i = 0; i < torosTotales.length; i++) {
       if (!listaids.contains(torosTotales[i].id)) {
-        animalesFaltantes.add("Id del Toro: " +
+        animalesFaltantes.add("Id del toro: " +
             torosTotales[i].id.toString() +
-            "\nNumero De Arete: " +
+            "\nnumero de arete: " +
             torosTotales[i].num_arete +
-            "\nNombre Del Toro: " +
+            "\nnombre del toro: " +
             torosTotales[i].nombre);
       }
     }
@@ -228,7 +238,7 @@ class _toroEditar extends State<toroEditar> {
               }
             },
             backgroundColor: Colors.green,
-            child: const Icon(Icons.pets_outlined),
+            child: const Icon(Icons.check),
           )
         ],
       ),
@@ -279,9 +289,9 @@ class ToroItem extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Icon(
-              Icons.pets,
-              color: Colors.yellow[700],
+            const Image(
+              image: AssetImage('assets/images/toro.png'),
+              width: 25,
             ),
             const SizedBox(
               width: 10,
@@ -291,16 +301,16 @@ class ToroItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Id: ${toro.id}',
+                  'Núm. de arete: ${toro.num_arete}',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: ColorSelect.color1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   'Nombre: ${toro.nombre}',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: ColorSelect.color1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -116,8 +116,12 @@ class _DashBoardCowState extends State<DashBoardCow> {
               );
               // return Container();
             } else {
-              print(token);
-              if (snapshot.data.length > 0) {
+              // print(token);
+              // print(
+              //     ' sot el data de la vaca _________________________________________________');
+              // print(snapshot.data);
+              if (snapshot.data.length > 0 &&
+                  snapshot.data[0]['error'] != 'error') {
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -178,7 +182,7 @@ class _DashBoardCowState extends State<DashBoardCow> {
           backgroundColor: ColorSelect.color5,
           foregroundColor: Colors.white,
           child: Text(
-            "${name[0].toUpperCase()}",
+            "daniel",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -279,9 +283,9 @@ class _DashBoardCowState extends State<DashBoardCow> {
                     height: 150,
                     margin: const EdgeInsets.only(left: 5, top: 0, bottom: 0),
                     child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/loading_green.gif',
-                      image: snapshot.data[index]['url_img'],
-                    ),
+                        placeholder: 'assets/images/loading_green.gif',
+                        image: snapshot.data[index]['url_img'] ??
+                            'https://upload.wikimedia.org/wikipedia/commons/0/07/20100516_Vacas_Vilarromar%C3%ADs%2C_Oroso-8-1.jpg'),
                   ),
                   Center(
                     child: Column(

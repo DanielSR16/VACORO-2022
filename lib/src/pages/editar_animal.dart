@@ -55,7 +55,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
   late bool _validateDate = false;
   late int id_usuario = 0;
   late var imageAnimal =
-      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+      'https://animapedia.org/wp-content/uploads/2018/07/vaca-perfil.jpg';
   late String token = '';
 
   @override
@@ -211,11 +211,12 @@ class _EditarAnimalState extends State<EditarAnimal> {
                         });
                       }, // button pressed
                       child: Container(
+                        padding: const EdgeInsets.only(bottom: 10, top: 10),
                         width: size.width,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: const <Widget>[
-                            Text("Borrar animal de mi lista",
+                            Text("Eliminar animal",
                                 style: TextStyle(
                                     fontSize: 16, color: ColorSelect.color5)),
                             Icon(

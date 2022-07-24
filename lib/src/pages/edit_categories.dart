@@ -46,10 +46,10 @@ class _editCategories extends State<editCategories> {
                   Container(margin: EdgeInsets.only(top: 25)),
                   insertarImagen('assets/images/categorias.png'),
                   eleccionCategorias(
-                      "Paso 1", "Escoja La Categoria A Administrar"),
+                      "Paso 1", "Escoja la categoría a administrar"),
                   eleccionCategorias(
-                      "Paso 2", "Administre A Los Diferentes Tipos De Ganado"),
-                  eleccionCategorias("Paso 3", "Guarda La Informacion"),
+                      "Paso 2", "Administre a los diferentes tipos de ganado"),
+                  eleccionCategorias("Paso 3", "Guarda la información"),
                 ],
               ),
             )));
