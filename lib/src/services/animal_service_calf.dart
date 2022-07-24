@@ -8,7 +8,8 @@ String ip = "192.168.0.2";
 Future<List<Map<String, dynamic>>> getAllCalf(int id_usuario, token) async {
   try {
     final response = await http.post(
-      Uri.http(ip + ":3001", "/becerro/getBecerrosUsuario"),
+      Uri.http("animales-vacoro-729421269.us-east-1.elb.amazonaws.com",
+          "/becerro/getBecerrosUsuario"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',

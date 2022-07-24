@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String host = '192.168.0.2:3001';
+String host = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
 
 Future<Map<String, dynamic>> serviceeditarbecerro(
   String token,

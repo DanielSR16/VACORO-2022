@@ -127,11 +127,12 @@ class _registroUser2State extends State<registroUser2> {
           width: 10,
         ),
         Container(
+          width: MediaQuery.of(context).size.width - 230,
           padding: const EdgeInsets.only(
             right: 1,
           ),
           child: SizedBox(
-            width: 152,
+            width: MediaQuery.of(context).size.width - 230,
             height: 160,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

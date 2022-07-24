@@ -2,18 +2,17 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-String ip = "192.168.0.2";
-
 Future getCategoryAll() async {
   print('hola estoy obteniendo categorias xd');
   try {
     final response = await http.get(
-      Uri.http(ip + ":3006", "/categoria/allCategorias"),
+      Uri.parse(
+          "http:/categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       print(data);

@@ -86,12 +86,12 @@ class _vacaEditar extends State<vacaEditar> {
                                 widget.categoriaSeleccionada.idCategoria
                           }); //update con todo y categoria
                           var buscarAnimal = await updateBecerroByCategory(
-                              "http://192.168.0.2:3006/categoria/findCategoryVacaByIdVaca",
+                              "http:/categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findCategoryVacaByIdVaca",
                               eliminarAnimal);
                           var cuerpoEliminar =
                               jsonEncode({"id": buscarAnimal['id']});
                           var x = await deleteAnimalCategoryById(
-                              "http://192.168.0.2:3006/categoria/deleteVacaByCategory",
+                              "http:/categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/deleteVacaByCategory",
                               cuerpoEliminar);
                           Navigator.of(context).pop(true);
                           widget.lista_de_vacas.remove(item);
@@ -152,7 +152,7 @@ class _vacaEditar extends State<vacaEditar> {
                   child: FloatingActionButton(
                     onPressed: () async {
                       vacasTotales = await listaVacas(
-                          "http://192.168.0.2:3006/categoria/allCategorias/allVacas");
+                          "http:/categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allVacas");
                       var animalesFaltantes = buscarAnimalesFaltantes(
                           widget.lista_de_vacas, vacasTotales);
                       dialogAgregar(animalesFaltantes);
@@ -215,11 +215,12 @@ class _vacaEditar extends State<vacaEditar> {
                   "id_categoria": widget.categoriaSeleccionada.idCategoria
                 });
                 var agrego = await updateBecerroByCategory(
-                    "http://192.168.0.2:3006/categoria/updateVacaByCategory",
+                    "http:/categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/updateVacaByCategory",
                     cuerpoAgregar);
                 var id = jsonEncode({"id_vaca": idOpcion});
                 var infoAnimal = await infoAnimalById(
-                    "http://192.168.0.2:3006/categoria/findByIdVaca", id); //aca
+                    "http:/categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findByIdVaca",
+                    id); //aca
                 print(infoAnimal);
                 Vacas addvaca = Vacas(
                     id: infoAnimal['id'],

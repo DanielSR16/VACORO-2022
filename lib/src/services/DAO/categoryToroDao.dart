@@ -18,7 +18,8 @@ Future<List<Toros>> listTorosByIdCategoria(path, cuerpo) async {
     for (var item in map) {
       var cuerpo = jsonEncode({"id_toro": item['id_toro']});
       var toroObtenido = await infoAnimalById(
-          "http://192.168.0.2:3006/categoria/findByIdToro", cuerpo);
+          "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findByIdToro",
+          cuerpo);
 
       Toros toros = Toros(
           id: toroObtenido['id'],

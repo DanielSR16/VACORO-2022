@@ -54,13 +54,14 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
 
   @override
   void initState() {
-    Cat = listaCategorias("http://192.168.0.2:3006/categoria/allCategorias");
+    Cat = listaCategorias(
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias");
     listaB = listaBecerros(
-        "http://192.168.0.2:3006/categoria/allCategorias/allBecerros");
-    listaV =
-        listaVacas("http://192.168.0.2:3006/categoria/allCategorias/allVacas");
-    listaT =
-        listaToros("http://192.168.0.2:3006/categoria/allCategorias/allToros");
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allBecerros");
+    listaV = listaVacas(
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allVacas");
+    listaT = listaToros(
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allToros");
     super.initState();
   }
 
@@ -175,7 +176,7 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
               idCategoriaB = jsonEncode(
                   {"id_categoria": widget.categoriaSeleccionada.idCategoria}),
               listaBecerrosPorCategoria = await listBecerrosByIdCategoria(
-                  "http://192.168.0.2:3006/categoria/findListBecerrosByIdCategory",
+                  "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findListBecerrosByIdCategory",
                   idCategoriaB),
               Navigator.push(
                   context,
@@ -191,7 +192,7 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
               idCategoriaV = jsonEncode(
                   {"id_categoria": widget.categoriaSeleccionada.idCategoria}),
               listaVacasPorCategoria = await listVacasByIdCategoria(
-                  "http://192.168.0.2:3006/categoria/findListVacasByIdCategory",
+                  "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findListVacasByIdCategory",
                   idCategoriaV),
               Navigator.push(
                   context,
@@ -207,7 +208,7 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
               idCategoriaT = jsonEncode(
                   {"id_categoria": widget.categoriaSeleccionada.idCategoria}),
               listaTorosPorCategoria = await listTorosByIdCategoria(
-                  "http://192.168.0.2:3006/categoria/findListTorosByIdCategory",
+                  "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findListTorosByIdCategory",
                   idCategoriaT),
               Navigator.push(
                   context,
@@ -275,7 +276,7 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
               var actualizoCategoria = jsonEncode(
                   {"id": id, "nombre": nombre, "descripcion": descripcion});
               await AccionarCategoria_edito_elimino(
-                  'http://192.168.0.2:3006/categoria/updatecategoria',
+                  'http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/updatecategoria',
                   actualizoCategoria);
               Navigator.pop(context);
               setState(() {
@@ -338,7 +339,7 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
                   onPressed: () async {
                     var idBorrar = jsonEncode({"id": idCategoria});
                     await AccionarCategoria_edito_elimino(
-                        'http://192.168.0.2:3006/categoria/deleteCategoria',
+                        'http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/deleteCategoria',
                         idBorrar);
                     Navigator.pop(context);
                     setState(() {

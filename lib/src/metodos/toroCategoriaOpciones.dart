@@ -82,12 +82,12 @@ class _toroEditar extends State<toroEditar> {
                                 widget.categoriaSeleccionada.idCategoria
                           }); //update con todo y categoria
                           var buscarAnimal = await updateBecerroByCategory(
-                              "http://192.168.0.2:3006/categoria/findCategoryToroByIdToro",
+                              "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findCategoryToroByIdToro",
                               eliminarAnimal);
                           var cuerpoEliminar =
                               jsonEncode({"id": buscarAnimal['id']});
                           var x = await deleteAnimalCategoryById(
-                              "http://192.168.0.2:3006/categoria/deleteToroByCategory",
+                              "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/deleteToroByCategory",
                               cuerpoEliminar);
                           Navigator.of(context).pop(true);
                           widget.lista_de_toros.remove(item);
@@ -148,7 +148,7 @@ class _toroEditar extends State<toroEditar> {
                   child: FloatingActionButton(
                     onPressed: () async {
                       torosTotales = await listaToros(
-                          "http://192.168.0.2:3006/categoria/allCategorias/allToros");
+                          "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allToros");
                       var animalesFaltantes = buscarAnimalesFaltantes(
                           widget.lista_de_toros, torosTotales);
                       dialogAgregar(animalesFaltantes);
@@ -207,11 +207,12 @@ class _toroEditar extends State<toroEditar> {
                   "id_categoria": widget.categoriaSeleccionada.idCategoria
                 });
                 var agrego = await updateBecerroByCategory(
-                    "http://192.168.0.2:3006/categoria/updateToroByCategory",
+                    "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/updateToroByCategory",
                     cuerpoAgregar);
                 var id = jsonEncode({"id_toro": idOpcion});
                 var infoAnimal = await infoAnimalById(
-                    "http://192.168.0.2:3006/categoria/findByIdToro", id); //aca
+                    "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findByIdToro",
+                    id); //aca
                 print(infoAnimal);
                 Toros addtoro = Toros(
                     id: infoAnimal['id'],

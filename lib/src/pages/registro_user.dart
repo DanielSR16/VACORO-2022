@@ -18,8 +18,8 @@ class _registroUserState extends State<registroUser> {
   final correo_electronico_ = TextEditingController();
   final contrasenia_ = TextEditingController();
   final repetirContrasenia_ = TextEditingController();
-  late String estado_;
-  late String ciudad_;
+  late String estado_ = '';
+  late String ciudad_ = '';
   final edad_ = TextEditingController();
   final nombreRancho_ = TextEditingController();
   List<String> listaCiudades = [''];
@@ -43,6 +43,9 @@ class _registroUserState extends State<registroUser> {
   late List<FormField> _fieldList = [];
   late List<FormField> _fieldListMunicipio = [];
   late bool _llenadoDatos = false;
+
+  late bool _passwordVisible = false;
+  late bool _passwordVisibleRepetir = false;
 
   late int indexEstado;
   Usuario usuario = Usuario();
@@ -120,9 +123,9 @@ class _registroUserState extends State<registroUser> {
               _validateCorreo,
               TextInputType.emailAddress,
               _errorCorreo),
-          inputs_correo('Contraseña', 'Ingrese contraseña', contrasenia_,
+          inputs_contrasenia('Contraseña', 'Ingrese contraseña', contrasenia_,
               _validateContrasenia, TextInputType.name, _errorContrasenia),
-          inputs_correo(
+          inputs_contraseniaRepetir(
               'Repetir contraseña',
               'Repila la contraseña',
               repetirContrasenia_,
@@ -417,9 +420,106 @@ class _registroUserState extends State<registroUser> {
           SizedBox(
             height: validate_ ? 60 : 40,
             child: TextField(
+              obscureText: !_passwordVisible,
+              enableSuggestions: false,
+              autocorrect: false,
               keyboardType: tipeKeyboard,
               controller: controller_,
               decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    color: ColorSelect.color1,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                ),
+                labelStyle: const TextStyle(color: Color(0xFF68C24E)),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: ColorSelect.color5, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 2.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                errorText: validate_ ? _errorContrasenia : null,
+                errorStyle: const TextStyle(color: Colors.red),
+                labelText: nameInField,
+              ),
+            ),
+          ),
+          const Divider(
+            height: 5,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget inputs_contraseniaRepetir(
+      String nameTopField,
+      String nameInField,
+      TextEditingController controller_,
+      bool validate_,
+      TextInputType tipeKeyboard,
+      String _errorContrasenia) {
+    return Container(
+      padding: EdgeInsets.only(left: bordes, right: bordes),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 5),
+            width: width_media,
+            child: Text(
+              nameTopField,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3E762F),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: validate_ ? 60 : 40,
+            child: TextField(
+              obscureText: !_passwordVisibleRepetir,
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: tipeKeyboard,
+              controller: controller_,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    color: ColorSelect.color1,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisibleRepetir = !_passwordVisibleRepetir;
+                    });
+                  },
+                ),
                 labelStyle: const TextStyle(color: Color(0xFF68C24E)),
                 border: const OutlineInputBorder(
                   borderSide: BorderSide(color: ColorSelect.color1, width: 2.0),

@@ -24,8 +24,8 @@ class _editCategories extends State<editCategories> {
 
   @override
   void initState() {
-    listaCat =
-        listaCategorias("http://192.168.0.2:3006/categoria/allCategorias");
+    listaCat = listaCategorias(
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias");
     super.initState();
   }
 

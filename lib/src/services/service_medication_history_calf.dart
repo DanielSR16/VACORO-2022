@@ -8,7 +8,7 @@ Future getMedicationHistoryByCalf(int id_animal) async {
   try {
     final response = await http.post(
         Uri.http(
-            ip + ":3004", "/medicamentos_historial_becerro/getAnimalHistorial"),
+            "medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com", "/medicamentos_historial_becerro/getAnimalHistorial"),
         headers: {"Content-Type": "application/json; charset=UTF-8"},
         body: json.encode({"id_animal": id_animal}));
 

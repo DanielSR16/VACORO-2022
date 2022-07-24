@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
@@ -281,11 +282,16 @@ class _ContainerDialogModalCowDetailState
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 10, top: 10),
-                      width: size.width * 0.65,
-                      height: 150,
-                      child: Image.network(url_img),
-                    ),
+                        margin: const EdgeInsets.only(bottom: 10, top: 10),
+                        width: size.width * 0.65,
+                        height: 150,
+                        child: CachedNetworkImage(
+                          imageUrl: url_img,
+                          placeholder: (context, url) =>
+                              Image.asset('assets/images/loading_green.gif'),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        )),
                   ],
                 ),
                 Row(

@@ -7,13 +7,14 @@ String ip = "192.168.0.2";
 Future<List<Map<String, dynamic>>> getBecerrobyIdvaca(
     int id_vaca, String token) async {
   try {
-    final response =
-        await http.post(Uri.http(ip + ":3001", "/becerro/getBecerrosbyIdvaca"),
-            headers: {
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'Bearer $token',
-            },
-            body: json.encode({'id_vaca': id_vaca}));
+    final response = await http.post(
+        Uri.http("animales-vacoro-729421269.us-east-1.elb.amazonaws.com",
+            "/becerro/getBecerrosbyIdvaca"),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({'id_vaca': id_vaca}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

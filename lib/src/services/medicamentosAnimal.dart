@@ -6,7 +6,7 @@ String ip = '192.168.100.15';
 Future medicamentos_all(token, idUsuario) async {
   try {
     final response = await http.post(
-        Uri.http(ip + ':3004', '/medicamento/allMedicamentosbyUser'),
+        Uri.http('medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com', '/medicamento/allMedicamentosbyUser'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           "authorization": 'Bearer $token'
@@ -33,7 +33,7 @@ Future medicamentos_name_byName(
 ) async {
   try {
     final response =
-        await http.post(Uri.http(ip + ':3004', '/medicamento/idNameMedicina'),
+        await http.post(Uri.http('medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com', '/medicamento/idNameMedicina'),
             headers: {
               'Content-Type': 'application/json; charset=UTF-8',
               "authorization": 'Bearer $token'
@@ -58,7 +58,7 @@ Future medicamentos_name_byName(
 Future medicamentos_name_byID(int id, int id_usuario, token) async {
   try {
     final response =
-        await http.post(Uri.http(ip + ':3004', '/medicamento/NameMedicina'),
+        await http.post(Uri.http('medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com', '/medicamento/NameMedicina'),
             headers: {
               'Content-Type': 'application/json; charset=UTF-8',
               "authorization": 'Bearer $token'
@@ -100,7 +100,7 @@ Future<String> register_historia_animal(
       ruta = '/medicamentos_historial_becerro/new';
     }
     final response = await http.post(
-      Uri.http(ip + ':3004', ruta),
+      Uri.http('medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com', ruta),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         "authorization": 'Bearer $token'
@@ -145,7 +145,7 @@ Future<String> historial_animal_edit(int id, int tipoAnimal, token) async {
       ruta = '/medicamentos_historial_becerro/getAnimalHistorialOne';
     }
     final response = await http.post(
-      Uri.http(ip + ':3004', ruta),
+      Uri.http('medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com', ruta),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         "authorization": 'Bearer $token'
@@ -194,7 +194,7 @@ Future<String> register_historia_animal_editar(
       ruta = '/medicamentos_historial_becerro/update';
     }
     final response = await http.post(
-      Uri.http(ip + ':3004', ruta),
+      Uri.http('medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com', ruta),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         "authorization": 'Bearer $token'
@@ -243,7 +243,7 @@ Future<String> historia_animal_eliminar(
       ruta = '/medicamentos_historial_becerro/delete';
     }
     final response = await http.post(
-      Uri.http(ip + ':3004', ruta),
+      Uri.http('medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com', ruta),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
       body: json.encode(
         {

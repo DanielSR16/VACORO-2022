@@ -10,7 +10,7 @@ Future getMedicationAll(id_usuario, token) async {
   print(d.runtimeType);
   try {
     final response = await http.post(
-        Uri.http(ip + ":3004", "/medicamento/allMedicamentosbyUser"),
+        Uri.http( "medicamentos-vacoro-1752549805.us-east-1.elb.amazonaws.com", "/medicamento/allMedicamentosbyUser"),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'authorization': 'Bearer $token',

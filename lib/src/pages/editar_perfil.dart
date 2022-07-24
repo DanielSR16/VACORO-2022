@@ -795,29 +795,30 @@ class _EditarPerfilState extends State<EditarPerfil> {
               lockAspectRatio: false),
         ],
       );
+      if (croppedFile != null) {
+        final imageTemporary = File(croppedFile.path);
 
-      final imageTemporary = File(croppedFile!.path);
+        String fileExtension = path.extension(croppedFile.path);
+        GenerateImageUrl generateImageUrl = GenerateImageUrl();
 
-      String fileExtension = path.extension(croppedFile.path);
-      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+        await generateImageUrl.call(fileExtension);
 
-      await generateImageUrl.call(fileExtension);
+        url_img = generateImageUrl.downloadUrl;
+        var uploadUrl;
+        if (generateImageUrl.isGenerated != null &&
+            generateImageUrl.isGenerated) {
+          uploadUrl = generateImageUrl.uploadUrl;
+        } else {
+          throw generateImageUrl.message;
+        }
 
-      url_img = generateImageUrl.downloadUrl;
-      var uploadUrl;
-      if (generateImageUrl.isGenerated != null &&
-          generateImageUrl.isGenerated) {
-        uploadUrl = generateImageUrl.uploadUrl;
-      } else {
-        throw generateImageUrl.message;
+        bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+        print(isUploaded);
+
+        setState(
+          () => this.image = imageTemporary,
+        );
       }
-
-      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
-      print(isUploaded);
-
-      setState(
-        () => this.image = imageTemporary,
-      );
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -857,26 +858,27 @@ class _EditarPerfilState extends State<EditarPerfil> {
               lockAspectRatio: false),
         ],
       );
+      if (croppedFile != null) {
+        final imageTemporary = File(croppedFile.path);
+        setState(() => this.image = imageTemporary);
+        String fileExtension = path.extension(croppedFile.path);
+        //final imageTemporary = File(image.path);
 
-      final imageTemporary = File(croppedFile!.path);
-      setState(() => this.image = imageTemporary);
-      String fileExtension = path.extension(croppedFile.path);
-      //final imageTemporary = File(image.path);
+        GenerateImageUrl generateImageUrl = GenerateImageUrl();
+        await generateImageUrl.call(fileExtension);
 
-      GenerateImageUrl generateImageUrl = GenerateImageUrl();
-      await generateImageUrl.call(fileExtension);
+        url_img = generateImageUrl.downloadUrl;
+        var uploadUrl;
+        if (generateImageUrl.isGenerated != null &&
+            generateImageUrl.isGenerated) {
+          uploadUrl = generateImageUrl.uploadUrl;
+        } else {
+          throw generateImageUrl.message;
+        }
 
-      url_img = generateImageUrl.downloadUrl;
-      var uploadUrl;
-      if (generateImageUrl.isGenerated != null &&
-          generateImageUrl.isGenerated) {
-        uploadUrl = generateImageUrl.uploadUrl;
-      } else {
-        throw generateImageUrl.message;
+        bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+        print(isUploaded);
       }
-
-      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
-      print(isUploaded);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }

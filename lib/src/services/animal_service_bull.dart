@@ -10,13 +10,14 @@ Future<List<Map<String, dynamic>>> getAllBull(
   print(token);
   String tok = 'Bearer ' + token;
   try {
-    final response =
-        await http.post(Uri.http(ip + ":3001", "/toro/getTorosUsuario"),
-            headers: {
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'Bearer $token',
-            },
-            body: json.encode({'id_usuario': 1}));
+    final response = await http.post(
+        Uri.http("animales-vacoro-729421269.us-east-1.elb.amazonaws.com",
+            "/toro/getTorosUsuario"),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({'id_usuario': 1}));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

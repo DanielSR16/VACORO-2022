@@ -20,7 +20,8 @@ creacionCategoria(nombreCategoria, descripcionCategoria, vacas, toros, becerros,
   var categoria;
   try {
     categoria = await addCategoria(
-        'http://192.168.0.2:3006/categoria/createCategoria', body);
+        'http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/createCategoria',
+        body);
   } catch (e) {
     categoria = "";
   }
@@ -38,7 +39,7 @@ creacionCategoria(nombreCategoria, descripcionCategoria, vacas, toros, becerros,
       BecerrosAgregar.add(cuerpo);
     }
     await createAnimalCategory(
-        "http://192.168.0.2:3006/categoria/createCategoryBecerro",
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/createCategoryBecerro",
         BecerrosAgregar.toString());
   }
   if (toros.length > 0 && categoria.length > 0) {
@@ -50,7 +51,7 @@ creacionCategoria(nombreCategoria, descripcionCategoria, vacas, toros, becerros,
       TorosAgregar.add(cuerpo);
     }
     await createAnimalCategory(
-        "http://192.168.0.2:3006/categoria/createCategoryToro",
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/createCategoryToro",
         TorosAgregar.toString());
   }
   if (vacas.length > 0 && categoria.length > 0) {
@@ -62,7 +63,7 @@ creacionCategoria(nombreCategoria, descripcionCategoria, vacas, toros, becerros,
       VacasAgregar.add(cuerpo);
     }
     await createAnimalCategory(
-        "http://192.168.0.2:3006/categoria/createCategoryVaca",
+        "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/createCategoryVaca",
         VacasAgregar.toString());
   }
 

@@ -10,7 +10,7 @@ Future<Map<String, dynamic>> servicedeletevacatoro(
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
   };
-  String host = '192.168.0.2:3001';
+  String host = 'animales-vacoro-729421269.us-east-1.elb.amazonaws.com';
   String loginAPI;
   if (tipoAnimal == "Vaca") {
     loginAPI = '/vaca/delete/';

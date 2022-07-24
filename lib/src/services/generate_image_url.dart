@@ -14,7 +14,8 @@ class GenerateImageUrl {
     Map body = {"fileType": fileType};
 
     var response = await http.post(
-      Uri.http(ip + ':5000', '/generatePresignedUrl'),
+      Uri.http('upload-image-1854400322.us-east-1.elb.amazonaws.com',
+          '/generatePresignedUrl'),
       body: body,
     );
 

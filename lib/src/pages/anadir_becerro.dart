@@ -27,7 +27,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
   File? image;
   bool isSwitched = false;
   late String url_img =
-      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+      'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
   int estado = 0;
   TextEditingController nombreBecerro = TextEditingController();
   TextEditingController descripcionBecerro = TextEditingController();
@@ -341,7 +341,7 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
                       print(url_img);
                       image = null;
                       url_img =
-                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                          'https://image-vacoro.s3.amazonaws.com/37b04641-514f-491a-b96e-6a115372a994.jpg';
                       print(url_img);
                     });
                   },
@@ -703,29 +703,30 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
               lockAspectRatio: false),
         ],
       );
+      if (croppedFile != null) {
+        final imageTemporary = File(croppedFile.path);
 
-      final imageTemporary = File(croppedFile!.path);
+        String fileExtension = path.extension(croppedFile.path);
 
-      String fileExtension = path.extension(croppedFile.path);
+        GenerateImageUrl generateImageUrl = GenerateImageUrl();
 
-      GenerateImageUrl generateImageUrl = GenerateImageUrl();
+        await generateImageUrl.call(fileExtension);
 
-      await generateImageUrl.call(fileExtension);
+        url_img = generateImageUrl.downloadUrl;
+        var uploadUrl;
+        if (generateImageUrl.isGenerated != null &&
+            generateImageUrl.isGenerated) {
+          uploadUrl = generateImageUrl.uploadUrl;
+        } else {
+          throw generateImageUrl.message;
+        }
 
-      url_img = generateImageUrl.downloadUrl;
-      var uploadUrl;
-      if (generateImageUrl.isGenerated != null &&
-          generateImageUrl.isGenerated) {
-        uploadUrl = generateImageUrl.uploadUrl;
-      } else {
-        throw generateImageUrl.message;
+        bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
+
+        setState(
+          () => this.image = imageTemporary,
+        );
       }
-
-      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
-
-      setState(
-        () => this.image = imageTemporary,
-      );
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -766,25 +767,26 @@ class _AnadirBecerroState extends State<AnadirBecerro> {
               lockAspectRatio: false),
         ],
       );
+      if (croppedFile != null) {
+        final imageTemporary = File(croppedFile.path);
+        setState(() => this.image = imageTemporary);
+        String fileExtension = path.extension(croppedFile.path);
+        //final imageTemporary = File(image.path);
 
-      final imageTemporary = File(croppedFile!.path);
-      setState(() => this.image = imageTemporary);
-      String fileExtension = path.extension(croppedFile.path);
-      //final imageTemporary = File(image.path);
+        GenerateImageUrl generateImageUrl = GenerateImageUrl();
+        await generateImageUrl.call(fileExtension);
 
-      GenerateImageUrl generateImageUrl = GenerateImageUrl();
-      await generateImageUrl.call(fileExtension);
+        url_img = generateImageUrl.downloadUrl;
+        var uploadUrl;
+        if (generateImageUrl.isGenerated != null &&
+            generateImageUrl.isGenerated) {
+          uploadUrl = generateImageUrl.uploadUrl;
+        } else {
+          throw generateImageUrl.message;
+        }
 
-      url_img = generateImageUrl.downloadUrl;
-      var uploadUrl;
-      if (generateImageUrl.isGenerated != null &&
-          generateImageUrl.isGenerated) {
-        uploadUrl = generateImageUrl.uploadUrl;
-      } else {
-        throw generateImageUrl.message;
+        bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
       }
-
-      bool isUploaded = await uploadFile(context, uploadUrl, imageTemporary);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
