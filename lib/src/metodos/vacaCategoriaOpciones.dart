@@ -19,26 +19,27 @@ import '../model/torosCategorias.dart';
 import '../model/vacasCategorias.dart';
 import '../pages/edit_categories_complete.dart';
 
-
 import '../widgets/HomePage/appBar.dart';
 
 class vacaEditar extends StatefulWidget {
   List<Vacas> lista_de_vacas;
   Categoria categoriaSeleccionada;
-  vacaEditar({Key? key,required this.lista_de_vacas,required this.categoriaSeleccionada}): super(key: key);
+  vacaEditar(
+      {Key? key,
+      required this.lista_de_vacas,
+      required this.categoriaSeleccionada})
+      : super(key: key);
   @override
   State<vacaEditar> createState() => _vacaEditar();
 }
 
 class _vacaEditar extends State<vacaEditar> {
-
   List<Vacas> vacasMostrar = [];
   List<Vacas> vacasTotales = [];
   String aceptacion = "";
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: appbarCat("Vacas", 'assets/images/vaca.png', context, "this"),
         body: Container(
@@ -57,31 +58,54 @@ class _vacaEditar extends State<vacaEditar> {
                     initialList: widget.lista_de_vacas,
                     builder: (Vacas vacas) => VacaItem(vaca: vacas),
                     filter: _filterVacaList,
-                    emptyWidget: EmptyView(categoriaSeleccionada: widget.categoriaSeleccionada),
+                    emptyWidget: EmptyView(
+                        categoriaSeleccionada: widget.categoriaSeleccionada),
                     onItemSelected: (Vacas item) async {
                       // set up the buttons
                       Widget cancelButton = ElevatedButton(
                         child: Text("Cancelar"),
-                        onPressed:  () {Navigator.of(context).pop(true);},
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
                       );
                       Widget continueButton = ElevatedButton(
                         child: Text("Eliminar"),
-                        onPressed:  () async {
-                          var eliminarAnimal = jsonEncode({"id_vaca":item.id, "id_categoria":widget.categoriaSeleccionada.idCategoria}); //update con todo y categoria
-                          var buscarAnimal = await updateBecerroByCategory("http://192.168.100.11:3006/categoria/findCategoryVacaByIdVaca", eliminarAnimal);
-                          var cuerpoEliminar = jsonEncode({"id":buscarAnimal['id']});
-                          var x = await deleteAnimalCategoryById("http://192.168.100.11:3006/categoria/deleteVacaByCategory", cuerpoEliminar);
+                        onPressed: () async {
+                          var eliminarAnimal = jsonEncode({
+                            "id_vaca": item.id,
+                            "id_categoria":
+                                widget.categoriaSeleccionada.idCategoria
+                          }); //update con todo y categoria
+                          var buscarAnimal = await updateBecerroByCategory(
+                              "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findCategoryVacaByIdVaca",
+                              eliminarAnimal);
+                          var cuerpoEliminar =
+                              jsonEncode({"id": buscarAnimal['id']});
+                          var x = await deleteAnimalCategoryById(
+                              "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/deleteVacaByCategory",
+                              cuerpoEliminar);
                           Navigator.of(context).pop(true);
                           widget.lista_de_vacas.remove(item);
                           setState(() {
-                            Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => vacaEditar(lista_de_vacas: widget.lista_de_vacas, categoriaSeleccionada: widget.categoriaSeleccionada)));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        vacaEditar(
+                                            lista_de_vacas:
+                                                widget.lista_de_vacas,
+                                            categoriaSeleccionada:
+                                                widget.categoriaSeleccionada)));
                           });
                         },
                       );
                       // set up the AlertDialog
                       AlertDialog alert = AlertDialog(
                         title: Text("Eliminar Vaca"),
-                        content: Text("Te gustaria Eliminar La Vaca "+item.nombre+" Con Numero De Arete "+item.num_arete),
+                        content: Text("Te gustaria Eliminar La Vaca " +
+                            item.nombre +
+                            " Con Numero De Arete " +
+                            item.num_arete),
                         actions: [
                           cancelButton,
                           continueButton,
@@ -95,14 +119,16 @@ class _vacaEditar extends State<vacaEditar> {
                           return alert;
                         },
                       );
-
                     },
                     inputDecoration: InputDecoration(
                       labelText: "Buscar Vaca",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.blue, width: 2.0,),
-                      borderRadius: BorderRadius.circular(5.0)),
+                          borderSide: const BorderSide(
+                            color: Colors.blue,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0)),
                     ),
                   ),
                 ),
@@ -113,9 +139,11 @@ class _vacaEditar extends State<vacaEditar> {
                   margin: EdgeInsets.only(bottom: 15, right: 15),
                   child: FloatingActionButton(
                     onPressed: () async {
-                    vacasTotales = await listaVacas("http://192.168.100.11:3006/categoria/allCategorias/allVacas");
-                    var animalesFaltantes = buscarAnimalesFaltantes(widget.lista_de_vacas, vacasTotales);
-                    dialogAgregar(animalesFaltantes);
+                      vacasTotales = await listaVacas(
+                          "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/allCategorias/allVacas");
+                      var animalesFaltantes = buscarAnimalesFaltantes(
+                          widget.lista_de_vacas, vacasTotales);
+                      dialogAgregar(animalesFaltantes);
                     },
                     backgroundColor: Colors.green,
                     child: const Icon(Icons.add),
@@ -127,7 +155,7 @@ class _vacaEditar extends State<vacaEditar> {
         ));
   }
 
-  buscarAnimalesFaltantes(listaVacas,vacasTotales) {
+  buscarAnimalesFaltantes(listaVacas, vacasTotales) {
     List<int> listaids = [];
     List<String> animalesFaltantes = [];
     for (int i = 0; i < listaVacas.length; i++) {
@@ -149,7 +177,7 @@ class _vacaEditar extends State<vacaEditar> {
     return animalesFaltantes;
   }
 
-  dialogAgregar(List<String>animalesFaltantes) async {
+  dialogAgregar(List<String> animalesFaltantes) async {
     print(animalesFaltantes);
     await DialogBackground(
       dialog: AlertDialog(
@@ -157,28 +185,47 @@ class _vacaEditar extends State<vacaEditar> {
         content: Text("Seleccione el animal a agregar"),
         actions: <Widget>[
           SeleccionAnimalesFaltantes(animalesFaltantes),
-          SizedBox(height: 50,),
+          SizedBox(
+            height: 50,
+          ),
           FloatingActionButton(
             onPressed: () async {
               if (aceptacion.length > 0) {
                 List<String> result = aceptacion.split('\n');
-                int idOpcion = int.parse(result[0].replaceAll(new RegExp(r'[^0-9]'), ''));
+                int idOpcion =
+                    int.parse(result[0].replaceAll(new RegExp(r'[^0-9]'), ''));
                 var cuerpoAgregar = jsonEncode({
                   "id_vaca": idOpcion,
                   "id_categoria": widget.categoriaSeleccionada.idCategoria
                 });
-                var agrego = await updateBecerroByCategory("http://192.168.100.11:3006/categoria/updateVacaByCategory",cuerpoAgregar);
-                var id = jsonEncode({"id_vaca":idOpcion});
-                var infoAnimal = await infoAnimalById("http://192.168.100.11:3006/categoria/findByIdVaca", id); //aca
+                var agrego = await updateBecerroByCategory(
+                    "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/updateVacaByCategory",
+                    cuerpoAgregar);
+                var id = jsonEncode({"id_vaca": idOpcion});
+                var infoAnimal = await infoAnimalById(
+                    "http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/findByIdVaca",
+                    id); //aca
                 print(infoAnimal);
-                Vacas addvaca = Vacas(id: infoAnimal['id'], id_usuario: infoAnimal['id_usuario'], nombre: infoAnimal['nombre'], 
-                descripcion: infoAnimal['descripcion'], raza: infoAnimal['raza'], num_arete: infoAnimal['num_arete'], 
-                 estado: infoAnimal['estado'], fecha_llegada:infoAnimal['fecha_llegada'], 
-                edad: infoAnimal['edad']);
+                Vacas addvaca = Vacas(
+                    id: infoAnimal['id'],
+                    id_usuario: infoAnimal['id_usuario'],
+                    nombre: infoAnimal['nombre'],
+                    descripcion: infoAnimal['descripcion'],
+                    raza: infoAnimal['raza'],
+                    num_arete: infoAnimal['num_arete'],
+                    estado: infoAnimal['estado'],
+                    fecha_llegada: infoAnimal['fecha_llegada'],
+                    edad: infoAnimal['edad']);
                 Navigator.of(context).pop(true);
                 widget.lista_de_vacas.add(addvaca);
                 setState(() {
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (BuildContext context) => vacaEditar(lista_de_vacas: widget.lista_de_vacas, categoriaSeleccionada: widget.categoriaSeleccionada)));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => vacaEditar(
+                              lista_de_vacas: widget.lista_de_vacas,
+                              categoriaSeleccionada:
+                                  widget.categoriaSeleccionada)));
                 });
               }
             },
