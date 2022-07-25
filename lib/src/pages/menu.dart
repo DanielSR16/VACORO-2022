@@ -156,7 +156,8 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ListTile(
           title: const Text('Cerrar sesión'),
           onTap: () {
-            Navigator.pushReplacementNamed(context, 'login');
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                'pre_login', (Route<dynamic> route) => false);
           },
           leading: const Image(
             image: AssetImage('assets/images/Icon_salida.png'),
