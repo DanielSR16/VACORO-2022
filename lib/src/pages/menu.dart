@@ -146,14 +146,6 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
           ),
         ),
         ListTile(
-          title: const Text('Ver anuncio'),
-          onTap: () {},
-          leading: const Image(
-            image: AssetImage('assets/images/Icon_anuncio.png'),
-            width: 30,
-          ),
-        ),
-        ListTile(
           title: const Text('Cerrar sesión'),
           onTap: () {},
           leading: const Image(
