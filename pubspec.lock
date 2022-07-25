@@ -428,7 +428,11 @@ packages:
       name: multiple_search_selection
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "2.1.0"
+=======
+    version: "2.0.1"
+>>>>>>> 128038730798b9c7358a863cb41042578b1dd10a
   ndialog:
     dependency: "direct main"
     description:
@@ -436,6 +440,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.1+1"
+<<<<<<< HEAD
   nm:
     dependency: transitive
     description:
@@ -443,6 +448,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
+=======
+>>>>>>> 128038730798b9c7358a863cb41042578b1dd10a
   page_transition:
     dependency: "direct main"
     description:

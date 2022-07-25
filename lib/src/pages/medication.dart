@@ -1,6 +1,12 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
+import 'package:vacoro_proyect/src/services/medication_service.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
+import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_add_medication.dart';
+import 'package:vacoro_proyect/src/widgets/window_modal/modal_edit_medication.dart';
 
 class Medication extends StatefulWidget {
   Medication({Key? key}) : super(key: key);
@@ -10,9 +16,38 @@ class Medication extends StatefulWidget {
 }
 
 class _MedicationState extends State<Medication> {
-  String? medication = '';
-  String? description = '';
-  int? cant = 0;
+  late int id_usuario = 0;
+  late String token = '';
+  late String correo = "";
+  late String name = "";
+  @override
+  void initState() {
+    super.initState();
+    UserSecureStorage.getId().then((value) {
+      UserSecureStorage.getToken().then((token_) {
+        UserSecureStorage.getName().then((name_) {
+          UserSecureStorage.getCorreo().then((correo_) {
+            setState(() {
+              int id_cast = int.parse(value!);
+
+              id_usuario = id_cast;
+              token = token_!;
+              correo = correo_!;
+              name = name_!;
+            });
+          });
+        });
+        setState(() {
+          // int id_cast = int.parse(value!);
+
+          // id_usuario = id_cast;
+          // token = token_!;
+        });
+      });
+    });
+
+    // TODO: implement initState
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +56,18 @@ class _MedicationState extends State<Medication> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            print('atras medicamentos');
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => homePage(
+                        nombre: name,
+                        correo: correo,
+                      )),
+            );
+          },
         ),
         title: const Text('MEDICAMENTOS'),
         centerTitle: true,
@@ -36,145 +82,128 @@ class _MedicationState extends State<Medication> {
         backgroundColor: ColorSelect.color5,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Center(
-                  child: Container(
-                    height: 35,
-                    width: 350,
-                    margin: const EdgeInsets.only(top: 40),
-                    decoration: BoxDecoration(
-                      color: ColorSelect.color2,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.bottom,
-                      autocorrect: true,
-                      autofocus: false,
-                      onChanged: (text) {},
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(
-                              color: Colors.purple,
-                              width: 1,
-                              strokeAlign: StrokeAlign.inside,
-                            ),
-                          ),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              print("Buscar Medicamentos, TAP");
-                            },
-                            child: const Icon(
-                              Icons.search,
-                              color: Color(0xff229567),
-                            ),
-                          ),
-                          hintText: "Buscar Medicamentos..."),
-                    ),
-                  ),
+        child: FutureBuilder(
+          future: getMedicationAll(id_usuario, token),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 5,
+                  backgroundColor: ColorSelect.color5,
+                  color: Colors.white,
                 ),
-                ///////////////////////////////////////////////
-                _createdCardMedication(
-                    size, "Jarabe", "Para la diarrea", 10, "MODAL"),
-                _createdCardMedication(
-                    size, "Inyección", "Para la fiebre", 200, "MODAL2"),
-                _createdCardMedication(
-                    size, "medication", "description", 50, "MODAL3")
-              ],
-            ),
-          ),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return FadeInLeft(
+                    duration: Duration(milliseconds: 100 * index),
+                    child: _createdCardMedication(size, snapshot, index),
+                  );
+                },
+              );
+            }
+          },
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: ColorSelect.color5,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 1,
+        elevation: 2.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 0),
+              height: 50,
+              width: size.width,
+            )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("Agregar Medicamento");
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => DialogContainerAddMedication(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
         backgroundColor: ColorSelect.color5,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  Card _createdCardMedication(Size size, String medication, String description,
-      int cantidad, String text) {
+  Card _createdCardMedication(Size size, AsyncSnapshot snapshot, int index) {
     return Card(
       shadowColor: Colors.grey,
-      // shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(30)),
-      margin: const EdgeInsets.all(15),
-      elevation: 10,
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(
+          color: ColorSelect.color5,
+          width: 2,
+          style: BorderStyle.solid,
+        ),
+        borderRadius: BorderRadius.circular(40),
+      ),
+      elevation: 20,
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            // margin: const EdgeInsets.only(top: 0),
+            margin: const EdgeInsets.only(top: 0),
             width: size.width,
             height: 200,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  // margin: const EdgeInsets.only(left: 20),
-                  child: const Image(
-                    image: AssetImage('assets/images/cow.png'),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      containerLabel(
+                          "Nombre: ${snapshot.data[index]['nombre']}", index),
+                      containerLabel(
+                          "Descripción: ${snapshot.data[index]['descripcion']}",
+                          index),
+                      containerLabel(
+                          "Cantidad: ${snapshot.data[index]['cantidad']}",
+                          index),
+                      containerLabel(
+                          "Fecha Caducidad: ${snapshot.data[index]['fecha_caducidad']}",
+                          index)
+                    ],
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      // margin: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Medicamento: $medication',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        'Descripcion: $description',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        'Cantidad: $cantidad disponibles',
-                        style: const TextStyle(
-                          color: Color(0xff3E762F),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      // margin: const EdgeInsets.only(left: 50),
+                      margin: const EdgeInsets.only(left: 40, right: 0),
                       child: GestureDetector(
                         onTap: () async {
-                          // print("Editar Medicamento!")
+                          // print("Edit Medicina");
+
                           await showDialog(
-                              context: context,
-                              builder: (_) => DialogContainer(text: text));
+                            context: context,
+                            builder: (_) => ContainerDialogEditMedication(),
+                          );
                         },
-                        child: Image.asset('assets/images/edit_logo.png'),
+                        child: Image.asset(
+                          'assets/images/edit_logo.png',
+                          height: 30,
+                          scale: 0.7,
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );

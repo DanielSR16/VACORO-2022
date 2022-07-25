@@ -23,8 +23,6 @@ creacionCategoria(nombreCategoria,descripcionCategoria,vacas,toros,becerros,cont
       var cuerpo = jsonEncode({"id_becerro": becerros[i].id, "id_categoria":categoria['id'], "id_usuario":2}); //"id_vaca": null,"id_toro": null,"id_becerro": null,"id_categoria": 3
       BecerrosAgregar.add(cuerpo);
     }
-    print(BecerrosAgregar.toString());
-    print(BecerrosAgregar);
     await createAnimalCategory("http://192.168.100.6:3006/categoria/createCategoryBecerro", BecerrosAgregar.toString());
   }
   if (toros.length > 0){

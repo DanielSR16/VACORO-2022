@@ -14,9 +14,6 @@ import 'package:vacoro_proyect/src/widgets/HomePage/appBar.dart';
 import '../model/becerrosCategorias.dart';
 import '../model/categorias.dart';
 import '../pages/edit_categories_complete.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
-import 'package:auto_reload/auto_reload.dart';
 
 class becerroEditar extends StatefulWidget {
   List<Becerros> lista_de_becerros;
@@ -124,10 +121,6 @@ class _becerroEditar extends State<becerroEditar> {
   }
 
   buscarAnimalesFaltantes(listaBecerros,BecerrosTotales) {
-    print("esto es lb");
-    print(listaBecerros);
-    print("esto es vt");
-    print(BecerrosTotales);
     List<int> listaids = [];
     List<String> animalesFaltantes = [];
 

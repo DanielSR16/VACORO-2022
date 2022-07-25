@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
@@ -20,7 +21,7 @@ class registroUser2 extends StatefulWidget {
 class _registroUser2State extends State<registroUser2> {
   File? image;
   bool isSwitched = false;
-  late String url_img;
+  late String url_img = '';
   @override
   var size, height_media, width_media;
   late double bordes = 30;
@@ -127,12 +128,11 @@ class _registroUser2State extends State<registroUser2> {
         ),
         Container(
           padding: const EdgeInsets.only(
-            //left: 1,
             right: 1,
           ),
           child: SizedBox(
-            width: 140,
-            height: 150,
+            width: 152,
+            height: 160,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -145,6 +145,17 @@ class _registroUser2State extends State<registroUser2> {
                   title: 'Tomar fotografía',
                   icon: Icons.image_outlined,
                   onClicked: () => pickCamera(),
+                ),
+                buildButton(
+                  title: 'Cancelar selección',
+                  icon: Icons.image_outlined,
+                  onClicked: () {
+                    setState(() {
+                      image = null;
+                      url_img =
+                          'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+                    });
+                  },
                 ),
               ],
             ),
@@ -177,11 +188,9 @@ class _registroUser2State extends State<registroUser2> {
 
               register_user(nombre, apellidos, correoElectronico, contrasenia,
                       estado, ciudad, edad_int, nombreRancho, url_img)
-                  .then((value) {
-                print(value);
-              });
+                  .then((value) {});
 
-              Navigator.pushNamed(
+              Navigator.popAndPushNamed(
                 context,
                 'login',
               );
@@ -205,10 +214,32 @@ class _registroUser2State extends State<registroUser2> {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
 
       if (image == null) return;
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      final imageTemporary = File(image.path);
+      final imageTemporary = File(croppedFile!.path);
 
-      String fileExtension = path.extension(image.path);
+      String fileExtension = path.extension(croppedFile.path);
 
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
       await generateImageUrl.call(fileExtension);
@@ -247,12 +278,33 @@ class _registroUser2State extends State<registroUser2> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
+      var croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        compressQuality: 100,
+        maxHeight: 200,
+        maxWidth: 200,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Edicion de imagen',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+        ],
+      );
 
-      //final imageTemporary = File(image.path);
-      final imageTemporary = await saveImagePermanently(image.path);
+      final imageTemporary = File(croppedFile!.path);
       setState(() => this.image = imageTemporary);
-
-      String fileExtension = path.extension(image.path);
+      String fileExtension = path.extension(croppedFile.path);
+      //final imageTemporary = File(image.path);
 
       GenerateImageUrl generateImageUrl = GenerateImageUrl();
       await generateImageUrl.call(fileExtension);

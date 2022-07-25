@@ -18,10 +18,6 @@ import '../model/categorias.dart';
 import '../model/torosCategorias.dart';
 import '../model/vacasCategorias.dart';
 import '../pages/edit_categories_complete.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
-import 'package:auto_reload/auto_reload.dart';
-
 import '../widgets/HomePage/appBar.dart';
 
 class vacaEditar extends StatefulWidget {

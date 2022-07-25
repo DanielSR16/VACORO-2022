@@ -40,7 +40,7 @@ class _editCategories extends State<editCategories> {
         child: SingleChildScrollView(
           child: Column(
           children: [
-            ElevatedButton(onPressed: (){Navigator.pushNamed(context, "anadir_categoria");}, child: Text("add")),
+            ElevatedButton(onPressed: (){Navigator.pushNamed(context, "anadir_categoria");}, child: Text("add")), //Uso de mientras
             selectionCategory(listaCat),
             Container(margin: EdgeInsets.only(top: 25)),
             insertarImagen('assets/images/categorias.png'),

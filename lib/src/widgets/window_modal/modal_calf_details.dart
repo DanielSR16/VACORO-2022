@@ -1,8 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/services/editarBecerro.dart';
+import 'package:vacoro_proyect/src/services/obtenerVacaToro.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
 
-class ContainerDialogModalCalfDetail extends StatelessWidget {
-  const ContainerDialogModalCalfDetail({Key? key}) : super(key: key);
+//BECERROS
+class ContainerDialogModalCalfDetail extends StatefulWidget {
+  int id;
+  String token;
+  ContainerDialogModalCalfDetail(
+      {Key? key, required this.id, required this.token})
+      : super(key: key);
+
+  @override
+  State<ContainerDialogModalCalfDetail> createState() =>
+      _ContainerDialogModalCalfDetailState();
+}
+
+class _ContainerDialogModalCalfDetailState
+    extends State<ContainerDialogModalCalfDetail> {
+  late String nombre = '';
+  late String descripcion = '';
+  late String raza = '';
+  late int edad = 0;
+  late String num_arete = '';
+  late String url_img =
+      'https://image-vacoro.s3.amazonaws.com/8f74ad4a-ae4d-4473-aff1-f19e0199e68b.jpg';
+  late String fecha_llegada = '';
+  late String estado = '';
+  late String nombre_madre = '';
+  late String num_areteMadre = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    becerro_id(widget.id,widget.token).then((value) {
+      print(value);
+      setState(() {
+        nombre = value.nombre;
+        descripcion = value.descripcion;
+        raza = value.raza;
+        edad = value.edad;
+        num_arete = value.num_arete;
+        url_img = value.url_img;
+        fecha_llegada = value.fecha_llegada;
+
+        if (value.estado == 1) {
+          estado = 'Enfermo';
+        } else {
+          estado = 'No esta enfermo';
+        }
+        if (value.id_vaca != -1) {
+          vacatoro_id(value.id_vaca, "Vaca", widget.token).then((value) {
+            print(value);
+            setState(() {
+              nombre_madre = value.nombre;
+              num_areteMadre = value.num_arete;
+            });
+          });
+        } else {
+          nombre_madre = 'Sin madre';
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +96,7 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        width: size.width * 0.75,
+                        width: size.width * 0.65,
                         child: const Text(
                           "Nombre",
                           style: TextStyle(
@@ -50,9 +112,9 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       height: 30,
-                      child: _input("Margarita"),
+                      child: _input(nombre),
                     ),
                   ],
                 ),
@@ -60,7 +122,7 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       child: const Text(
                         "Descripción",
                         style: TextStyle(
@@ -77,9 +139,9 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       height: size.height * 0.085,
-                      child: _input("Es color blanca con manchas negras"),
+                      child: _input(descripcion),
                     ),
                   ],
                 ),
@@ -87,7 +149,7 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       child: const Text(
                         "Raza",
                         style: TextStyle(
@@ -103,9 +165,9 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       height: 50,
-                      child: _input("Angus"),
+                      child: _input(raza),
                     ),
                   ],
                 ),
@@ -113,9 +175,9 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       child: const Text(
-                        "Edad",
+                        "Edad (Meses)",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -130,9 +192,9 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       height: 30,
-                      child: _input("2"),
+                      child: _input(edad.toString()),
                     ),
                   ],
                 ),
@@ -140,7 +202,34 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
+                      child: const Text(
+                        "Estado del animal",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Color(0xff2F6622),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      width: size.width * 0.65,
+                      height: 30,
+                      child: _input(estado),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: size.width * 0.65,
                       child: const Text(
                         "Número de aretes",
                         style: TextStyle(
@@ -157,9 +246,35 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       height: 30,
-                      child: _input("20"),
+                      child: _input(num_arete),
+                    ),
+                  ],
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: size.width * 0.65,
+                        child: const Text(
+                          "Nombre/Núm. arete de la madre",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Color(0xff2F6622),
+                          ),
+                        ),
+                      ),
+                    ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      width: size.width * 0.65,
+                      height: 30,
+                      child: _inputVaca(nombre_madre, num_areteMadre),
                     ),
                   ],
                 ),
@@ -167,7 +282,7 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       child: const Text(
                         "Imagen de su marca",
                         style: TextStyle(
@@ -184,9 +299,9 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(bottom: 10, top: 10),
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       height: 150,
-                      child: Image.asset('assets/images/logoVacoro.png'),
+                      child: Image.network(url_img),
                     ),
                   ],
                 ),
@@ -194,7 +309,7 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       child: const Text(
                         "Fecha de llegada",
                         style: TextStyle(
@@ -211,38 +326,12 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(bottom: 50),
-                      width: size.width * 0.75,
+                      width: size.width * 0.65,
                       height: 50,
-                      child: _input("23/06/2022"),
+                      child: _input(fecha_llegada),
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 10, bottom: 20),
-                      width: size.width * 0.45,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          print("Ver historial");
-                        },
-                        style: ElevatedButton.styleFrom(
-                            primary: const Color(0xff3E762F),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            )),
-                        child: const Text(
-                          "Ver historial",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                )
               ],
             ),
           ),
@@ -254,6 +343,16 @@ class ContainerDialogModalCalfDetail extends StatelessWidget {
   Widget _input(String text) {
     return Text(
       "$text",
+      style: const TextStyle(
+        fontSize: 20,
+        color: ColorSelect.color5,
+      ),
+    );
+  }
+
+  Widget _inputVaca(String text, String text2) {
+    return Text(
+      "$text  $text2",
       style: const TextStyle(
         fontSize: 20,
         color: ColorSelect.color5,
