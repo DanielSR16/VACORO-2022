@@ -47,7 +47,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
 
   String? dropdownValue;
   late Map<int, String> listaVacas = {0: 'vaca'};
-
+  String nameMadre = "";
   late int id;
   late int id_usuario;
   late String token = '';
@@ -96,7 +96,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
           vacatoro_id(value.id_vaca, "Vaca", widget.token).then((value) {
             setState(() {
               print(value);
-              dropdownValue = value.nombre + " " + value.num_arete;
+              nameMadre = value.nombre + " " + value.num_arete;
               print(listaVacas);
             });
           });
@@ -104,7 +104,8 @@ class _EditarBecerroState extends State<EditarBecerro> {
           if (value.id_vaca == -1) {
             Future.delayed(const Duration(milliseconds: 700), () {
               setState(() {
-                dropdownValue = listaVacas[-1];
+                nameMadre = listaVacas[-1].toString();
+                // dropdownValue = listaVacas[-1];
               });
             });
           }
@@ -135,6 +136,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
               size: 40,
             ),
             onPressed: () {
+              
               Navigator.pop(context);
             },
           ),
@@ -166,7 +168,7 @@ class _EditarBecerroState extends State<EditarBecerro> {
                 inputs("Número de arete", "Ingrese el número de arete", size,
                     numeroAreteBecerroEditar, _validateNumeroArete),
                 fecha(context, 'Fecha de llegada', dateinput, _validateDate),
-                selectMadre("Seleccionar vaca madre", size),
+                // selectMadre("Vaca madre" + nameMadre, size),
                 edadEstado("Edad (Meses)", "Ingrese los meses que tiene",
                     "Buen estado", size, edadBecerro, _validateEdad),
                 selectImage(size),
