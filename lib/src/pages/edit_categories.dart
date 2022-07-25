@@ -111,7 +111,7 @@ class _editCategories extends State<editCategories> {
                             {
                               descripcion =
                                   snapshot.data![i].descripcionCategoria,
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,
                                   PageTransition(
                                       type: PageTransitionType.fade,

@@ -67,7 +67,7 @@ creacionCategoria(nombreCategoria, descripcionCategoria, vacas, toros, becerros,
         VacasAgregar.toString());
   }
 
-  Navigator.popAndPushNamed(context, "dash_category");
+  //  Navigator.pushNamed(context, "dash_category");
 }
 
 Container botonGuardar(texto, altura, becerros, vacas, toros, nombreCategoria,
@@ -80,7 +80,9 @@ Container botonGuardar(texto, altura, becerros, vacas, toros, nombreCategoria,
         onPressed: () {
           creacionCategoria(nombreCategoria, descripcionCategoria, vacas, toros,
               becerros, context);
-          Navigator.pushNamed(context, 'dash_category');
+          Future.delayed(const Duration(milliseconds: 200), () {
+            Navigator.popAndPushNamed(context, 'dash_category');
+          });
         },
         style: ButtonStyle(
           shape: MaterialStateProperty.all(RoundedRectangleBorder(

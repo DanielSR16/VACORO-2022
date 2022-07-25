@@ -1,7 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/services/category_service.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
+import 'package:vacoro_proyect/src/utils/user_secure_storage.dart';
 import 'package:vacoro_proyect/src/widgets/widgets_views/widgets_views.dart';
 import 'package:vacoro_proyect/src/widgets/window_modal/modal_category_details.dart';
 
@@ -12,7 +14,24 @@ class DashboardCategory extends StatefulWidget {
   State<DashboardCategory> createState() => _DashboardCategoryState();
 }
 
+late String name = '';
+late String correo = '';
+
 class _DashboardCategoryState extends State<DashboardCategory> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    UserSecureStorage.getName().then((_NAME) {
+      UserSecureStorage.getCorreo().then((_CORREO) {
+        setState(() {
+          name = _NAME!;
+          correo = _CORREO!;
+        });
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -21,7 +40,15 @@ class _DashboardCategoryState extends State<DashboardCategory> {
         leading: IconButton(
           onPressed: () {
             print("Regresar...");
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => homePage(
+                        nombre: name,
+                        correo: correo,
+                      )),
+            );
           },
           icon: const Icon(Icons.arrow_back),
         ),
