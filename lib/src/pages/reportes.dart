@@ -62,7 +62,7 @@ class _generateReportsState extends State<generateReports> {
                   ),
                   onPressed: () {
                     var urlDescarga =
-                        "http://192.168.100.15:3001/pdf/globalReportVaca"; //url del back
+                        "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportVaca"; //url del back
                     String fileName =
                         "Vacas.pdf"; //url.substring(url.lastIndexOf("/") + 1);
                     downloadFile(urlDescarga, fileName);
@@ -111,7 +111,7 @@ class _generateReportsState extends State<generateReports> {
                     ),
                     onPressed: () {
                       var urlDescarga =
-                          "http://192.168.100.15:3001/pdf/globalReportToro"; //url del back
+                          "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportToro"; //url del back
                       String fileName =
                           "Toros.pdf"; //url.substring(url.lastIndexOf("/") + 1);
                       downloadFile(urlDescarga, fileName);
@@ -159,7 +159,7 @@ class _generateReportsState extends State<generateReports> {
                     ),
                     onPressed: () {
                       var urlDescarga =
-                          "http://192.168.100.15:3001/pdf/globalReportBecerro"; //url del back
+                          "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportBecerro"; //url del back
                       String fileName =
                           "Becerros.pdf"; //url.substring(url.lastIndexOf("/") + 1);
                       downloadFile(urlDescarga, fileName);
