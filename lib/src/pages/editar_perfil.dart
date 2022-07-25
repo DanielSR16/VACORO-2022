@@ -674,11 +674,12 @@ class _EditarPerfilState extends State<EditarPerfil> {
 
   Widget selectImage() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Column(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
+              padding: const EdgeInsets.only(left: 20, right: 0, bottom: 5),
               child: const Text(
                 'Imagen de su marca',
                 style: TextStyle(
@@ -689,7 +690,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 16),
+              margin: const EdgeInsets.only(left: 0),
               child: image != null
                   ? Image.file(
                       image!,
@@ -709,9 +710,10 @@ class _EditarPerfilState extends State<EditarPerfil> {
           padding: const EdgeInsets.only(
             right: 1,
           ),
-          child: SizedBox(
-            width: 160,
-            height: 150,
+          child: Container(
+            color: Colors.amber,
+            width: MediaQuery.of(context).size.width * 0.40,
+            margin: const EdgeInsets.only(left: 16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
