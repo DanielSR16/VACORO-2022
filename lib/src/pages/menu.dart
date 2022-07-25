@@ -86,7 +86,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Agregar medicamentos'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, 'dash_medication');
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_syringe.png'),
             width: 40,
@@ -94,7 +96,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Agregar categorias'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, 'dash_category');
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_Carpeta.png'),
             width: 27,
@@ -150,16 +154,11 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
           ),
         ),
         ListTile(
-          title: const Text('Ver anuncio'),
-          onTap: () {},
-          leading: const Image(
-            image: AssetImage('assets/images/Icon_anuncio.png'),
-            width: 30,
-          ),
-        ),
-        ListTile(
           title: const Text('Cerrar sesión'),
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                'pre_login', (Route<dynamic> route) => false);
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_salida.png'),
             width: 25,

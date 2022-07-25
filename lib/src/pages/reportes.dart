@@ -47,93 +47,148 @@ class _generateReportsState extends State<generateReports> {
             ),
             Center(
               child: Container(
-                  width: size.width - 30,
-                  height: 70,
-                  margin: EdgeInsets.only(top: 50),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(35),
-                        primary: ColorSelect.color1,
-                        onPrimary: Colors.white,
-                        textStyle: const TextStyle(fontSize: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                width: size.width - 50,
+                height: 70,
+                margin: EdgeInsets.only(top: 50),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(35),
+                    primary: ColorSelect.color5,
+                    onPrimary: Colors.white,
+                    textStyle: const TextStyle(fontSize: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    var urlDescarga =
+                        "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportVaca"; //url del back
+                    String fileName =
+                        "Vacas.pdf"; //url.substring(url.lastIndexOf("/") + 1);
+                    downloadFile(urlDescarga, fileName);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(milliseconds: 1000),
+                        content: Text('Reporte generado, revise descargas'),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Image(
+                          image: AssetImage('assets/images/vaca.png'),
+                          width: 40,
                         ),
                       ),
-                      onPressed: () {
-                        var urlDescarga =
-                            "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportVaca"; //url del back
-                        String fileName =
-                            "Vacas.pdf"; //url.substring(url.lastIndexOf("/") + 1);
-                        downloadFile(urlDescarga, fileName);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            duration: Duration(milliseconds: 1000),
-                            content: Text('Reporte generado, revise descargas'),
-                          ),
-                        );
-                      },
-                      child: Text("Generar reporte vacas"))),
+                      Container(
+                          margin: const EdgeInsets.only(left: 30.0),
+                          child: Text(
+                            "Generar reporte vacas",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 20.0),
+                          ))
+                    ],
+                  ),
+                ),
+              ),
             ),
             Center(
               child: Container(
-                  width: size.width - 30,
+                  width: size.width - 50,
                   height: 70,
                   margin: EdgeInsets.only(top: 50),
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(35),
-                        primary: ColorSelect.color1,
-                        onPrimary: Colors.white,
-                        textStyle: const TextStyle(fontSize: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(35),
+                      primary: ColorSelect.color5,
+                      onPrimary: Colors.white,
+                      textStyle: const TextStyle(fontSize: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
                       ),
-                      onPressed: () {
-                        var urlDescarga =
-                            "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportToro"; //url del back
-                        String fileName =
-                            "Toros.pdf"; //url.substring(url.lastIndexOf("/") + 1);
-                        downloadFile(urlDescarga, fileName);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            duration: Duration(milliseconds: 1000),
-                            content: Text('Reporte generado, revise descargas'),
+                    ),
+                    onPressed: () {
+                      var urlDescarga =
+                          "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportToro"; //url del back
+                      String fileName =
+                          "Toros.pdf"; //url.substring(url.lastIndexOf("/") + 1);
+                      downloadFile(urlDescarga, fileName);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          duration: Duration(milliseconds: 1000),
+                          content: Text('Reporte generado, revise descargas'),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Image(
+                            image: AssetImage('assets/images/toro.png'),
+                            width: 40,
                           ),
-                        );
-                      },
-                      child: Text("Generar reporte Toros"))),
+                        ),
+                        Container(
+                            margin: const EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              "Generar reporte toros",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 20.0),
+                            ))
+                      ],
+                    ),
+                  )),
             ),
             Center(
               child: Container(
-                  width: size.width - 30,
+                  width: size.width - 50,
                   height: 70,
                   margin: EdgeInsets.only(top: 50),
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(35),
-                        primary: ColorSelect.color1,
-                        onPrimary: Colors.white,
-                        textStyle: const TextStyle(fontSize: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(35),
+                      primary: ColorSelect.color5,
+                      onPrimary: Colors.white,
+                      textStyle: const TextStyle(fontSize: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
                       ),
-                      onPressed: () {
-                        var urlDescarga =
-                            "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportBecerro"; //url del back
-                        String fileName =
-                            "Becerros.pdf"; //url.substring(url.lastIndexOf("/") + 1);
-                        downloadFile(urlDescarga, fileName);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            duration: Duration(milliseconds: 1000),
-                            content: Text('Reporte generado, revise descargas'),
+                    ),
+                    onPressed: () {
+                      var urlDescarga =
+                          "http://animales-vacoro-729421269.us-east-1.elb.amazonaws.com/pdf/globalReportBecerro"; //url del back
+                      String fileName =
+                          "Becerros.pdf"; //url.substring(url.lastIndexOf("/") + 1);
+                      downloadFile(urlDescarga, fileName);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          duration: Duration(milliseconds: 1000),
+                          content: Text('Reporte generado, revise descargas'),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Image(
+                            image: AssetImage('assets/images/becerro.png'),
+                            width: 37,
                           ),
-                        );
-                      },
-                      child: Text("Generar reporte Becerros"))),
+                        ),
+                        Container(
+                            margin: const EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              "Generar reporte becerros",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 20.0),
+                            ))
+                      ],
+                    ),
+                  )),
             ),
           ],
         ),
