@@ -141,13 +141,15 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
                             {
                               descripcion =
                                   snapshot.data![i].descripcionCategoria,
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.fade,
-                                      child: editCategoriesComplete(
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      editCategoriesComplete(
                                           categoriaSeleccionada:
-                                              snapshot.data![i]))),
+                                              snapshot.data![i]),
+                                ),
+                              )
                             },
                         },
                     }),
@@ -278,12 +280,13 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
               await AccionarCategoria_edito_elimino(
                   'http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/updatecategoria',
                   actualizoCategoria);
-              Navigator.pop(context);
+              // Navigator.pop(context);
               setState(() {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => editCategories()));
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (BuildContext context) => editCategories()));
+                Navigator.popAndPushNamed(context, "dash_category");
               });
             },
           );
@@ -341,13 +344,17 @@ class _editCategoriesComplete extends State<editCategoriesComplete> {
                     await AccionarCategoria_edito_elimino(
                         'http://categorias-vacoro-1164392975.us-east-1.elb.amazonaws.com/categoria/deleteCategoria',
                         idBorrar);
-                    Navigator.pop(context);
+
                     setState(() {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  editCategories()));
+                      Future.delayed(const Duration(milliseconds: 200), () {
+                        Navigator.popAndPushNamed(context, "dash_category");
+                      });
+
+                      // Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (BuildContext context) =>
+                      //             editCategories()));
                     });
                   },
                 );
