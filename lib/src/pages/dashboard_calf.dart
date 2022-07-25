@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vacoro_proyect/src/model/listCardsCalf.dart';
 import 'package:vacoro_proyect/src/pages/anadir_becerro.dart';
 import 'package:vacoro_proyect/src/pages/editar_becerro.dart';
+import 'package:vacoro_proyect/src/pages/homepage.dart';
 import 'package:vacoro_proyect/src/pages/medication_history_calf.dart';
 import 'package:vacoro_proyect/src/services/animal_service_calf.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
@@ -23,18 +24,21 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
   var id_usuario = 0;
   var token = '';
   var name = '';
+  var correo = '';
   @override
   void initState() {
     super.initState();
     UserSecureStorage.getId().then((value) {
       UserSecureStorage.getToken().then((token_) {
         UserSecureStorage.getName().then((name_) {
-          setState(() {
-            int id_cast = int.parse(value!);
-
-            id_usuario = id_cast;
-            token = token_!;
-            name = name_!;
+          UserSecureStorage.getCorreo().then((correo_) {
+            setState(() {
+              int id_cast = int.parse(value!);
+              correo = correo_!;
+              id_usuario = id_cast;
+              token = token_!;
+              name = name_!;
+            });
           });
         });
       });
@@ -53,7 +57,15 @@ class _DashBoardCalfState extends State<DashBoardCalf> {
         leading: IconButton(
           padding: const EdgeInsets.only(right: 0),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => homePage(
+                        nombre: name,
+                        correo: correo,
+                      )),
+            );
+            // Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,

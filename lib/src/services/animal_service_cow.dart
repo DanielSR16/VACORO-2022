@@ -17,7 +17,7 @@ Future<List<Map<String, dynamic>>> getAllCow(int id_usuario, token) async {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
         },
-        body: json.encode({"id_usuario": 1}));
+        body: json.encode({"id_usuario": id_usuario}));
     print('boddddddddddddddddddyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
     print(response.body);
     print(response.statusCode);

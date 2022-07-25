@@ -84,7 +84,11 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
               size: 40,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Future.delayed(const Duration(milliseconds: 500), () {
+// Here you can write your code
+
+                Navigator.pop(context);
+              });
             },
           ),
         ),
@@ -151,11 +155,10 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
                                     dateinputFechaAplicacion.text,
                                     data_[2]);
                               });
-                              print('TIpo animal');
+                              // print('TIpo animal')
                               print(data_[0]);
-                              Future.delayed(const Duration(milliseconds: 200),
+                              Future.delayed(const Duration(milliseconds: 500),
                                   () {
-// Here you can write your code
                                 if (data_[0] == 1) {
                                   Navigator.pushReplacement(
                                     context,
@@ -169,6 +172,7 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
                                     ),
                                   );
                                 } else if (data_[0] == 2) {
+                                  print('a');
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute<void>(
@@ -187,7 +191,7 @@ class _AnadirMedicamentoAnimalState extends State<AnadirMedicamentoAnimal> {
                                       builder: (BuildContext context) =>
                                           MedicationHitoryCalf(
                                         idAnimal: data_[2],
-                                        nombre: 'l',
+                                        nombre: '',
                                         idUsuario: data_[1],
                                       ),
                                     ),

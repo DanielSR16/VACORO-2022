@@ -173,22 +173,7 @@ class _LoginState extends State<Login> {
                 ),
                 Container(
                   width: size.width * 0.90,
-                  margin: const EdgeInsets.only(right: 8),
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    child: const Text(
-                      '¿Haz olvidado tu contraseña?',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: ColorSelect.color5,
-                          fontSize: 16),
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-                Container(
-                  width: size.width * 0.90,
-                  padding: const EdgeInsets.only(top: 35),
+                  padding: const EdgeInsets.only(top: 65),
                   child: SizedBox(
                     width: size.width - 50,
                     height: 50,

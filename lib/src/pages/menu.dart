@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vacoro_proyect/src/style/colors/colorview.dart';
-
+import 'package:vacoro_proyect/src/pages/reportes.dart';
 import 'editarPerfilContrasena.dart';
 import 'editar_perfil.dart';
 
@@ -84,7 +86,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Agregar medicamentos'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, 'dash_medication');
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_syringe.png'),
             width: 40,
@@ -92,7 +96,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Agregar categorias'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, 'dash_category');
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_Carpeta.png'),
             width: 27,
@@ -100,7 +106,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Generar reporte'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, 'reportes');
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_Report.png'),
             width: 30,
@@ -147,7 +155,9 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
         ),
         ListTile(
           title: const Text('Cerrar sesión'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacementNamed(context, 'login');
+          },
           leading: const Image(
             image: AssetImage('assets/images/Icon_salida.png'),
             width: 25,
@@ -157,3 +167,32 @@ Drawer drawer(BuildContext context, nombre, correo, imageUsuario, id_usuario) {
     ),
   );
 }
+
+// Future downloadFile(url, filename) async {
+//   bool downloading = true;
+//   String downloadingStr = "No data";
+
+//   final directory = await getExternalStorageDirectory();
+//   String rutaGuardado = directory!.path + "/";
+
+//   try {
+//     Dio dio = Dio();
+//     var savePath = await getFilePath(rutaGuardado, filename);
+//     await dio.download(url, savePath, onReceiveProgress: (rec, total) {
+//       downloading = true;
+//       downloadingStr = "Downloading Image : $rec";
+//     });
+
+//     downloading = false;
+//     downloadingStr = "Completed";
+
+//     print(downloading);
+//   } catch (e) {
+//     print(e.toString());
+//   }
+// }
+
+// Future<String> getFilePath(rutaGuardado, fileName) async {
+//   String path = 'storage/emulated/0/download' + fileName;
+//   return path;
+// }

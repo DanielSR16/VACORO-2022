@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -420,7 +421,7 @@ class _EditarAnimalState extends State<EditarAnimal> {
                   : Image(
                       width: 160,
                       height: 150,
-                      image: NetworkImage(imageAnimal),
+                      image: CachedNetworkImageProvider(imageAnimal),
                     ),
             ),
           ],
