@@ -711,7 +711,6 @@ class _EditarPerfilState extends State<EditarPerfil> {
             right: 1,
           ),
           child: Container(
-            color: Colors.amber,
             width: MediaQuery.of(context).size.width * 0.40,
             margin: const EdgeInsets.only(left: 16),
             child: Column(

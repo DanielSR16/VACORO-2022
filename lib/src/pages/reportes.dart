@@ -224,7 +224,7 @@ class _generateReportsState extends State<generateReports> {
   }
 
   Future<String> getFilePath(rutaGuardado, fileName) async {
-    String path = 'storage/emulated/0/download/' + fileName;
+    String path = 'storage/emulated/0/download/pdf - ' + fileName;
     return path;
   }
 }
